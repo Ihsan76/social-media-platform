@@ -7,5 +7,5 @@ cmds = [
 [start]
 cmd = "python app.py"
 
-[providers]
+[[providers]]
 python = "3.11"
