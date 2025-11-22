@@ -1,357 +1,179 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" dir="{{ text_direction }}">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</title>
-    
+    <title>نشرتي - منصة الناشرين المحترفين</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        html[dir="rtl"] {
-            direction: rtl;
-            text-align: right;
+        body { 
+            font-family: 'Tajawal', sans-serif;
         }
-        html[dir="ltr"] {
-            direction: ltr;
-            text-align: left;
-        }
-        
-        body {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        body.loaded {
-            visibility: visible;
-            opacity: 1;
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="loading">
-    <script>
-        document.documentElement.dir = '{{ text_direction }}';
-        document.documentElement.lang = '{{ lang }}';
-        
-        window.addEventListener('load', function() {
-            document.body.classList.remove('loading');
-            document.body.classList.add('loaded');
-        });
-    </script>
+<body class="bg-gray-50">
+    <!-- الهيدر -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- الشعار -->
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">ن</span>
+                </div>
+                <span class="text-xl font-bold text-gray-800">نشرتي</span>
+            </div>
 
-    <div class="container">
-        <!-- شريط اللغة -->
-        <div class="language-bar">
-            <div class="language-selector">
-                <span class="current-language">
-                    {{ languages[lang].flag }} {{ translations.get('current_language', 'Current Language') }}: {{ languages[lang].name }}
-                </span>
-                <div class="language-dropdown">
-                    {% for code, info in languages.items() %}
-                    <button class="lang-btn {% if code == lang %}active{% endif %}" 
-                            onclick="changeLanguage('{{ code }}')">
-                        {{ info.flag }} {{ info.name }}
-                    </button>
-                    {% endfor %}
-                </div>
+            <!-- القائمة -->
+            <div class="hidden md:flex space-x-8 space-x-reverse">
+                <a href="#features" class="text-gray-600 hover:text-blue-500 transition duration-300">المميزات</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-blue-500 transition duration-300">كيف تعمل</a>
+                <a href="#testimonials" class="text-gray-600 hover:text-blue-500 transition duration-300">آراء العملاء</a>
             </div>
-        </div>
 
-        <div class="header">
-            <h1>🚀 {{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</h1>
-            <p>{{ translations.get('login_with_email_social', 'Login with your email or social accounts') }}</p>
-            
-            <!-- 🔥 إحصائيات النظام الحية -->
-            <div class="system-stats">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalUsers">0</div>
-                        <div class="stat-label">{{ translations.get('total_users', 'Total Users') }}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="activeSessions">0</div>
-                        <div class="stat-label">{{ translations.get('active_sessions', 'Active Sessions') }}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="socialAccounts">0</div>
-                        <div class="stat-label">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="systemStatus">🟢</div>
-                        <div class="stat-label">{{ translations.get('system_status', 'System Status') }}</div>
-                    </div>
-                </div>
+            <!-- أزرار -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <a href="/login" class="text-gray-600 hover:text-blue-500 transition duration-300">تسجيل الدخول</a>
+                <a href="/login" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition duration-300 transform hover:-translate-y-0.5">
+                    ابدأ مجاناً
+                </a>
             </div>
-        </div>
-        
-        <div class="dashboard">
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('register')">{{ translations.get('register', 'Register') }}</div>
-                <div class="tab" onclick="switchTab('login')">{{ translations.get('login', 'Login') }}</div>
-                <div class="tab" onclick="switchTab('profile')">{{ translations.get('profile', 'Profile') }}</div>
-                <div class="tab" onclick="switchTab('social')">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
-            </div>
-            
-            <!-- تسجيل جديد -->
-            <div id="register" class="tab-content active">
-                <h2>{{ translations.get('register', 'Register') }}</h2>
-                
-                <div class="auth-section">
-                    <h3>📧 {{ translations.get('register_with_email', 'Register with Email') }}</h3>
-                    <div class="form-group">
-                        <label for="regUsername">{{ translations.get('username', 'Username') }}</label>
-                        <input type="text" id="regUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="regEmail">{{ translations.get('email', 'Email') }}</label>
-                        <input type="email" id="regEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="regPassword">{{ translations.get('password', 'Password') }}</label>
-                        <input type="password" id="regPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }} (6 {{ translations.get('characters_min', 'characters minimum') }})">
-                    </div>
-                    <div class="form-group">
-                        <label for="regLanguage">{{ translations.get('preferred_language', 'Preferred Language') }}</label>
-                        <select id="regLanguage">
-                            {% for code, info in languages.items() %}
-                            <option value="{{ code }}" {% if code == lang %}selected{% endif %}>
-                                {{ info.flag }} {{ info.name }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" onclick="registerWithEmail()">{{ translations.get('register', 'Register') }}</button>
-                </div>
-                
-                <div class="divider">
-                    <span>{{ translations.get('or', 'OR') }}</span>
-                </div>
-                
-                <div class="social-auth-section">
-                    <h3>🔗 {{ translations.get('register_with_social', 'Register with Social Accounts') }}</h3>
-                    <div class="social-buttons">
-                        <button class="btn-social btn-google" onclick="socialLogin('google')">
-                            <span class="social-icon">🔍</span>
-                            {{ translations.get('register_google', 'Register with Google') }}
-                        </button>
-                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
-                            <span class="social-icon">🐦</span>
-                            {{ translations.get('register_twitter', 'Register with Twitter') }}
-                        </button>
-                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
-                            <span class="social-icon">📘</span>
-                            {{ translations.get('register_facebook', 'Register with Facebook') }}
-                        </button>
-                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
-                            <span class="social-icon">📷</span>
-                            {{ translations.get('register_instagram', 'Register with Instagram') }}
-                        </button>
-                        <button class="btn-social btn-github" onclick="socialLogin('github')">
-                            <span class="social-icon">💻</span>
-                            {{ translations.get('register_github', 'Register with GitHub') }}
+        </nav>
+    </header>
+
+    <!-- القسم البطولي -->
+    <section class="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <!-- النص -->
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight mb-6">
+                        منصة 
+                        <span class="gradient-text">
+                            الناشرين المحترفين
+                        </span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                        واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. 
+                        أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
+                        <a href="/login" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:shadow-xl transition duration-300 transform hover:-translate-y-1 text-center font-medium">
+                            ابدأ رحلتك الآن
+                        </a>
+                        <button class="border border-blue-500 text-blue-500 px-8 py-4 rounded-xl hover:bg-blue-50 transition duration-300 text-center font-medium">
+                            شاهد العرض التوضيحي
                         </button>
                     </div>
                 </div>
-                
-                <div id="registerMessage" class="message"></div>
-            </div>
-            
-            <!-- تسجيل الدخول -->
-            <div id="login" class="tab-content">
-                <h2>{{ translations.get('login', 'Login') }}</h2>
-                
-                <div class="auth-section">
-                    <h3>📧 {{ translations.get('login_with_email', 'Login with Email') }}</h3>
-                    <div class="form-group">
-                        <label for="loginEmail">{{ translations.get('email', 'Email') }}</label>
-                        <input type="email" id="loginEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">{{ translations.get('password', 'Password') }}</label>
-                        <input type="password" id="loginPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }}">
-                    </div>
-                    <button class="btn btn-primary" onclick="loginWithEmail()">{{ translations.get('login', 'Login') }}</button>
-                </div>
-                
-                <div class="divider">
-                    <span>{{ translations.get('or', 'OR') }}</span>
-                </div>
-                
-                <div class="social-auth-section">
-                    <h3>🔗 {{ translations.get('login_with_social', 'Login with Social Accounts') }}</h3>
-                    <div class="social-buttons">
-                        <button class="btn-social btn-google" onclick="socialLogin('google')">
-                            <span class="social-icon">🔍</span>
-                            {{ translations.get('login_google', 'Login with Google') }}
-                        </button>
-                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
-                            <span class="social-icon">🐦</span>
-                            {{ translations.get('login_twitter', 'Login with Twitter') }}
-                        </button>
-                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
-                            <span class="social-icon">📘</span>
-                            {{ translations.get('login_facebook', 'Login with Facebook') }}
-                        </button>
-                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
-                            <span class="social-icon">📷</span>
-                            {{ translations.get('login_instagram', 'Login with Instagram') }}
-                        </button>
-                        <button class="btn-social btn-github" onclick="socialLogin('github')">
-                            <span class="social-icon">💻</span>
-                            {{ translations.get('login_github', 'Login with GitHub') }}
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="loginMessage" class="message"></div>
-            </div>
-            
-            <!-- الملف الشخصي -->
-            <div id="profile" class="tab-content">
-                <h2>{{ translations.get('profile', 'Profile') }}</h2>
-                <button class="btn btn-secondary" onclick="getProfile()">🔄 {{ translations.get('update_profile', 'Update Profile') }}</button>
-                
-                <div id="profileInfo" class="user-info">
-                    <div class="profile-placeholder">
-                        <p>{{ translations.get('please_login', 'Please login to view your profile') }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- الحسابات الاجتماعية -->
-            <div id="social" class="tab-content">
-                <h2>{{ translations.get('manage_accounts', 'Manage Accounts') }}</h2>
-                
-                <div class="social-connect">
-                    <h3>🔗 {{ translations.get('connect_new_account', 'Connect New Account') }}</h3>
-                    <div class="form-group">
-                        <label for="socialPlatform">{{ translations.get('platform', 'Platform') }}</label>
-                        <select id="socialPlatform">
-                            <option value="">{{ translations.get('choose_platform', 'Choose Platform') }}</option>
-                            <option value="twitter">{{ translations.get('twitter', 'Twitter') }}</option>
-                            <option value="facebook">{{ translations.get('facebook', 'Facebook') }}</option>
-                            <option value="instagram">{{ translations.get('instagram', 'Instagram') }}</option>
-                            <option value="linkedin">{{ translations.get('linkedin', 'LinkedIn') }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="socialUsername">{{ translations.get('social_username', 'Username on platform') }}</label>
-                        <input type="text" id="socialUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="socialToken">{{ translations.get('access_token', 'Access Token') }}</label>
-                        <input type="text" id="socialToken" placeholder="{{ translations.get('enter_access_token', 'Enter access token') }}">
-                    </div>
-                    <button class="btn btn-success" onclick="connectSocialAccount()">{{ translations.get('connect_account', 'Connect Account') }}</button>
-                </div>
-                
-                <div class="accounts-list">
-                    <h3>{{ translations.get('connected_accounts', 'Connected Accounts') }}</h3>
-                    <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 {{ translations.get('refresh_list', 'Refresh List') }}</button>
-                    <div id="accountsList" class="accounts-container">
-                        <p class="no-accounts">{{ translations.get('no_accounts', 'No accounts connected yet') }}</p>
+
+                <!-- الصورة -->
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="bg-white p-6 rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition duration-500 max-w-md">
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 h-80 rounded-lg flex items-center justify-center relative overflow-hidden">
+                            <!-- صورة وهمية للواجهة -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-500/20"></div>
+                            <div class="relative z-10 text-center p-8">
+                                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <span class="text-white text-2xl">📱</span>
+                                </div>
+                                <p class="text-gray-600 font-medium">واجهة الناشر الذكية</p>
+                                <p class="text-gray-500 text-sm mt-2">تصميم مبسط وسلس</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>{{ translations.get('version', 'Version') }} 2.2 - {{ translations.get('multi_language_system', 'Multi-language System') }}</p>
+    </section>
+
+    <!-- قسم المميزات -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                    كل ما يحتاجه الناشر المحترف
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- بطاقة 1 -->
+                <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-blue-100">
+                    <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-white text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">تحليلات متقدمة</h3>
+                    <p class="text-gray-600 text-center">
+                        فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.
+                    </p>
+                </div>
+
+                <!-- بطاقة 2 -->
+                <div class="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-purple-100">
+                    <div class="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-white text-2xl">🎯</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">استهداف دقيق</h3>
+                    <p class="text-gray-600 text-center">
+                        وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.
+                    </p>
+                </div>
+
+                <!-- بطاقة 3 -->
+                <div class="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-green-100">
+                    <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                        <span class="text-white text-2xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">تفاعل حقيقي</h3>
+                    <p class="text-gray-600 text-center">
+                        حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <script>
-        const CURRENT_LANG = '{{ lang }}';
-        const TEXT_DIRECTION = '{{ text_direction }}';
-        const LANGUAGES = {{ languages | tojson }};
-        const TRANSLATIONS = {{ translations | tojson }};
+    <!-- قسم دعوة للعمل -->
+    <section class="py-20 bg-gradient-to-r from-blue-500 to-purple-600">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                مستعد لبدء رحلتك؟
+            </h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل
+            </p>
+            <a href="/login" class="bg-white text-blue-600 px-8 py-4 rounded-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 inline-block font-bold text-lg">
+                سجل حسابك مجاناً
+            </a>
+        </div>
+    </section>
 
-        // 🔥 دالة تحميل إحصائيات النظام
-        async function loadSystemStats() {
-            try {
-                const response = await fetch('/api/health');
-                const data = await response.json();
-                
-                // تحديث الإحصائيات
-                document.getElementById('totalUsers').textContent = data.statistics?.users_count || 0;
-                document.getElementById('activeSessions').textContent = data.statistics?.active_sessions || 0;
-                document.getElementById('socialAccounts').textContent = data.statistics?.social_accounts || 0;
-                document.getElementById('systemStatus').textContent = data.status === 'healthy' ? '��' : '🔴';
-                
-            } catch (error) {
-                console.log('Error loading system stats:', error);
-                document.getElementById('systemStatus').textContent = '🔴';
-            }
-        }
-
-        // 🔥 تحميل الإحصائيات عند فتح الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            loadSystemStats();
-            
-            // تحديث الإحصائيات كل 10 ثواني
-            setInterval(loadSystemStats, 10000);
-            
-            // نظام التبويب
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // إزالة النشاط من جميع الأزرار والمحتويات
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-
-                    // إضافة النشاط للزر والمحتوى المحدد
-                    tab.classList.add('active');
-                    const tabId = tab.getAttribute('onclick').match(/'([^']+)'/)[1];
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-        });
-
-        function changeLanguage(lang) {
-            window.location.href = `/?lang=${lang}`;
-        }
-
-        function switchTab(tabName) {
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => tab.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-
-            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        function socialLogin(provider) {
-            alert(`${TRANSLATIONS.connecting || 'Connecting to'} ${provider}`);
-        }
-
-        async function registerWithEmail() {
-            // تنفيذ التسجيل
-            alert(TRANSLATIONS.register_success || 'Registration functionality will be implemented');
-        }
-
-        async function loginWithEmail() {
-            // تنفيذ تسجيل الدخول
-            alert(TRANSLATIONS.login_success || 'Login functionality will be implemented');
-        }
-
-        async function getProfile() {
-            // جلب الملف الشخصي
-            alert(TRANSLATIONS.profile_loaded || 'Profile functionality will be implemented');
-        }
-
-        async function connectSocialAccount() {
-            // ربط حساب اجتماعي
-            alert(TRANSLATIONS.social_connected || 'Social account connection will be implemented');
-        }
-
-        async function loadSocialAccounts() {
-            // تحميل الحسابات الاجتماعية
-            alert(TRANSLATIONS.accounts_loaded || 'Social accounts loading will be implemented');
-        }
-    </script>
+    <!-- الفوتر -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                        <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold">ن</span>
+                        </div>
+                        <span class="text-xl font-bold">نشرتي</span>
+                    </div>
+                    <p class="text-gray-400 mt-2">منصة الناشرين المحترفين</p>
+                </div>
+                <div class="text-gray-400">
+                    <p>© 2024 نشرتي. جميع الحقوق محفوظة</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

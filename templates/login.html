@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="{{ text_direction }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</title>
+    
+    <style>
+        html[dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        html[dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        body {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="loading">
+    <script>
+        document.documentElement.dir = '{{ text_direction }}';
+        document.documentElement.lang = '{{ lang }}';
+        
+        window.addEventListener('load', function() {
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+        });
+    </script>
+
+    <div class="container">
+        <!-- شريط اللغة -->
+        <div class="language-bar">
+            <div class="language-selector">
+                <span class="current-language">
+                    {{ languages[lang].flag }} {{ translations.get('current_language', 'Current Language') }}: {{ languages[lang].name }}
+                </span>
+                <div class="language-dropdown">
+                    {% for code, info in languages.items() %}
+                    <button class="lang-btn {% if code == lang %}active{% endif %}" 
+                            onclick="changeLanguage('{{ code }}')">
+                        {{ info.flag }} {{ info.name }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>🚀 {{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</h1>
+            <p>{{ translations.get('login_with_email_social', 'Login with your email or social accounts') }}</p>
+            
+            <!-- 🔥 إحصائيات النظام الحية -->
+            <div class="system-stats">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">{{ translations.get('total_users', 'Total Users') }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeSessions">0</div>
+                        <div class="stat-label">{{ translations.get('active_sessions', 'Active Sessions') }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="socialAccounts">0</div>
+                        <div class="stat-label">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="systemStatus">🟢</div>
+                        <div class="stat-label">{{ translations.get('system_status', 'System Status') }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('register')">{{ translations.get('register', 'Register') }}</div>
+                <div class="tab" onclick="switchTab('login')">{{ translations.get('login', 'Login') }}</div>
+                <div class="tab" onclick="switchTab('profile')">{{ translations.get('profile', 'Profile') }}</div>
+                <div class="tab" onclick="switchTab('social')">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
+            </div>
+            
+            <!-- تسجيل جديد -->
+            <div id="register" class="tab-content active">
+                <h2>{{ translations.get('register', 'Register') }}</h2>
+                
+                <div class="auth-section">
+                    <h3>📧 {{ translations.get('register_with_email', 'Register with Email') }}</h3>
+                    <div class="form-group">
+                        <label for="regUsername">{{ translations.get('username', 'Username') }}</label>
+                        <input type="text" id="regUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">{{ translations.get('email', 'Email') }}</label>
+                        <input type="email" id="regEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">{{ translations.get('password', 'Password') }}</label>
+                        <input type="password" id="regPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }} (6 {{ translations.get('characters_min', 'characters minimum') }})">
+                    </div>
+                    <div class="form-group">
+                        <label for="regLanguage">{{ translations.get('preferred_language', 'Preferred Language') }}</label>
+                        <select id="regLanguage">
+                            {% for code, info in languages.items() %}
+                            <option value="{{ code }}" {% if code == lang %}selected{% endif %}>
+                                {{ info.flag }} {{ info.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="registerWithEmail()">{{ translations.get('register', 'Register') }}</button>
+                </div>
+                
+                <div class="divider">
+                    <span>{{ translations.get('or', 'OR') }}</span>
+                </div>
+                
+                <div class="social-auth-section">
+                    <h3>🔗 {{ translations.get('register_with_social', 'Register with Social Accounts') }}</h3>
+                    <div class="social-buttons">
+                        <button class="btn-social btn-google" onclick="socialLogin('google')">
+                            <span class="social-icon">🔍</span>
+                            {{ translations.get('register_google', 'Register with Google') }}
+                        </button>
+                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
+                            <span class="social-icon">🐦</span>
+                            {{ translations.get('register_twitter', 'Register with Twitter') }}
+                        </button>
+                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
+                            <span class="social-icon">📘</span>
+                            {{ translations.get('register_facebook', 'Register with Facebook') }}
+                        </button>
+                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
+                            <span class="social-icon">📷</span>
+                            {{ translations.get('register_instagram', 'Register with Instagram') }}
+                        </button>
+                        <button class="btn-social btn-github" onclick="socialLogin('github')">
+                            <span class="social-icon">💻</span>
+                            {{ translations.get('register_github', 'Register with GitHub') }}
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="registerMessage" class="message"></div>
+            </div>
+            
+            <!-- تسجيل الدخول -->
+            <div id="login" class="tab-content">
+                <h2>{{ translations.get('login', 'Login') }}</h2>
+                
+                <div class="auth-section">
+                    <h3>📧 {{ translations.get('login_with_email', 'Login with Email') }}</h3>
+                    <div class="form-group">
+                        <label for="loginEmail">{{ translations.get('email', 'Email') }}</label>
+                        <input type="email" id="loginEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">{{ translations.get('password', 'Password') }}</label>
+                        <input type="password" id="loginPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }}">
+                    </div>
+                    <button class="btn btn-primary" onclick="loginWithEmail()">{{ translations.get('login', 'Login') }}</button>
+                </div>
+                
+                <div class="divider">
+                    <span>{{ translations.get('or', 'OR') }}</span>
+                </div>
+                
+                <div class="social-auth-section">
+                    <h3>🔗 {{ translations.get('login_with_social', 'Login with Social Accounts') }}</h3>
+                    <div class="social-buttons">
+                        <button class="btn-social btn-google" onclick="socialLogin('google')">
+                            <span class="social-icon">🔍</span>
+                            {{ translations.get('login_google', 'Login with Google') }}
+                        </button>
+                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
+                            <span class="social-icon">🐦</span>
+                            {{ translations.get('login_twitter', 'Login with Twitter') }}
+                        </button>
+                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
+                            <span class="social-icon">📘</span>
+                            {{ translations.get('login_facebook', 'Login with Facebook') }}
+                        </button>
+                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
+                            <span class="social-icon">📷</span>
+                            {{ translations.get('login_instagram', 'Login with Instagram') }}
+                        </button>
+                        <button class="btn-social btn-github" onclick="socialLogin('github')">
+                            <span class="social-icon">💻</span>
+                            {{ translations.get('login_github', 'Login with GitHub') }}
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="loginMessage" class="message"></div>
+            </div>
+            
+            <!-- الملف الشخصي -->
+            <div id="profile" class="tab-content">
+                <h2>{{ translations.get('profile', 'Profile') }}</h2>
+                <button class="btn btn-secondary" onclick="getProfile()">🔄 {{ translations.get('update_profile', 'Update Profile') }}</button>
+                
+                <div id="profileInfo" class="user-info">
+                    <div class="profile-placeholder">
+                        <p>{{ translations.get('please_login', 'Please login to view your profile') }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الحسابات الاجتماعية -->
+            <div id="social" class="tab-content">
+                <h2>{{ translations.get('manage_accounts', 'Manage Accounts') }}</h2>
+                
+                <div class="social-connect">
+                    <h3>🔗 {{ translations.get('connect_new_account', 'Connect New Account') }}</h3>
+                    <div class="form-group">
+                        <label for="socialPlatform">{{ translations.get('platform', 'Platform') }}</label>
+                        <select id="socialPlatform">
+                            <option value="">{{ translations.get('choose_platform', 'Choose Platform') }}</option>
+                            <option value="twitter">{{ translations.get('twitter', 'Twitter') }}</option>
+                            <option value="facebook">{{ translations.get('facebook', 'Facebook') }}</option>
+                            <option value="instagram">{{ translations.get('instagram', 'Instagram') }}</option>
+                            <option value="linkedin">{{ translations.get('linkedin', 'LinkedIn') }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="socialUsername">{{ translations.get('social_username', 'Username on platform') }}</label>
+                        <input type="text" id="socialUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="socialToken">{{ translations.get('access_token', 'Access Token') }}</label>
+                        <input type="text" id="socialToken" placeholder="{{ translations.get('enter_access_token', 'Enter access token') }}">
+                    </div>
+                    <button class="btn btn-success" onclick="connectSocialAccount()">{{ translations.get('connect_account', 'Connect Account') }}</button>
+                </div>
+                
+                <div class="accounts-list">
+                    <h3>{{ translations.get('connected_accounts', 'Connected Accounts') }}</h3>
+                    <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 {{ translations.get('refresh_list', 'Refresh List') }}</button>
+                    <div id="accountsList" class="accounts-container">
+                        <p class="no-accounts">{{ translations.get('no_accounts', 'No accounts connected yet') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>{{ translations.get('version', 'Version') }} 2.2 - {{ translations.get('multi_language_system', 'Multi-language System') }}</p>
+        </div>
+    </div>
+
+    <script>
+        const CURRENT_LANG = '{{ lang }}';
+        const TEXT_DIRECTION = '{{ text_direction }}';
+        const LANGUAGES = {{ languages | tojson }};
+        const TRANSLATIONS = {{ translations | tojson }};
+
+        // 🔥 دالة تحميل إحصائيات النظام
+        async function loadSystemStats() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                // تحديث الإحصائيات
+                document.getElementById('totalUsers').textContent = data.statistics?.users_count || 0;
+                document.getElementById('activeSessions').textContent = data.statistics?.active_sessions || 0;
+                document.getElementById('socialAccounts').textContent = data.statistics?.social_accounts || 0;
+                document.getElementById('systemStatus').textContent = data.status === 'healthy' ? '��' : '🔴';
+                
+            } catch (error) {
+                console.log('Error loading system stats:', error);
+                document.getElementById('systemStatus').textContent = '🔴';
+            }
+        }
+
+        // 🔥 تحميل الإحصائيات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSystemStats();
+            
+            // تحديث الإحصائيات كل 10 ثواني
+            setInterval(loadSystemStats, 10000);
+            
+            // نظام التبويب
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // إزالة النشاط من جميع الأزرار والمحتويات
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // إضافة النشاط للزر والمحتوى المحدد
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+
+        function changeLanguage(lang) {
+            window.location.href = `/?lang=${lang}`;
+        }
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function socialLogin(provider) {
+            alert(`${TRANSLATIONS.connecting || 'Connecting to'} ${provider}`);
+        }
+
+        async function registerWithEmail() {
+            // تنفيذ التسجيل
+            alert(TRANSLATIONS.register_success || 'Registration functionality will be implemented');
+        }
+
+        async function loginWithEmail() {
+            // تنفيذ تسجيل الدخول
+            alert(TRANSLATIONS.login_success || 'Login functionality will be implemented');
+        }
+
+        async function getProfile() {
+            // جلب الملف الشخصي
+            alert(TRANSLATIONS.profile_loaded || 'Profile functionality will be implemented');
+        }
+
+        async function connectSocialAccount() {
+            // ربط حساب اجتماعي
+            alert(TRANSLATIONS.social_connected || 'Social account connection will be implemented');
+        }
+
+        async function loadSocialAccounts() {
+            // تحميل الحسابات الاجتماعية
+            alert(TRANSLATIONS.accounts_loaded || 'Social accounts loading will be implemented');
+        }
+    </script>
+</body>
+</html>

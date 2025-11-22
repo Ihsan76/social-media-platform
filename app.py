@@ -180,6 +180,26 @@ def find_user_by_email(email):
 # استبدل دالة home فقط
 @app.route('/')
 def home():
+
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+# الصفحة الرئيسية الجديدة
+@app.route('/')
+def index():
+    lang = request.args.get('lang', 'en')
+    if lang not in SUPPORTED_LANGUAGES:
+        lang = 'en'
+    # 🔥 استخدم الدالة الجديدة من translations
+    from translations import get_language_direction
+    text_direction = get_language_direction(lang)
+    return render_template('index.html')  # صفحة الهبوط
+
+# صفحة التسجيل الحالية
+@app.route('/login')
+def login():
+     # صفحة التسجيل
     """الصفحة الرئيسية مع دعم اللغات"""
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
@@ -189,11 +209,14 @@ def home():
     from translations import get_language_direction
     text_direction = get_language_direction(lang)
     
-    return render_template('index.html', 
+    return render_template('login.html', 
         lang=lang,
         text_direction=text_direction,  # 🔥 أضف هذا
         languages=SUPPORTED_LANGUAGES,
         translations=TRANSLATIONS.get(lang, {}))
+
+
+# ... باقي الرواوت الحالية ...# 
 
 @app.route('/api/')
 def api_home():
