@@ -1,0 +1,634 @@
+/* ===== LOGIN PAGE SPECIFIC STYLES ===== */
+
+/* تطبيق الاتجاه فوراً في CSS */
+html[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* منع الوميض المؤقت */
+body.loading {
+    visibility: hidden;
+    opacity: 0;
+}
+
+body.loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+/* الأنماط الأساسية */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* دعم RTL للغة العربية */
+[dir="rtl"] .container {
+    text-align: right;
+}
+
+[dir="rtl"] .language-switcher {
+    text-align: left;
+}
+
+[dir="rtl"] .input-group {
+    text-align: right;
+}
+
+[dir="rtl"] .input-group label {
+    text-align: right;
+}
+
+[dir="rtl"] .input-group input {
+    text-align: right;
+}
+
+[dir="rtl"] .social-buttons {
+    text-align: right;
+}
+
+[dir="rtl"] .tabs {
+    text-align: right;
+}
+
+[dir="rtl"] .tab-button {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .data-section {
+    text-align: right;
+}
+
+[dir="rtl"] .stats-grid {
+    text-align: right;
+}
+
+/* شريط اللغة */
+.language-bar {
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.language-selector {
+    display: inline-block;
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 8px 20px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.current-language {
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.language-selector:hover .language-dropdown {
+    display: block;
+}
+
+.lang-btn {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.lang-btn:hover {
+    background: #f8f9fa;
+}
+
+.lang-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* اتجاه RTL للعربية */
+html[dir="rtl"] .lang-btn {
+    text-align: right;
+}
+
+html[dir="rtl"] .language-dropdown {
+    left: auto;
+    right: 0;
+}
+
+/* بقية الأنماط */
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.dashboard {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee;
+    flex-wrap: wrap;
+}
+
+html[dir="rtl"] .tabs {
+    flex-direction: row-reverse;
+}
+
+.tab {
+    padding: 15px 30px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.tab:hover {
+    background: #f8f9fa;
+}
+
+.tab.active {
+    border-bottom-color: #667eea;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* الأنماط الجديدة للإحصائيات */
+.system-stats {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 25px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* بيانات العرض التوضيحي */
+.social-mock-data, .demo-accounts {
+    background: #e8f4fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 4px solid #1890ff;
+}
+
+html[dir="rtl"] .social-mock-data,
+html[dir="rtl"] .demo-accounts {
+    border-left: none;
+    border-right: 4px solid #1890ff;
+}
+
+.mock-accounts, .demo-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mock-account, .demo-account {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #e1e8ed;
+}
+
+.mock-account:hover, .demo-account:hover {
+    background: #1890ff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.profile-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* بقية الأنماط تبقى كما كانت */
+.auth-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.social-auth-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #e9ecef;
+}
+
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e9ecef;
+}
+
+.divider span {
+    background: white;
+    padding: 0 15px;
+    color: #6c757d;
+    font-weight: bold;
+}
+
+/* 🔥 أزرار وسائل التواصل - متجاورة */
+.social-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border: 2px solid;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+html[dir="rtl"] .btn-social {
+    flex-direction: row-reverse;
+}
+
+.btn-social:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* 🔥 ألوان وسائل التواصل - متجاورة */
+.btn-google { border-color: #db4437; color: #db4437; }
+.btn-google:hover { background: #db4437; color: white; }
+
+.btn-twitter { border-color: #1da1f2; color: #1da1f2; }
+.btn-twitter:hover { background: #1da1f2; color: white; }
+
+.btn-facebook { border-color: #1877f2; color: #1877f2; }
+.btn-facebook:hover { background: #1877f2; color: white; }
+
+.btn-instagram { border-color: #e4405f; color: #e4405f; }
+.btn-instagram:hover { background: #e4405f; color: white; }
+
+.btn-github { border-color: #333; color: #333; }
+.btn-github:hover { background: #333; color: white; }
+
+.social-icon {
+    font-size: 1.2em;
+}
+
+.language-change-section,
+.link-social-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn {
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.message {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+html[dir="rtl"] .message {
+    animation: slideInRTL 0.3s ease;
+}
+
+@keyframes slideInRTL {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    display: block;
+}
+
+.user-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.accounts-container {
+    margin-top: 20px;
+}
+
+.account-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+html[dir="rtl"] .account-card {
+    flex-direction: row-reverse;
+}
+
+.account-platform {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.account-username {
+    color: #6c757d;
+}
+
+.social-connect {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.footer {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    opacity: 0.8;
+}
+
+.no-accounts {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 40px 20px;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .tabs {
+        flex-direction: column;
+    }
+    
+    html[dir="rtl"] .tabs {
+        flex-direction: column;
+    }
+    
+    .tab {
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        border-left: 3px solid transparent;
+    }
+    
+    .tab.active {
+        border-left-color: #667eea;
+        border-bottom-color: #eee;
+    }
+    
+    html[dir="rtl"] .tab.active {
+        border-left-color: transparent;
+        border-right-color: #667eea;
+    }
+    
+    .dashboard {
+        padding: 20px;
+    }
+    
+    .social-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .language-selector {
+        width: 100%;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .tab {
+        padding: 12px 20px;
+    }
+}
