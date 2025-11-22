@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ translations.get('landing.hero.title', 'نشرتي - منصة الناشرين المحترفين') }}</title>
+    <title>{{ get_translation('landing.hero.title', 'نشرتي - منصة الناشرين المحترفين') }}</title>
     
     <!-- ربط ملف التنسيق المحسن -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -42,6 +42,20 @@
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(180deg); }
         }
+
+        /* إصلاح مشكلة قائمة اللغة - تبقى مفتوحة فترة أطول */
+        .language-selector:hover .language-dropdown {
+            display: block;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        .language-dropdown {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .language-selector {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body class="loading">
@@ -53,16 +67,34 @@
             document.body.classList.remove('loading');
             document.body.classList.add('loaded');
         });
+
+        // إصلاح مشكلة قائمة اللغة - تبقى مفتوحة فترة أطول
+        let languageTimeout;
+        
+        function showLanguageDropdown() {
+            clearTimeout(languageTimeout);
+            const dropdown = document.querySelector('.language-dropdown');
+            if (dropdown) dropdown.style.display = 'block';
+        }
+        
+        function hideLanguageDropdown() {
+            languageTimeout = setTimeout(() => {
+                const dropdown = document.querySelector('.language-dropdown');
+                if (dropdown) dropdown.style.display = 'none';
+            }, 300); // 300ms تأخير قبل الإخفاء
+        }
     </script>
 
     <!-- شريط اللغة -->
     <div class="language-bar">
-        <div class="language-selector">
+        <div class="language-selector" 
+             onmouseenter="showLanguageDropdown()" 
+             onmouseleave="hideLanguageDropdown()">
             <span class="current-language">
                 <i class="fas fa-globe"></i>
                 {{ languages[lang].name }}
             </span>
-            <div class="language-dropdown">
+            <div class="language-dropdown" style="display: none;">
                 {% for code, info in languages.items() %}
                 <button class="lang-btn {% if code == lang %}active{% endif %}" 
                         onclick="changeLanguage('{{ code }}')">
@@ -82,29 +114,29 @@
                     <div class="logo-icon">
                         <i class="fas fa-paper-plane"></i>
                     </div>
-                    <span>نشرتي</span> <!-- ثابت لا يحتاج ترجمة -->
+                    <span>نشرتي</span>
                 </div>
 
                 <!-- القائمة -->
                 <div class="nav-links">
                     <a href="#features" class="nav-link">
-                        {{ translations.get('landing.nav.features', 'المميزات') }}
+                        {{ get_translation('landing.nav.features', 'المميزات') }}
                     </a>
                     <a href="#how-it-works" class="nav-link">
-                        {{ translations.get('landing.nav.how_it_works', 'كيف تعمل') }}
+                        {{ get_translation('landing.nav.how_it_works', 'كيف تعمل') }}
                     </a>
                     <a href="#testimonials" class="nav-link">
-                        {{ translations.get('landing.nav.testimonials', 'آراء العملاء') }}
+                        {{ get_translation('landing.nav.testimonials', 'آراء العملاء') }}
                     </a>
                     <a href="/login?lang={{ lang }}" class="nav-link">
-                        {{ translations.get('landing.nav.login', 'تسجيل الدخول') }}
+                        {{ get_translation('login', 'تسجيل الدخول') }}
                     </a>
                 </div>
 
                 <!-- زر البدء -->
                 <a href="/login?lang={{ lang }}" class="btn btn-primary">
                     <i class="fas fa-rocket"></i>
-                    {{ translations.get('landing.nav.get_started', 'ابدأ مجاناً') }}
+                    {{ get_translation('landing.nav.get_started', 'ابدأ مجاناً') }}
                 </a>
             </nav>
         </div>
@@ -121,10 +153,10 @@
         <div class="container">
             <div class="hero-content fade-in">
                 <h1 class="hero-title">
-                    {{ translations.get('landing.hero.title', 'منصة الناشرين المحترفين') }}
+                    {{ get_translation('landing.hero.title', 'منصة الناشرين المحترفين') }}
                 </h1>
                 <p class="hero-subtitle">
-                    {{ translations.get('landing.hero.subtitle', 'واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.') }}
+                    {{ get_translation('landing.hero.subtitle', 'واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.') }}
                 </p>
                 
                 <!-- إحصائيات سريعة -->
@@ -146,11 +178,11 @@
                 <div class="hero-buttons">
                     <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg">
                         <i class="fas fa-play-circle"></i>
-                        {{ translations.get('landing.hero.start_journey', 'ابدأ رحلتك الآن') }}
+                        {{ get_translation('landing.hero.start_journey', 'ابدأ رحلتك الآن') }}
                     </a>
                     <button class="btn btn-secondary btn-lg" onclick="scrollToSection('features')">
                         <i class="fas fa-info-circle"></i>
-                        {{ translations.get('landing.hero.watch_demo', 'شاهد العرض التوضيحي') }}
+                        {{ get_translation('landing.hero.watch_demo', 'شاهد العرض التوضيحي') }}
                     </button>
                 </div>
             </div>
@@ -162,10 +194,10 @@
         <div class="container">
             <div class="text-center mb-8">
                 <h2 class="section-title">
-                    {{ translations.get('landing.features.title', 'كل ما يحتاجه الناشر المحترف') }}
+                    {{ get_translation('landing.features.title', 'كل ما يحتاجه الناشر المحترف') }}
                 </h2>
                 <p class="section-subtitle">
-                    {{ translations.get('landing.features.subtitle', 'أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى') }}
+                    {{ get_translation('landing.features.subtitle', 'أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى') }}
                 </p>
             </div>
 
@@ -176,10 +208,10 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3 class="feature-title">
-                        {{ translations.get('landing.features.analytics.title', 'تحليلات متقدمة') }}
+                        {{ get_translation('landing.features.analytics.title', 'تحليلات متقدمة') }}
                     </h3>
                     <p class="feature-description">
-                        {{ translations.get('landing.features.analytics.desc', 'فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.') }}
+                        {{ get_translation('landing.features.analytics.desc', 'فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.') }}
                     </p>
                 </div>
 
@@ -189,10 +221,10 @@
                         <i class="fas fa-bullseye"></i>
                     </div>
                     <h3 class="feature-title">
-                        {{ translations.get('landing.features.targeting.title', 'استهداف دقيق') }}
+                        {{ get_translation('landing.features.targeting.title', 'استهداف دقيق') }}
                     </h3>
                     <p class="feature-description">
-                        {{ translations.get('landing.features.targeting.desc', 'وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.') }}
+                        {{ get_translation('landing.features.targeting.desc', 'وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.') }}
                     </p>
                 </div>
 
@@ -202,104 +234,10 @@
                         <i class="fas fa-comments"></i>
                     </div>
                     <h3 class="feature-title">
-                        {{ translations.get('landing.features.engagement.title', 'تفاعل حقيقي') }}
+                        {{ get_translation('landing.features.engagement.title', 'تفاعل حقيقي') }}
                     </h3>
                     <p class="feature-description">
-                        {{ translations.get('landing.features.engagement.desc', 'حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.') }}
-                    </p>
-                </div>
-
-                <!-- مميزة 4 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        منصات متعددة
-                    </h3>
-                    <p class="feature-description">
-                        ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.
-                    </p>
-                </div>
-
-                <!-- مميزة 5 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        أتمتة ذكية
-                    </h3>
-                    <p class="feature-description">
-                        وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.
-                    </p>
-                </div>
-
-                <!-- مميزة 6 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        أمان متكامل
-                    </h3>
-                    <p class="feature-description">
-                        بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم كيف تعمل -->
-    <section id="how-it-works" class="features-section" style="background: var(--white);">
-        <div class="container">
-            <div class="text-center mb-8">
-                <h2 class="section-title">
-                    كيف تعمل المنصة
-                </h2>
-                <p class="section-subtitle">
-                    3 خطوات بسيطة لبدء رحلتك في النشر المحترف
-                </p>
-            </div>
-
-            <div class="features-grid">
-                <!-- خطوة 1 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <span class="step-number">1</span>
-                    </div>
-                    <h3 class="feature-title">
-                        أنشئ حسابك
-                    </h3>
-                    <p class="feature-description">
-                        سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.
-                    </p>
-                </div>
-
-                <!-- خطوة 2 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <span class="step-number">2</span>
-                    </div>
-                    <h3 class="feature-title">
-                        اربط حساباتك
-                    </h3>
-                    <p class="feature-description">
-                        أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.
-                    </p>
-                </div>
-
-                <!-- خطوة 3 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                        <span class="step-number">3</span>
-                    </div>
-                    <h3 class="feature-title">
-                        ابدأ النشر
-                    </h3>
-                    <p class="feature-description">
-                        استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.
+                        {{ get_translation('landing.features.engagement.desc', 'حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.') }}
                     </p>
                 </div>
             </div>
@@ -311,15 +249,15 @@
         <div class="container">
             <div class="hero-content">
                 <h2 class="cta-title">
-                    {{ translations.get('landing.cta.title', 'مستعد لبدء رحلتك؟') }}
+                    {{ get_translation('landing.cta.title', 'مستعد لبدء رحلتك؟') }}
                 </h2>
                 <p class="cta-subtitle">
-                    {{ translations.get('landing.cta.subtitle', 'انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل') }}
+                    {{ get_translation('landing.cta.subtitle', 'انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل') }}
                 </p>
                 <div class="hero-buttons">
                     <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg" style="background: var(--white); color: var(--primary-500);">
                         <i class="fas fa-user-plus"></i>
-                        {{ translations.get('landing.cta.button', 'سجل حسابك مجاناً') }}
+                        {{ get_translation('landing.cta.button', 'سجل حسابك مجاناً') }}
                     </a>
                 </div>
             </div>
@@ -337,7 +275,7 @@
                     <span>نشرتي</span>
                 </div>
                 <div class="footer-text">
-                    © 2024 نشرتي. {{ translations.get('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
+                    © 2024 نشرتي. {{ get_translation('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
                 </div>
             </div>
         </div>

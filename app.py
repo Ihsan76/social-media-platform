@@ -55,8 +55,48 @@ def get_user_language(request):
     return 'en'
 
 def get_text(lang, key):
-    """دالة مساعدة للحصول على النص المترجم"""
-    return get_translation(lang, key)
+    """دالة مساعدة للحصول على النص المترجم - محسنة للهياكل المتداخلة"""
+    try:
+        # إذا كان المفتاح يحتوي على نقاط (هيكل متداخل)
+        if '.' in key:
+            # الحصول على بيانات الترجمة للغة المطلوبة
+            translations_data = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
+            
+            # البحث عن المفتاح في الهيكل المتداخل
+            keys = key.split('.')
+            value = translations_data
+            
+            for k in keys:
+                if isinstance(value, dict) and k in value:
+                    value = value[k]
+                else:
+                    # إذا لم يتم العثور على الترجمة، حاول الإنجليزية
+                    if lang != 'en':
+                        return get_text('en', key)
+                    return key  # إرجاع المفتاح نفسه إذا لم توجد ترجمة
+            
+            return value
+        else:
+            # للمفاتيح البسيطة، استخدم الدالة الأصلية
+            return get_translation(lang, key)
+    except Exception as e:
+        print(f"Translation error for key '{key}' in language '{lang}': {e}")
+        # حاول الإنجليزية كبديل
+        if lang != 'en':
+            return get_text('en', key)
+        return key
+
+# إضافة دالة مساعدة للقوالب - آمنة ولا تؤثر على النظام الحالي
+@app.context_processor
+def utility_processor():
+    def get_translation_template(key, default=None):
+        """دالة مساعدة للقوالب للحصول على الترجمة"""
+        lang = request.args.get('lang', 'en')
+        result = get_text(lang, key)
+        # إذا كانت النتيجة هي المفتاح نفسه (لم توجد ترجمة)، استخدم القيمة الافتراضية
+        return result if result != key else (default if default else key)
+    
+    return dict(get_text=get_text, get_translation=get_translation_template)
 
 def json_response(data, status=200):
     return Response(
