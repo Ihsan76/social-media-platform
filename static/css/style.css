@@ -1,3 +1,4 @@
+/* الأنماط الأساسية السابقة تبقى كما هي */
 * {
     margin: 0;
     padding: 0;
@@ -95,6 +96,132 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* الأنماط الجديدة للمصادقة الاجتماعية */
+.auth-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.social-auth-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px dashed #e9ecef;
+}
+
+.divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e9ecef;
+}
+
+.divider span {
+    background: white;
+    padding: 0 15px;
+    color: #6c757d;
+    font-weight: bold;
+}
+
+.social-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border: 2px solid;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.btn-social:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn-google {
+    border-color: #db4437;
+    color: #db4437;
+}
+
+.btn-google:hover {
+    background: #db4437;
+    color: white;
+}
+
+.btn-twitter {
+    border-color: #1da1f2;
+    color: #1da1f2;
+}
+
+.btn-twitter:hover {
+    background: #1da1f2;
+    color: white;
+}
+
+.btn-facebook {
+    border-color: #1877f2;
+    color: #1877f2;
+}
+
+.btn-facebook:hover {
+    background: #1877f2;
+    color: white;
+}
+
+.btn-instagram {
+    border-color: #e4405f;
+    color: #e4405f;
+}
+
+.btn-instagram:hover {
+    background: #e4405f;
+    color: white;
+}
+
+.btn-github {
+    border-color: #333;
+    color: #333;
+}
+
+.btn-github:hover {
+    background: #333;
+    color: white;
+}
+
+.social-icon {
+    font-size: 1.2em;
+}
+
+.link-social-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+/* الأنماط الأساسية للعناصر */
 .form-group {
     margin-bottom: 20px;
 }
@@ -255,5 +382,9 @@ body {
     
     .dashboard {
         padding: 20px;
+    }
+    
+    .social-buttons {
+        grid-template-columns: 1fr;
     }
 }

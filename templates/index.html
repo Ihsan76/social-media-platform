@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة إدارة الوسائط الاجتماعية - الإصدار 2.0</title>
+    <title>منصة إدارة الوسائط الاجتماعية - الإصدار 2.1</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 منصة إدارة الوسائط الاجتماعية - الإصدار 2.0</h1>
-            <p>نظام متكامل ومهني لإدارة جميع حساباتك الاجتماعية من مكان واحد</p>
+            <h1>🚀 منصة إدارة الوسائط الاجتماعية - الإصدار 2.1</h1>
+            <p>سجل الدخول باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية</p>
             <div class="status-badge" id="systemStatus">جاري التحقق...</div>
         </div>
         
@@ -25,42 +25,141 @@
             <!-- تسجيل جديد -->
             <div id="register" class="tab-content active">
                 <h2>إنشاء حساب جديد</h2>
-                <div class="form-group">
-                    <label for="regUsername">اسم المستخدم</label>
-                    <input type="text" id="regUsername" placeholder="أدخل اسم المستخدم">
+                
+                <!-- التسجيل بالبريد الإلكتروني -->
+                <div class="auth-section">
+                    <h3>📧 التسجيل بالبريد الإلكتروني</h3>
+                    <div class="form-group">
+                        <label for="regUsername">اسم المستخدم</label>
+                        <input type="text" id="regUsername" placeholder="أدخل اسم المستخدم">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">البريد الإلكتروني</label>
+                        <input type="email" id="regEmail" placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">كلمة المرور</label>
+                        <input type="password" id="regPassword" placeholder="أدخل كلمة المرور (6 أحرف على الأقل)">
+                    </div>
+                    <button class="btn btn-primary" onclick="registerWithEmail()">إنشاء الحساب</button>
                 </div>
-                <div class="form-group">
-                    <label for="regEmail">البريد الإلكتروني</label>
-                    <input type="email" id="regEmail" placeholder="أدخل بريدك الإلكتروني">
+                
+                <!-- أو -->
+                <div class="divider">
+                    <span>أو</span>
                 </div>
-                <div class="form-group">
-                    <label for="regPassword">كلمة المرور</label>
-                    <input type="password" id="regPassword" placeholder="أدخل كلمة المرور (6 أحرف على الأقل)">
+                
+                <!-- التسجيل بالحسابات الاجتماعية -->
+                <div class="social-auth-section">
+                    <h3>🔗 التسجيل باستخدام الحسابات الاجتماعية</h3>
+                    <div class="social-buttons">
+                        <button class="btn-social btn-google" onclick="socialLogin('google')">
+                            <span class="social-icon">🔍</span>
+                            التسجيل باستخدام Google
+                        </button>
+                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
+                            <span class="social-icon">🐦</span>
+                            التسجيل باستخدام Twitter
+                        </button>
+                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
+                            <span class="social-icon">📘</span>
+                            التسجيل باستخدام Facebook
+                        </button>
+                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
+                            <span class="social-icon">📷</span>
+                            التسجيل باستخدام Instagram
+                        </button>
+                        <button class="btn-social btn-github" onclick="socialLogin('github')">
+                            <span class="social-icon">💻</span>
+                            التسجيل باستخدام GitHub
+                        </button>
+                    </div>
                 </div>
-                <button class="btn btn-primary" onclick="register()">إنشاء الحساب</button>
+                
                 <div id="registerMessage" class="message"></div>
             </div>
             
             <!-- تسجيل الدخول -->
             <div id="login" class="tab-content">
                 <h2>تسجيل الدخول</h2>
-                <div class="form-group">
-                    <label for="loginEmail">البريد الإلكتروني</label>
-                    <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني">
+                
+                <!-- الدخول بالبريد الإلكتروني -->
+                <div class="auth-section">
+                    <h3>📧 تسجيل الدخول بالبريد الإلكتروني</h3>
+                    <div class="form-group">
+                        <label for="loginEmail">البريد الإلكتروني</label>
+                        <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">كلمة المرور</label>
+                        <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                    </div>
+                    <button class="btn btn-primary" onclick="loginWithEmail()">تسجيل الدخول</button>
                 </div>
-                <div class="form-group">
-                    <label for="loginPassword">كلمة المرور</label>
-                    <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                
+                <!-- أو -->
+                <div class="divider">
+                    <span>أو</span>
                 </div>
-                <button class="btn btn-primary" onclick="login()">تسجيل الدخول</button>
+                
+                <!-- الدخول بالحسابات الاجتماعية -->
+                <div class="social-auth-section">
+                    <h3>🔗 تسجيل الدخول باستخدام الحسابات الاجتماعية</h3>
+                    <div class="social-buttons">
+                        <button class="btn-social btn-google" onclick="socialLogin('google')">
+                            <span class="social-icon">🔍</span>
+                            الدخول باستخدام Google
+                        </button>
+                        <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
+                            <span class="social-icon">🐦</span>
+                            الدخول باستخدام Twitter
+                        </button>
+                        <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
+                            <span class="social-icon">📘</span>
+                            الدخول باستخدام Facebook
+                        </button>
+                        <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
+                            <span class="social-icon">📷</span>
+                            الدخول باستخدام Instagram
+                        </button>
+                        <button class="btn-social btn-github" onclick="socialLogin('github')">
+                            <span class="social-icon">💻</span>
+                            الدخول باستخدام GitHub
+                        </button>
+                    </div>
+                </div>
+                
                 <div id="loginMessage" class="message"></div>
             </div>
             
             <!-- الملف الشخصي -->
             <div id="profile" class="tab-content">
                 <h2>الملف الشخصي</h2>
-                <button class="btn btn-secondary" onclick="getProfile()">🔄 تحميل الملف الشخصي</button>
+                <button class="btn btn-secondary" onclick="getProfile()">🔄 تحديث الملف الشخصي</button>
+                
                 <div id="profileInfo" class="user-info"></div>
+                
+                <!-- ربط حسابات اجتماعية إضافية -->
+                <div class="link-social-section">
+                    <h3>ربط حسابات اجتماعية إضافية</h3>
+                    <div class="form-group">
+                        <label for="linkPlatform">المنصة</label>
+                        <select id="linkPlatform">
+                            <option value="">اختر المنصة</option>
+                            <option value="google">Google</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="github">GitHub</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="linkSocialId">المعرف الاجتماعي</label>
+                        <input type="text" id="linkSocialId" placeholder="أدخل المعرف الخاص بك في المنصة">
+                    </div>
+                    <button class="btn btn-success" onclick="linkSocialAccount()">ربط الحساب</button>
+                    <div id="linkMessage" class="message"></div>
+                </div>
             </div>
             
             <!-- الحسابات الاجتماعية -->
@@ -68,7 +167,7 @@
                 <h2>إدارة الحسابات الاجتماعية</h2>
                 
                 <div class="social-connect">
-                    <h3>ربط حساب جديد</h3>
+                    <h3>ربط حساب جديد (لإدارة المحتوى)</h3>
                     <div class="form-group">
                         <label for="socialPlatform">المنصة</label>
                         <select id="socialPlatform">
@@ -99,7 +198,7 @@
         </div>
         
         <div class="footer">
-            <p>الإصدار 2.0 - نظام مهني متكامل</p>
+            <p>الإصدار 2.1 - نظام مصادقة متعدد المسارات</p>
         </div>
     </div>
 

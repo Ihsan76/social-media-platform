@@ -1,4 +1,4 @@
-// تطبيق إدارة الوسائط الاجتماعية - الإصدار 2.0
+// تطبيق إدارة الوسائط الاجتماعية - الإصدار 2.1
 class SocialMediaManager {
     constructor() {
         this.apiBase = '/api';
@@ -12,19 +12,41 @@ class SocialMediaManager {
         this.loadCurrentUser();
         this.setupEventListeners();
         
-        // إذا كان هناك جلسة نشطة، تحميل البيانات تلقائياً
         if (this.sessionId) {
             this.loadUserData();
         }
     }
 
     setupEventListeners() {
-        // تحديث تلقائي للحسابات كل 30 ثانية
         setInterval(() => {
             if (this.sessionId) {
                 this.loadSocialAccounts();
             }
         }, 30000);
+
+        // إضافة مستمعي الأحداث للأزرار
+        this.addEnterKeyListeners();
+    }
+
+    addEnterKeyListeners() {
+        // التسجيل
+        document.getElementById('regPassword')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.registerWithEmail();
+        });
+
+        // تسجيل الدخول
+        document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.loginWithEmail();
+        });
+
+        // ربط الحسابات
+        document.getElementById('linkSocialId')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.linkSocialAccount();
+        });
+
+        document.getElementById('socialToken')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.connectSocialAccount();
+        });
     }
 
     async checkSystemStatus() {
@@ -53,7 +75,6 @@ class SocialMediaManager {
             }
         };
 
-        // إضافة token المصادقة إذا كان موجوداً
         if (this.sessionId) {
             defaultOptions.headers['Authorization'] = `Bearer ${this.sessionId}`;
         }
@@ -78,8 +99,8 @@ class SocialMediaManager {
         }
     }
 
-    // إدارة المستخدمين
-    async register() {
+    // التسجيل بالبريد الإلكتروني
+    async registerWithEmail() {
         const username = document.getElementById('regUsername').value;
         const email = document.getElementById('regEmail').value;
         const password = document.getElementById('regPassword').value;
@@ -99,19 +120,11 @@ class SocialMediaManager {
             body: JSON.stringify({ username, email, password })
         });
 
-        if (result.success) {
-            this.sessionId = result.data.session_id;
-            this.currentUser = result.data.user;
-            localStorage.setItem('sessionId', this.sessionId);
-            this.showMessage('registerMessage', result.data.message, 'success');
-            this.switchTab('profile');
-            this.loadUserData();
-        } else {
-            this.showMessage('registerMessage', result.data.error, 'error');
-        }
+        this.handleAuthResponse(result, 'registerMessage', 'profile');
     }
 
-    async login() {
+    // تسجيل الدخول بالبريد الإلكتروني
+    async loginWithEmail() {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
 
@@ -125,18 +138,85 @@ class SocialMediaManager {
             body: JSON.stringify({ email, password })
         });
 
+        this.handleAuthResponse(result, 'loginMessage', 'profile');
+    }
+
+    // التسجيل/الدخول بالحسابات الاجتماعية
+    async socialLogin(platform) {
+        // في التطبيق الحقيقي، هنا نفتح نافذة OAuth
+        // لكن للتجربة سنستخدم محاكاة
+        const socialId = this.generateMockSocialId(platform);
+        const email = `${socialId}@${platform}.com`;
+        const username = `${platform}_user_${socialId.substr(0, 6)}`;
+
+        const result = await this.apiCall('/auth/social-login', {
+            method: 'POST',
+            body: JSON.stringify({
+                platform: platform,
+                social_id: socialId,
+                email: email,
+                username: username
+            })
+        });
+
+        this.handleAuthResponse(result, 'loginMessage', 'profile', platform);
+    }
+
+    // ربط حساب اجتماعي بحساب موجود
+    async linkSocialAccount() {
+        const platform = document.getElementById('linkPlatform').value;
+        const socialId = document.getElementById('linkSocialId').value;
+
+        if (!platform || !socialId) {
+            this.showMessage('linkMessage', 'المنصة والمعرف الاجتماعي مطلوبان', 'error');
+            return;
+        }
+
+        const result = await this.apiCall('/auth/link-social', {
+            method: 'POST',
+            body: JSON.stringify({ platform, social_id: socialId })
+        });
+
+        if (result.success) {
+            this.showMessage('linkMessage', result.data.message, 'success');
+            this.getProfile(); // تحديث الملف الشخصي
+            document.getElementById('linkSocialId').value = ''; // مسح الحقل
+        } else {
+            this.showMessage('linkMessage', result.data.error, 'error');
+        }
+    }
+
+    // معالجة استجابة المصادقة
+    handleAuthResponse(result, messageElementId, nextTab, platform = null) {
         if (result.success) {
             this.sessionId = result.data.session_id;
             this.currentUser = result.data.user;
             localStorage.setItem('sessionId', this.sessionId);
-            this.showMessage('loginMessage', result.data.message, 'success');
-            this.switchTab('profile');
+            
+            const action = result.data.action === 'register' ? 'إنشاء' : 'تسجيل الدخول';
+            const method = platform ? `باستخدام ${this.getPlatformName(platform)}` : '';
+            
+            this.showMessage(messageElementId, `تم ${action} الحساب ${method} بنجاح!`, 'success');
+            this.switchTab(nextTab);
             this.loadUserData();
         } else {
-            this.showMessage('loginMessage', result.data.error, 'error');
+            this.showMessage(messageElementId, result.data.error, 'error');
         }
     }
 
+    // توليد معرف اجتماعي تجريبي
+    generateMockSocialId(platform) {
+        const prefixes = {
+            google: 'google',
+            twitter: 'twitter', 
+            facebook: 'fb',
+            instagram: 'ig',
+            github: 'gh'
+        };
+        return `${prefixes[platform]}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    // باقي الدوال تبقى كما هي (getProfile, connectSocialAccount, loadSocialAccounts, etc.)
     async getProfile() {
         const result = await this.apiCall('/auth/profile');
         
@@ -149,7 +229,6 @@ class SocialMediaManager {
         }
     }
 
-    // الحسابات الاجتماعية
     async connectSocialAccount() {
         const platform = document.getElementById('socialPlatform').value;
         const username = document.getElementById('socialUsername').value;
@@ -168,7 +247,6 @@ class SocialMediaManager {
         if (result.success) {
             this.showMessage('accountsList', result.data.message, 'success');
             this.loadSocialAccounts();
-            // مسح الحقول
             document.getElementById('socialUsername').value = '';
             document.getElementById('socialToken').value = '';
         } else {
@@ -186,9 +264,11 @@ class SocialMediaManager {
         }
     }
 
-    // عرض البيانات
     displayUserProfile(user) {
         const profileElement = document.getElementById('profileInfo');
+        const socialLogins = user.social_logins_count > 0 ? 
+            ` (${user.social_logins_count} حساب اجتماعي مرتبط)` : '';
+        
         profileElement.innerHTML = `
             <div class="profile-header">
                 <h3>معلومات المستخدم</h3>
@@ -196,10 +276,10 @@ class SocialMediaManager {
             <div class="profile-details">
                 <p><strong>اسم المستخدم:</strong> ${user.username}</p>
                 <p><strong>البريد الإلكتروني:</strong> ${user.email}</p>
+                <p><strong>طريقة التسجيل:</strong> ${this.getAuthMethodName(user.auth_method)}${socialLogins}</p>
                 <p><strong>تاريخ الإنشاء:</strong> ${new Date(user.created_at).toLocaleDateString('ar-SA')}</p>
-                <p><strong>عدد الحسابات الاجتماعية:</strong> ${user.social_accounts_count}</p>
                 <p><strong>اللغة:</strong> ${user.preferences.language === 'ar' ? 'العربية' : user.preferences.language}</p>
-                <p><strong>المنطقة الزمنية:</strong> ${user.preferences.timezone}</p>
+                <p><strong>الحالة:</strong> ${user.is_active ? 'نشط' : 'غير نشط'}</p>
             </div>
             <button class="btn btn-secondary" onclick="app.logout()">تسجيل الخروج</button>
         `;
@@ -226,64 +306,74 @@ class SocialMediaManager {
                         <small>متابعون: ${account.stats.followers} | منشورات: ${account.stats.posts}</small>
                     </div>
                 </div>
-                <div class="account-status ${account.is_active ? 'active' : 'inactive'}">
-                    ${account.is_active ? 'نشط' : 'غير نشط'}
+                <div class="account-status active">
+                    نشط
                 </div>
             </div>
         `).join('');
     }
 
+    getAuthMethodName(method) {
+        const methods = {
+            'email': 'البريد الإلكتروني',
+            'google': 'Google',
+            'twitter': 'Twitter',
+            'facebook': 'Facebook',
+            'instagram': 'Instagram',
+            'github': 'GitHub'
+        };
+        return methods[method] || method;
+    }
+
     getPlatformIcon(platform) {
         const icons = {
-            twitter: '🐦',
-            facebook: '📘',
-            instagram: '📷',
-            linkedin: '💼'
+            'twitter': '🐦',
+            'facebook': '📘',
+            'instagram': '📷',
+            'linkedin': '💼',
+            'google': '🔍',
+            'github': '💻'
         };
         return icons[platform] || '🔗';
     }
 
     getPlatformName(platform) {
         const names = {
-            twitter: 'تويتر (X)',
-            facebook: 'فيسبوك',
-            instagram: 'إنستغرام',
-            linkedin: 'لينكدإن'
+            'twitter': 'تويتر (X)',
+            'facebook': 'فيسبوك',
+            'instagram': 'إنستغرام',
+            'linkedin': 'لينكدإن',
+            'google': 'Google',
+            'github': 'GitHub'
         };
         return names[platform] || platform;
     }
 
-    // أدوات مساعدة
     showMessage(elementId, message, type) {
         const element = document.getElementById(elementId);
-        element.textContent = message;
-        element.className = `message ${type}`;
-        element.style.display = 'block';
+        if (element) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
 
-        // إخفاء الرسالة بعد 5 ثواني
-        setTimeout(() => {
-            element.style.display = 'none';
-        }, 5000);
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
     }
 
     switchTab(tabName) {
-        // إخفاء جميع المحتويات
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
         
-        // إلغاء تنشيط جميع الألسنة
         document.querySelectorAll('.tab').forEach(tab => {
             tab.classList.remove('active');
         });
         
-        // إظهار المحتوى المطلوب
         document.getElementById(tabName).classList.add('active');
-        
-        // تنشيط اللسان المطلوب
         document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
 
-        // تحميل البيانات إذا لزم الأمر
         if (tabName === 'profile' && this.sessionId) {
             this.getProfile();
         } else if (tabName === 'social' && this.sessionId) {
@@ -307,7 +397,6 @@ class SocialMediaManager {
         this.currentUser = null;
         localStorage.removeItem('sessionId');
         
-        // إعادة تعيين الواجهة
         document.getElementById('profileInfo').innerHTML = '';
         document.getElementById('profileInfo').classList.remove('active');
         document.getElementById('accountsList').innerHTML = '';
@@ -325,12 +414,20 @@ function switchTab(tabName) {
     app.switchTab(tabName);
 }
 
-function register() {
-    app.register();
+function registerWithEmail() {
+    app.registerWithEmail();
 }
 
-function login() {
-    app.login();
+function loginWithEmail() {
+    app.loginWithEmail();
+}
+
+function socialLogin(platform) {
+    app.socialLogin(platform);
+}
+
+function linkSocialAccount() {
+    app.linkSocialAccount();
 }
 
 function getProfile() {
@@ -344,21 +441,3 @@ function connectSocialAccount() {
 function loadSocialAccounts() {
     app.loadSocialAccounts();
 }
-
-// إضافة إدخال عند الضغط على Enter
-document.addEventListener('DOMContentLoaded', function() {
-    // التسجيل
-    document.getElementById('regPassword').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') register();
-    });
-
-    // تسجيل الدخول
-    document.getElementById('loginPassword').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') login();
-    });
-
-    // ربط الحسابات الاجتماعية
-    document.getElementById('socialToken').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') connectSocialAccount();
-    });
-});
