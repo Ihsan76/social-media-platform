@@ -6,6 +6,13 @@ import uuid
 from datetime import datetime
 from flask import Flask, request, Response, render_template
 
+# أضف هذا بعد استيرادات Flask
+TRANSLATIONS = {
+    'ar': load_translations('ar'),
+        'en': load_translations('en'), 
+            'fr': load_translations('fr')
+            }
+
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
