@@ -249,8 +249,8 @@
     <!-- تمرير المتغيرات من Flask إلى JavaScript -->
     <script>
         const CURRENT_LANG = '{{ lang }}';
-        const LANGUAGES = {{ languages | tojson }};
-        const TRANSLATIONS = {{ translations | tojson }};
+        const LANGUAGES = {{languages | tojson }};
+        const TRANSLATIONS = {{translations | tojson }};
     </script>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
