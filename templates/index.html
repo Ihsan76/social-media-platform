@@ -1,592 +1,502 @@
-<!DOCTYPE html>
-<html lang="{{ lang }}" dir="{{ text_direction }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ get_translation('landing.hero.title', 'نشرتي - منصة الناشرين المحترفين') }}</title>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="loading landing-layout">
-    <script>
-        document.documentElement.dir = '{{ text_direction }}';
-        document.documentElement.lang = '{{ lang }}';
+{% extends "base.html" %}
+
+{% block title %}{{ get_translation('landing.hero.title', 'نشرتي - منصة الناشرين المحترفين') }}{% endblock %}
+
+{% block body_class %}landing-layout{% endblock %}
+
+{% block content %}
+<!-- القسم البطولي -->
+<section class="hero-section">
+    <div class="background-shapes">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content fade-in">
+            <h1 class="hero-title">
+                {{ get_translation('landing.hero.title', 'منصة الناشرين المحترفين') }}
+            </h1>
+            <p class="hero-subtitle">
+                {{ get_translation('landing.hero.subtitle', 'واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.') }}
+            </p>
+            
+            <!-- إحصائيات سريعة -->
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-6); margin: var(--space-8) auto; max-width: 500px;">
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">+500</div>
+                    <div style="color: var(--white); opacity: 0.9;">ناشر</div>
+                </div>
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">+50K</div>
+                    <div style="color: var(--white); opacity: 0.9;">منشور</div>
+                </div>
+                <div class="stat-card" style="text-align: center;">
+                    <div class="stat-number">+1M</div>
+                    <div style="color: var(--white); opacity: 0.9;">تفاعل</div>
+                </div>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-play-circle"></i>
+                    {{ get_translation('landing.hero.start_journey', 'ابدأ رحلتك الآن') }}
+                </a>
+                <button class="btn btn-secondary btn-lg" onclick="scrollToSection('features')">
+                    <i class="fas fa-info-circle"></i>
+                    {{ get_translation('landing.hero.watch_demo', 'شاهد العرض التوضيحي') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم المميزات -->
+<section id="features" class="features-section">
+    <div class="container">
+        <div class="text-center mb-8">
+            <h2 class="section-title">
+                {{ get_translation('landing.features.title', 'كل ما يحتاجه الناشر المحترف') }}
+            </h2>
+            <p class="section-subtitle">
+                {{ get_translation('landing.features.subtitle', 'أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى') }}
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- مميزة 1 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">
+                    {{ get_translation('landing.features.analytics.title', 'تحليلات متقدمة') }}
+                </h3>
+                <p class="feature-description">
+                    {{ get_translation('landing.features.analytics.desc', 'فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.') }}
+                </p>
+            </div>
+
+            <!-- مميزة 2 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3 class="feature-title">
+                    {{ get_translation('landing.features.targeting.title', 'استهداف دقيق') }}
+                </h3>
+                <p class="feature-description">
+                    {{ get_translation('landing.features.targeting.desc', 'وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.') }}
+                </p>
+            </div>
+
+            <!-- مميزة 3 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="feature-title">
+                    {{ get_translation('landing.features.engagement.title', 'تفاعل حقيقي') }}
+                </h3>
+                <p class="feature-description">
+                    {{ get_translation('landing.features.engagement.desc', 'حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.') }}
+                </p>
+            </div>
+
+            <!-- مميزة 4 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 class="feature-title">
+                    منصات متعددة
+                </h3>
+                <p class="feature-description">
+                    ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.
+                </p>
+            </div>
+
+            <!-- مميزة 5 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="feature-title">
+                    أتمتة ذكية
+                </h3>
+                <p class="feature-description">
+                    وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.
+                </p>
+            </div>
+
+            <!-- مميزة 6 -->
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">
+                    أمان متكامل
+                </h3>
+                <p class="feature-description">
+                    بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم كيف تعمل -->
+<section id="how-it-works" class="features-section" style="background: var(--white);">
+    <div class="container">
+        <div class="text-center mb-8">
+            <h2 class="section-title">
+                كيف تعمل المنصة
+            </h2>
+            <p class="section-subtitle">
+                3 خطوات بسيطة لبدء رحلتك في النشر المحترف
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- خطوة 1 -->
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <span class="step-number">1</span>
+                </div>
+                <h3 class="feature-title">
+                    أنشئ حسابك
+                </h3>
+                <p class="feature-description">
+                    سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.
+                </p>
+            </div>
+
+            <!-- خطوة 2 -->
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <span class="step-number">2</span>
+                </div>
+                <h3 class="feature-title">
+                    اربط حساباتك
+                </h3>
+                <p class="feature-description">
+                    أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.
+                </p>
+            </div>
+
+            <!-- خطوة 3 -->
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                    <span class="step-number">3</span>
+                </div>
+                <h3 class="feature-title">
+                    ابدأ النشر
+                </h3>
+                <p class="feature-description">
+                    استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم آراء العملاء -->
+<section id="testimonials" class="testimonials-section" style="padding: 100px 0;">
+    <div class="container">
+        <div class="text-center mb-8">
+            <h2 class="section-title" style="color: white;">
+                {{ get_translation('landing.nav.testimonials', 'آراء العملاء') }}
+            </h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
+                ماذا يقول الناشرون عن منصتنا
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- رأي 1 -->
+            <div class="feature-card testimonial-card fade-in">
+                <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
+                    <i class="fas fa-user" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title" style="color: white;">
+                    أحمد محمد
+                </h3>
+                <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
+                    "المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%."
+                </p>
+                <div style="color: gold; margin-top: 15px;">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <!-- رأي 2 -->
+            <div class="feature-card testimonial-card fade-in">
+                <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
+                    <i class="fas fa-user" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title" style="color: white;">
+                    سارة عبدالله
+                </h3>
+                <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
+                    "وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً."
+                </p>
+                <div style="color: gold; margin-top: 15px;">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <!-- رأي 3 -->
+            <div class="feature-card testimonial-card fade-in">
+                <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
+                    <i class="fas fa-user" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title" style="color: white;">
+                    خالد المصري
+                </h3>
+                <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
+                    "منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة."
+                </p>
+                <div style="color: gold; margin-top: 15px;">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم الأسعار -->
+<section id="pricing" class="pricing-section" style="padding: 100px 0;">
+    <div class="container">
+        <div class="text-center mb-8">
+            <h2 class="section-title">
+                خطط الأسعار
+            </h2>
+            <p class="section-subtitle">
+                اختر الخطة التي تناسب احتياجاتك
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- الخطة الأساسية -->
+            <div class="feature-card pricing-card fade-in">
+                <div class="feature-icon" style="background: var(--gray-500);">
+                    <i class="fas fa-user" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title">
+                    الأساسية
+                </h3>
+                <div style="text-align: center; margin: 20px 0;">
+                    <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">مجاناً</span>
+                    <div style="color: var(--text-secondary);">للبدء</div>
+                </div>
+                <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
+                    <li style="padding: 8px 0;">✓ 3 حسابات اجتماعية</li>
+                    <li style="padding: 8px 0;">✓ 50 منشور شهرياً</li>
+                    <li style="padding: 8px 0;">✓ تحليلات أساسية</li>
+                    <li style="padding: 8px 0;">✓ دعم عبر البريد الإلكتروني</li>
+                </ul>
+                <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
+                    ابدأ مجاناً
+                </a>
+            </div>
+
+            <!-- الخطة الاحترافية -->
+            <div class="feature-card pricing-card popular fade-in">
+                <div class="popular-badge">الأكثر شيوعاً</div>
+                <div class="feature-icon" style="background: var(--primary-500);">
+                    <i class="fas fa-crown" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title">
+                    الاحترافية
+                </h3>
+                <div style="text-align: center; margin: 20px 0;">
+                    <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">49</span>
+                    <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
+                </div>
+                <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
+                    <li style="padding: 8px 0;">✓ 10 حسابات اجتماعية</li>
+                    <li style="padding: 8px 0;">✓ منشورات غير محدودة</li>
+                    <li style="padding: 8px 0;">✓ تحليلات متقدمة</li>
+                    <li style="padding: 8px 0;">✓ أتمتة ذكية</li>
+                    <li style="padding: 8px 0;">✓ دعم فني مميز</li>
+                </ul>
+                <a href="/login?lang={{ lang }}" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                    جرب مجاناً
+                </a>
+            </div>
+
+            <!-- الخطة المؤسسية -->
+            <div class="feature-card pricing-card fade-in">
+                <div class="feature-icon" style="background: var(--secondary-500);">
+                    <i class="fas fa-building" style="color: white;"></i>
+                </div>
+                <h3 class="feature-title">
+                    المؤسسية
+                </h3>
+                <div style="text-align: center; margin: 20px 0;">
+                    <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">99</span>
+                    <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
+                </div>
+                <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
+                    <li style="padding: 8px 0;">✓ حسابات غير محدودة</li>
+                    <li style="padding: 8px 0;">✓ فريق عمل متكامل</li>
+                    <li style="padding: 8px 0;">✓ تقارير مخصصة</li>
+                    <li style="padding: 8px 0;">✓ API متكامل</li>
+                    <li style="padding: 8px 0;">✓ دعم فني 24/7</li>
+                </ul>
+                <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
+                    اتصل بنا
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- قسم الدعوة للعمل -->
+<section class="cta-section">
+    <div class="container">
+        <div class="hero-content">
+            <h2 class="cta-title">
+                {{ get_translation('landing.cta.title', 'مستعد لبدء رحلتك؟') }}
+            </h2>
+            <p class="cta-subtitle">
+                {{ get_translation('landing.cta.subtitle', 'انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل') }}
+            </p>
+            <div class="hero-buttons">
+                <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg" style="background: var(--white); color: var(--primary-500);">
+                    <i class="fas fa-user-plus"></i>
+                    {{ get_translation('landing.cta.button', 'سجل حسابك مجاناً') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- الفوتر -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <span>نشرتي</span>
+            </div>
+            <div class="footer-text">
+                © 2024 نشرتي. {{ get_translation('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // نظام القفز السلس المحسن
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        const headerHeight = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+    // إدارة حالة القائمة النشطة
+    document.addEventListener('DOMContentLoaded', function() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
         
-        window.addEventListener('load', function() {
-            document.body.classList.remove('loading');
-            document.body.classList.add('loaded');
-        });
-    </script>
-
-    <!-- الهيدر الثابت -->
-    <header class="main-header">
-        <div class="container">
-            <nav class="main-nav">
-                <!-- الشعار -->
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-paper-plane"></i>
-                    </div>
-                    <span>نشرتي</span>
-                </div>
-
-                <!-- القائمة العلوية -->
-                <div class="nav-links">
-                    <a href="#features" class="nav-link">
-                        {{ get_translation('landing.nav.features', 'المميزات') }}
-                    </a>
-                    <a href="#how-it-works" class="nav-link">
-                        {{ get_translation('landing.nav.how_it_works', 'كيف تعمل') }}
-                    </a>
-                    <a href="#testimonials" class="nav-link">
-                        {{ get_translation('landing.nav.testimonials', 'آراء العملاء') }}
-                    </a>
-                    <a href="#pricing" class="nav-link">
-                        الأسعار
-                    </a>
-                </div>
-
-                <!-- جانب المستخدم -->
-                <div class="user-section">
-                    <a href="/login?lang={{ lang }}" class="nav-link">
-                        {{ get_translation('login', 'تسجيل الدخول') }}
-                    </a>
-                    <a href="/login?lang={{ lang }}" class="btn btn-primary">
-                        {{ get_translation('landing.nav.get_started', 'ابدأ مجاناً') }}
-                    </a>
-                    
-                    <!-- مفتاح اللغة -->
-                    <div class="language-selector">
-                        <button class="lang-toggle">
-                            <i class="fas fa-globe"></i>
-                            {{ languages[lang].name }}
-                        </button>
-                        <div class="language-dropdown">
-                            {% for code, info in languages.items() %}
-                            <a href="/?lang={{ code }}" class="lang-btn {% if code == lang %}active{% endif %}">
-                                {{ info.flag }} {{ info.name }}
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="content-wrapper">
-        <!-- القسم البطولي -->
-        <section class="hero-section">
-            <!--div class="container" -->
-                <div class="hero-content fade-in">
-                    <!-- محتوى الهيرو الحالي -->
-        <!---
-        <div class="floating-shapes">
-            <div class="shape" style="top: 10%; left: 10%; width: 100px; height: 100px; background: var(--white); border-radius: 50%;"></div>
-            <div class="shape" style="top: 60%; right: 15%; width: 150px; height: 150px; background: var(--white); border-radius: 30%;"></div>
-            <div class="shape" style="bottom: 20%; left: 20%; width: 80px; height: 80px; background: var(--white); border-radius: 40%;"></div>
-        </div>
-        --->
-
-        <div class="background-shapes">
-            <div class="bg-shape shape-1"></div>
-            <div class="bg-shape shape-2"></div>
-            <div class="bg-shape shape-3"></div>
-        </div>
-        <div class="container">
-            <div class="hero-content fade-in">
-                <h1 class="hero-title">
-                    {{ get_translation('landing.hero.title', 'منصة الناشرين المحترفين') }}
-                </h1>
-                <p class="hero-subtitle">
-                    {{ get_translation('landing.hero.subtitle', 'واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.') }}
-                </p>
-                
-                <!-- إحصائيات سريعة -->
-                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-6); margin: var(--space-8) auto; max-width: 500px;">
-                    <div class="stat-card" style="text-align: center;">
-                        <div class="stat-number">+500</div>
-                        <div style="color: var(--white); opacity: 0.9;">ناشر</div>
-                    </div>
-                    <div class="stat-card" style="text-align: center;">
-                        <div class="stat-number">+50K</div>
-                        <div style="color: var(--white); opacity: 0.9;">منشور</div>
-                    </div>
-                    <div class="stat-card" style="text-align: center;">
-                        <div class="stat-number">+1M</div>
-                        <div style="color: var(--white); opacity: 0.9;">تفاعل</div>
-                    </div>
-                </div>
-                
-                <div class="hero-buttons">
-                    <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-play-circle"></i>
-                        {{ get_translation('landing.hero.start_journey', 'ابدأ رحلتك الآن') }}
-                    </a>
-                    <button class="btn btn-secondary btn-lg" onclick="scrollToSection('features')">
-                        <i class="fas fa-info-circle"></i>
-                        {{ get_translation('landing.hero.watch_demo', 'شاهد العرض التوضيحي') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    
-                </div>
-            </div>
-        </section>
-  <!-- قسم المميزات -->
-    <section id="features" class="features-section">
-        <div class="container">
-            <div class="text-center mb-8">
-                <h2 class="section-title">
-                    {{ get_translation('landing.features.title', 'كل ما يحتاجه الناشر المحترف') }}
-                </h2>
-                <p class="section-subtitle">
-                    {{ get_translation('landing.features.subtitle', 'أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى') }}
-                </p>
-            </div>
-
-            <div class="features-grid">
-                <!-- مميزة 1 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        {{ get_translation('landing.features.analytics.title', 'تحليلات متقدمة') }}
-                    </h3>
-                    <p class="feature-description">
-                        {{ get_translation('landing.features.analytics.desc', 'فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.') }}
-                    </p>
-                </div>
-
-                <!-- مميزة 2 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        {{ get_translation('landing.features.targeting.title', 'استهداف دقيق') }}
-                    </h3>
-                    <p class="feature-description">
-                        {{ get_translation('landing.features.targeting.desc', 'وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.') }}
-                    </p>
-                </div>
-
-                <!-- مميزة 3 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        {{ get_translation('landing.features.engagement.title', 'تفاعل حقيقي') }}
-                    </h3>
-                    <p class="feature-description">
-                        {{ get_translation('landing.features.engagement.desc', 'حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.') }}
-                    </p>
-                </div>
-
-                <!-- مميزة 4 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        منصات متعددة
-                    </h3>
-                    <p class="feature-description">
-                        ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.
-                    </p>
-                </div>
-
-                <!-- مميزة 5 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        أتمتة ذكية
-                    </h3>
-                    <p class="feature-description">
-                        وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.
-                    </p>
-                </div>
-
-                <!-- مميزة 6 -->
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        أمان متكامل
-                    </h3>
-                    <p class="feature-description">
-                        بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم كيف تعمل -->
-    <section id="how-it-works" class="features-section" style="background: var(--white);">
-        <div class="container">
-            <div class="text-center mb-8">
-                <h2 class="section-title">
-                    كيف تعمل المنصة
-                </h2>
-                <p class="section-subtitle">
-                    3 خطوات بسيطة لبدء رحلتك في النشر المحترف
-                </p>
-            </div>
-
-            <div class="features-grid">
-                <!-- خطوة 1 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <span class="step-number">1</span>
-                    </div>
-                    <h3 class="feature-title">
-                        أنشئ حسابك
-                    </h3>
-                    <p class="feature-description">
-                        سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.
-                    </p>
-                </div>
-
-                <!-- خطوة 2 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <span class="step-number">2</span>
-                    </div>
-                    <h3 class="feature-title">
-                        اربط حساباتك
-                    </h3>
-                    <p class="feature-description">
-                        أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.
-                    </p>
-                </div>
-
-                <!-- خطوة 3 -->
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                        <span class="step-number">3</span>
-                    </div>
-                    <h3 class="feature-title">
-                        ابدأ النشر
-                    </h3>
-                    <p class="feature-description">
-                        استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم آراء العملاء -->
-    <section id="testimonials" class="testimonials-section" style="padding: 100px 0;">
-        <div class="container">
-            <div class="text-center mb-8">
-                <h2 class="section-title" style="color: white;">
-                    {{ get_translation('landing.nav.testimonials', 'آراء العملاء') }}
-                </h2>
-                <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
-                    ماذا يقول الناشرون عن منصتنا
-                </p>
-            </div>
-
-            <div class="features-grid">
-                <!-- رأي 1 -->
-                <div class="feature-card testimonial-card fade-in">
-                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
-                        <i class="fas fa-user" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title" style="color: white;">
-                        أحمد محمد
-                    </h3>
-                    <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                        "المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%."
-                    </p>
-                    <div style="color: gold; margin-top: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <!-- رأي 2 -->
-                <div class="feature-card testimonial-card fade-in">
-                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
-                        <i class="fas fa-user" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title" style="color: white;">
-                        سارة عبدالله
-                    </h3>
-                    <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                        "وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً."
-                    </p>
-                    <div style="color: gold; margin-top: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <!-- رأي 3 -->
-                <div class="feature-card testimonial-card fade-in">
-                    <div class="feature-icon" style="background: rgba(255,255,255,0.2);">
-                        <i class="fas fa-user" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title" style="color: white;">
-                        خالد المصري
-                    </h3>
-                    <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                        "منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة."
-                    </p>
-                    <div style="color: gold; margin-top: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الأسعار -->
-    <section id="pricing" class="pricing-section" style="padding: 100px 0;">
-        <div class="container">
-            <div class="text-center mb-8">
-                <h2 class="section-title">
-                    خطط الأسعار
-                </h2>
-                <p class="section-subtitle">
-                    اختر الخطة التي تناسب احتياجاتك
-                </p>
-            </div>
-
-            <div class="features-grid">
-                <!-- الخطة الأساسية -->
-                <div class="feature-card pricing-card fade-in">
-                    <div class="feature-icon" style="background: var(--gray-500);">
-                        <i class="fas fa-user" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        الأساسية
-                    </h3>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">مجاناً</span>
-                        <div style="color: var(--text-secondary);">للبدء</div>
-                    </div>
-                    <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                        <li style="padding: 8px 0;">✓ 3 حسابات اجتماعية</li>
-                        <li style="padding: 8px 0;">✓ 50 منشور شهرياً</li>
-                        <li style="padding: 8px 0;">✓ تحليلات أساسية</li>
-                        <li style="padding: 8px 0;">✓ دعم عبر البريد الإلكتروني</li>
-                    </ul>
-                    <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
-                        ابدأ مجاناً
-                    </a>
-                </div>
-
-                <!-- الخطة الاحترافية -->
-                <div class="feature-card pricing-card popular fade-in">
-                    <div class="popular-badge">الأكثر شيوعاً</div>
-                    <div class="feature-icon" style="background: var(--primary-500);">
-                        <i class="fas fa-crown" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        الاحترافية
-                    </h3>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">49</span>
-                        <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
-                    </div>
-                    <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                        <li style="padding: 8px 0;">✓ 10 حسابات اجتماعية</li>
-                        <li style="padding: 8px 0;">✓ منشورات غير محدودة</li>
-                        <li style="padding: 8px 0;">✓ تحليلات متقدمة</li>
-                        <li style="padding: 8px 0;">✓ أتمتة ذكية</li>
-                        <li style="padding: 8px 0;">✓ دعم فني مميز</li>
-                    </ul>
-                    <a href="/login?lang={{ lang }}" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
-                        جرب مجاناً
-                    </a>
-                </div>
-
-                <!-- الخطة المؤسسية -->
-                <div class="feature-card pricing-card fade-in">
-                    <div class="feature-icon" style="background: var(--secondary-500);">
-                        <i class="fas fa-building" style="color: white;"></i>
-                    </div>
-                    <h3 class="feature-title">
-                        المؤسسية
-                    </h3>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">99</span>
-                        <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
-                    </div>
-                    <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                        <li style="padding: 8px 0;">✓ حسابات غير محدودة</li>
-                        <li style="padding: 8px 0;">✓ فريق عمل متكامل</li>
-                        <li style="padding: 8px 0;">✓ تقارير مخصصة</li>
-                        <li style="padding: 8px 0;">✓ API متكامل</li>
-                        <li style="padding: 8px 0;">✓ دعم فني 24/7</li>
-                    </ul>
-                    <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
-                        اتصل بنا
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الدعوة للعمل -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="cta-title">
-                    {{ get_translation('landing.cta.title', 'مستعد لبدء رحلتك؟') }}
-                </h2>
-                <p class="cta-subtitle">
-                    {{ get_translation('landing.cta.subtitle', 'انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل') }}
-                </p>
-                <div class="hero-buttons">
-                    <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg" style="background: var(--white); color: var(--primary-500);">
-                        <i class="fas fa-user-plus"></i>
-                        {{ get_translation('landing.cta.button', 'سجل حسابك مجاناً') }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- الفوتر -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-paper-plane"></i>
-                    </div>
-                    <span>نشرتي</span>
-                </div>
-                <div class="footer-text">
-                    © 2024 نشرتي. {{ get_translation('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
-                </div>
-            </div>
-        </div>
-    </footer>
-  
-        </main>
-
-    <script>
-        // نظام القفز السلس المحسن
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
+        function setActiveLink() {
+            let current = '';
             const headerHeight = 80;
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - headerHeight;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
             });
         }
 
-        // إدارة حالة القائمة النشطة
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-            
-            function setActiveLink() {
-                let current = '';
-                const headerHeight = 80;
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - headerHeight;
-                    const sectionHeight = section.clientHeight;
-                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                        current = section.getAttribute('id');
-                    }
-                });
+        window.addEventListener('scroll', setActiveLink);
+    });
 
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
+    function changeLanguage(lang) {
+        window.location.href = `/?lang=${lang}`;
+    }
 
-            window.addEventListener('scroll', setActiveLink);
+    function scrollToSection(sectionId) {
+        document.getElementById(sectionId).scrollIntoView({
+            behavior: 'smooth'
         });
-    </script>
+    }
 
-    <script>
-        function changeLanguage(lang) {
-            window.location.href = `/?lang=${lang}`;
-        }
-
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: 'smooth'
+    // إضافة تأثير fade-in عند التمرير
+    document.addEventListener('DOMContentLoaded', function() {
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
             });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            fadeObserver.observe(el);
+        });
+
+        // إصلاح مشكلة قائمة اللغة
+        let languageTimeout;
+        
+        function showLanguageDropdown() {
+            clearTimeout(languageTimeout);
+            const dropdown = document.querySelector('.language-dropdown');
+            if (dropdown) dropdown.style.display = 'block';
         }
-
-        // إضافة تأثير fade-in عند التمرير
-        document.addEventListener('DOMContentLoaded', function() {
-            const fadeElements = document.querySelectorAll('.fade-in');
-            
-            const fadeObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            fadeElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                fadeObserver.observe(el);
-            });
-
-            // إصلاح مشكلة قائمة اللغة
-            let languageTimeout;
-            
-            function showLanguageDropdown() {
-                clearTimeout(languageTimeout);
+        
+        function hideLanguageDropdown() {
+            languageTimeout = setTimeout(() => {
                 const dropdown = document.querySelector('.language-dropdown');
-                if (dropdown) dropdown.style.display = 'block';
-            }
-            
-            function hideLanguageDropdown() {
-                languageTimeout = setTimeout(() => {
-                    const dropdown = document.querySelector('.language-dropdown');
-                    if (dropdown) dropdown.style.display = 'none';
-                }, 300);
-            }
+                if (dropdown) dropdown.style.display = 'none';
+            }, 300);
+        }
 
-            // تطبيق events على مفتاح اللغة
-            const languageSelector = document.querySelector('.language-selector');
-            if (languageSelector) {
-                languageSelector.addEventListener('mouseenter', showLanguageDropdown);
-                languageSelector.addEventListener('mouseleave', hideLanguageDropdown);
-            }
-        });
-    </script>
-
-</body>
-</html>
+        // تطبيق events على مفتاح اللغة
+        const languageSelector = document.querySelector('.language-selector');
+        if (languageSelector) {
+            languageSelector.addEventListener('mouseenter', showLanguageDropdown);
+            languageSelector.addEventListener('mouseleave', hideLanguageDropdown);
+        }
+    });
+</script>
+{% endblock %}
