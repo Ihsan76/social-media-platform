@@ -134,6 +134,14 @@ def health():
     data = {"status": "صحي", "message": "الخدمة تعمل بشكل طبيعي", "users_count": len(users_db)}
     return Response(json.dumps(data, ensure_ascii=False, indent=2), mimetype='application/json; charset=utf-8')
 
+@app.route('/test')
+def test():
+    data = {
+        "test_arabic": "اختبار النص العربي ✅",
+        "welcome": "أهلاً وسهلاً في منصتنا"
+    }
+    return Response(json.dumps(data, ensure_ascii=False, indent=2), mimetype='application/json; charset=utf-8')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
