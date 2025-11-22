@@ -494,7 +494,61 @@
             </div>
         </div>
     </footer>
+    <script>
+        function changeLanguage(lang) {
+            window.location.href = `/?lang=${lang}`;
+        }
 
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // إضافة تأثير fade-in عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                fadeObserver.observe(el);
+            });
+
+            // إصلاح مشكلة قائمة اللغة
+            let languageTimeout;
+            
+            function showLanguageDropdown() {
+                clearTimeout(languageTimeout);
+                const dropdown = document.querySelector('.language-dropdown');
+                if (dropdown) dropdown.style.display = 'block';
+            }
+            
+            function hideLanguageDropdown() {
+                languageTimeout = setTimeout(() => {
+                    const dropdown = document.querySelector('.language-dropdown');
+                    if (dropdown) dropdown.style.display = 'none';
+                }, 300);
+            }
+
+            // تطبيق events على مفتاح اللغة
+            const languageSelector = document.querySelector('.language-selector');
+            if (languageSelector) {
+                languageSelector.addEventListener('mouseenter', showLanguageDropdown);
+                languageSelector.addEventListener('mouseleave', hideLanguageDropdown);
+            }
+        });
+    </script>
 
 </body>
 </html>
