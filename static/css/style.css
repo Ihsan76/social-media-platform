@@ -363,6 +363,7 @@ html[dir="rtl"] .demo-accounts {
     font-weight: bold;
 }
 
+/* 🔥 أزرار وسائل التواصل - متجاورة */
 .social-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -393,55 +394,21 @@ html[dir="rtl"] .btn-social {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.btn-google {
-    border-color: #db4437;
-    color: #db4437;
-}
+/* 🔥 ألوان وسائل التواصل - متجاورة */
+.btn-google { border-color: #db4437; color: #db4437; }
+.btn-google:hover { background: #db4437; color: white; }
 
-.btn-google:hover {
-    background: #db4437;
-    color: white;
-}
+.btn-twitter { border-color: #1da1f2; color: #1da1f2; }
+.btn-twitter:hover { background: #1da1f2; color: white; }
 
-.btn-twitter {
-    border-color: #1da1f2;
-    color: #1da1f2;
-}
+.btn-facebook { border-color: #1877f2; color: #1877f2; }
+.btn-facebook:hover { background: #1877f2; color: white; }
 
-.btn-twitter:hover {
-    background: #1da1f2;
-    color: white;
-}
+.btn-instagram { border-color: #e4405f; color: #e4405f; }
+.btn-instagram:hover { background: #e4405f; color: white; }
 
-.btn-facebook {
-    border-color: #1877f2;
-    color: #1877f2;
-}
-
-.btn-facebook:hover {
-    background: #1877f2;
-    color: white;
-}
-
-.btn-instagram {
-    border-color: #e4405f;
-    color: #e4405f;
-}
-
-.btn-instagram:hover {
-    background: #e4405f;
-    color: white;
-}
-
-.btn-github {
-    border-color: #333;
-    color: #333;
-}
-
-.btn-github:hover {
-    background: #333;
-    color: white;
-}
+.btn-github { border-color: #333; color: #333; }
+.btn-github:hover { background: #333; color: white; }
 
 .social-icon {
     font-size: 1.2em;
@@ -654,267 +621,7 @@ html[dir="rtl"] .account-card {
     }
 }
 
-[dir="rtl"] .language-switcher {
-    text-align: left;
-}
-
-[dir="rtl"] .input-group {
-    text-align: right;
-}
-
-[dir="rtl"] .input-group label {
-    text-align: right;
-}
-
-[dir="rtl"] .input-group input {
-    text-align: right;
-}
-
-[dir="rtl"] .social-buttons {
-    text-align: right;
-}
-
-[dir="rtl"] .tabs {
-    text-align: right;
-}
-
-[dir="rtl"] .tab-button {
-    float: right;
-    margin-left: 10px;
-    margin-right: 0;
-}
-
-[dir="rtl"] .data-section {
-    text-align: right;
-}
-
-[dir="rtl"] .stats-grid {
-    text-align: right;
-}
-
-/* الهيدر */
-header {
-    margin-bottom: 30px;
-}
-
-header h1 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-    font-size: 2em;
-}
-
-.language-switcher {
-    margin-bottom: 20px;
-}
-
-.language-switcher button {
-    margin: 0 5px;
-    padding: 8px 15px;
-    border: 1px solid #ddd;
-    background: #f5f5f5;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.language-switcher button:hover {
-    background: #e0e0e0;
-    transform: translateY(-2px);
-}
-
-/* نظام التبويب */
-.tabs {
-    display: flex;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-.tab-button {
-    padding: 12px 24px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    font-size: 16px;
-    transition: all 0.3s ease;
-}
-
-.tab-button.active {
-    border-bottom: 3px solid #007bff;
-    color: #007bff;
-    font-weight: bold;
-}
-
-.tab-content {
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* نماذج الإدخال */
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border 0.3s ease;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0,123,255,0.3);
-}
-
-.btn-primary {
-    width: 100%;
-    padding: 14px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-}
-
-/* أزرار وسائل التواصل */
-.social-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.social-btn {
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    background: white;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.3s ease;
-    font-size: 14px;
-}
-
-.social-btn:hover {
-    background: #f8f9fa;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.social-btn .icon {
-    font-weight: bold;
-    width: 20px;
-    text-align: center;
-}
-
-
-/* قسم الإحصائيات */
-.data-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-}
-
-.data-section h3 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.stat-card {
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-3px);
-}
-
-.stat-card h4 {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.stat-number {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007bff;
-    margin: 0;
-}
-
-/* الفوتر */
-footer {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-    color: #666;
-    text-align: center;
-}
-
-.version {
-    font-size: 12px;
-    color: #999;
-    margin-top: 5px;
-}
-
-/* تصميم متجاوب */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-        margin: 10px;
-    }
-    
-    .tabs {
-        flex-direction: column;
-    }
-    
-    .tab-button {
-        text-align: center;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* 🔥 أزرار وسائل التواصل - متجاورة في RTL */
 [dir="rtl"] .social-btn {
     border-left: none;
     border-right: 4px solid;
