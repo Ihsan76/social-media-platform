@@ -16,7 +16,7 @@ sessions = {}
 social_accounts_db = {}
 
 # استيراد نظام اللغات
-from translations import get_translation, get_supported_languages, SUPPORTED_LANGUAGES
+from translations import get_translation, get_supported_languages, get_language_direction, SUPPORTED_LANGUAGES
 
 # دالة تحميل الترجمات - يجب تعريفها قبل استخدامها
 def load_translations(lang='en'):
@@ -177,46 +177,33 @@ def find_user_by_email(email):
     return None
 
 # المسارات الأساسية
-# استبدل دالة home فقط
-@app.route('/')
-def home():
-
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-# الصفحة الرئيسية الجديدة
 @app.route('/')
 def index():
+    """الصفحة الرئيسية الجديدة"""
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
         lang = 'en'
-    # 🔥 استخدم الدالة الجديدة من translations
-    from translations import get_language_direction
+    
     text_direction = get_language_direction(lang)
-    return render_template('index.html')  # صفحة الهبوط
+    return render_template('index.html', 
+                         lang=lang,
+                         text_direction=text_direction,
+                         languages=SUPPORTED_LANGUAGES,
+                         translations=TRANSLATIONS.get(lang, {}))
 
-# صفحة التسجيل الحالية
 @app.route('/login')
-def login():
-     # صفحة التسجيل
-    """الصفحة الرئيسية مع دعم اللغات"""
+def login_page():
+    """صفحة تسجيل الدخول"""
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
         lang = 'en'
     
-    # 🔥 استخدم الدالة الجديدة من translations
-    from translations import get_language_direction
     text_direction = get_language_direction(lang)
-    
     return render_template('login.html', 
-        lang=lang,
-        text_direction=text_direction,  # 🔥 أضف هذا
-        languages=SUPPORTED_LANGUAGES,
-        translations=TRANSLATIONS.get(lang, {}))
-
-
-# ... باقي الرواوت الحالية ...# 
+                         lang=lang,
+                         text_direction=text_direction,
+                         languages=SUPPORTED_LANGUAGES,
+                         translations=TRANSLATIONS.get(lang, {}))
 
 @app.route('/api/')
 def api_home():
@@ -302,7 +289,7 @@ def register():
 
 # نظام المصادقة - تسجيل الدخول بالبريد الإلكتروني
 @app.route('/api/auth/login', methods=['POST'])
-def login():
+def api_login():
     try:
         lang = get_user_language(request)
         data = request.get_json()
