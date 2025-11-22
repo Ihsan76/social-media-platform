@@ -1,3 +1,26 @@
+/* تطبيق الاتجاه فوراً في CSS */
+html[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+html[dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* منع الوميض المؤقت */
+body.loading {
+    visibility: hidden;
+    opacity: 0;
+}
+
+body.loaded {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
 /* الأنماط الأساسية */
 * {
     margin: 0;
@@ -87,11 +110,11 @@ body {
 }
 
 /* اتجاه RTL للعربية */
-[dir="rtl"] .lang-btn {
+html[dir="rtl"] .lang-btn {
     text-align: right;
 }
 
-[dir="rtl"] .language-dropdown {
+html[dir="rtl"] .language-dropdown {
     left: auto;
     right: 0;
 }
@@ -143,7 +166,7 @@ body {
     flex-wrap: wrap;
 }
 
-[dir="rtl"] .tabs {
+html[dir="rtl"] .tabs {
     flex-direction: row-reverse;
 }
 
@@ -180,16 +203,16 @@ body {
 }
 
 /* دعم RTL للنماذج */
-[dir="rtl"] .form-group label {
+html[dir="rtl"] .form-group label {
     text-align: right;
 }
 
-[dir="rtl"] .form-group input,
-[dir="rtl"] .form-group select {
+html[dir="rtl"] .form-group input,
+html[dir="rtl"] .form-group select {
     text-align: right;
 }
 
-[dir="rtl"] .btn {
+html[dir="rtl"] .btn {
     text-align: center;
 }
 
@@ -252,7 +275,7 @@ body {
     background: white;
 }
 
-[dir="rtl"] .btn-social {
+html[dir="rtl"] .btn-social {
     flex-direction: row-reverse;
 }
 
@@ -397,7 +420,7 @@ body {
     to { opacity: 1; transform: translateX(0); }
 }
 
-[dir="rtl"] .message {
+html[dir="rtl"] .message {
     animation: slideInRTL 0.3s ease;
 }
 
@@ -447,7 +470,7 @@ body {
     gap: 15px;
 }
 
-[dir="rtl"] .account-card {
+html[dir="rtl"] .account-card {
     flex-direction: row-reverse;
 }
 
@@ -484,7 +507,7 @@ body {
         flex-direction: column;
     }
     
-    [dir="rtl"] .tabs {
+    html[dir="rtl"] .tabs {
         flex-direction: column;
     }
     
@@ -499,7 +522,7 @@ body {
         border-bottom-color: #eee;
     }
     
-    [dir="rtl"] .tab.active {
+    html[dir="rtl"] .tab.active {
         border-left-color: transparent;
         border-right-color: #667eea;
     }

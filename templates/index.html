@@ -1,24 +1,62 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" dir="{{ text_direction }}">
+<html lang="{{ lang }}" dir="{{ languages[lang].dir }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ translations.get('social_media_platform', 'Social Media Platform')}} - {{ translations.get('version', 'Version')}} 2.2</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <title>{{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</title>
+    
+    <!-- تطبيق اتجاه الصفحة فوراً في الـhead -->
+    <style>
+        /* تطبيق الاتجاه فوراً قبل تحميل CSS */
+        html[dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        html[dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* منع الوميض المؤقت */
+        body {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="loading">
+    <!-- إضافة سكريبت فوري لتطبيق الاتجاه -->
+    <script>
+        // تطبيق الاتجاه فوراً قبل تحميل أي شيء
+        document.documentElement.dir = '{{ languages[lang].dir }}';
+        document.documentElement.lang = '{{ lang }}';
+        
+        // إظهار الصفحة بعد التحميل
+        window.addEventListener('load', function() {
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+        });
+    </script>
+
     <div class="container">
         <!-- شريط اللغة -->
         <div class="language-bar">
             <div class="language-selector">
                 <span class="current-language">
-                    {{ languages[lang].flag}} {{ translations.get('current_language', 'Current Language')}}: {{ languages[lang].name}}
+                    {{ languages[lang].flag }} {{ translations.get('current_language', 'Current Language') }}: {{ languages[lang].name }}
                 </span>
                 <div class="language-dropdown">
                     {% for code, info in languages.items() %}
                     <button class="lang-btn {% if code == lang %}active{% endif %}" 
-                            onclick="changeLanguage('{{ code}}')">
-                        {{ info.flag}}} {{ info.name}}}
+                            onclick="changeLanguage('{{ code }}')">
+                        {{ info.flag }} {{ info.name }}
                     </button>
                     {% endfor %}
                 </div>
@@ -26,79 +64,80 @@
         </div>
 
         <div class="header">
-            <h1>🚀 {{ translations.get('social_media_platform', 'Social Media Platform')}} - {{ translations.get('version', 'Version')}} 2.2</h1>
-            <p>{{ translations.get('multi_language_system', 'Multi-language System')}}</p>
-            <div class="status-badge" id="systemStatus">{{ translations.get('checking_system', 'Checking system...')}}</div>
+            <h1>🚀 {{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</h1>
+            <p>{{ translations.get('multi_language_system', 'Multi-language System') }}</p>
+            <div class="status-badge" id="systemStatus">{{ translations.get('checking_system', 'Checking system...') }}</div>
         </div>
         
+        <!-- باقي المحتوى يبقى كما هو -->
         <div class="dashboard">
             <div class="tabs">
-                <div class="tab active" onclick="switchTab('register')">{{ translations.get('register', 'Register')}}</div>
-                <div class="tab" onclick="switchTab('login')">{{ translations.get('login', 'Login')}}</div>
-                <div class="tab" onclick="switchTab('profile')">{{ translations.get('profile', 'Profile')}}</div>
-                <div class="tab" onclick="switchTab('social')">{{ translations.get('social_accounts', 'Social Accounts')}}</div>
+                <div class="tab active" onclick="switchTab('register')">{{ translations.get('register', 'Register') }}</div>
+                <div class="tab" onclick="switchTab('login')">{{ translations.get('login', 'Login') }}</div>
+                <div class="tab" onclick="switchTab('profile')">{{ translations.get('profile', 'Profile') }}</div>
+                <div class="tab" onclick="switchTab('social')">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
             </div>
             
             <!-- تسجيل جديد -->
             <div id="register" class="tab-content active">
-                <h2>{{ translations.get('register', 'Register')}}</h2>
+                <h2>{{ translations.get('register', 'Register') }}</h2>
                 
                 <!-- التسجيل بالبريد الإلكتروني -->
                 <div class="auth-section">
-                    <h3>📧 {{ translations.get('register_with_email', 'Register with Email')}}</h3>
+                    <h3>📧 {{ translations.get('register_with_email', 'Register with Email') }}</h3>
                     <div class="form-group">
-                        <label for="regUsername">{{ translations.get('username', 'Username')}}</label>
-                        <input type="text" id="regUsername" placeholder="{{ translations.get('enter_username', 'Enter username')}}">
+                        <label for="regUsername">{{ translations.get('username', 'Username') }}</label>
+                        <input type="text" id="regUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
                     </div>
                     <div class="form-group">
-                        <label for="regEmail">{{ translations.get('email', 'Email')}}</label>
-                        <input type="email" id="regEmail" placeholder="{{ translations.get('enter_email', 'Enter your email')}}">
+                        <label for="regEmail">{{ translations.get('email', 'Email') }}</label>
+                        <input type="email" id="regEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
                     </div>
                     <div class="form-group">
-                        <label for="regPassword">{{ translations.get('password', 'Password')}}</label>
-                        <input type="password" id="regPassword" placeholder="{{ translations.get('enter_password', 'Enter password')}} (6 {{ translations.get('characters_min', 'characters minimum')}})">
+                        <label for="regPassword">{{ translations.get('password', 'Password') }}</label>
+                        <input type="password" id="regPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }} (6 {{ translations.get('characters_min', 'characters minimum') }})">
                     </div>
                     <div class="form-group">
-                        <label for="regLanguage">{{ translations.get('preferred_language', 'Preferred Language')}}</label>
+                        <label for="regLanguage">{{ translations.get('preferred_language', 'Preferred Language') }}</label>
                         <select id="regLanguage">
                             {% for code, info in languages.items() %}
-                            <option value="{{ code}}}" {% if code == lang %}selected{% endif %}>
-                                {{ info.flag}} {{ info.name}}
+                            <option value="{{ code }}" {% if code == lang %}selected{% endif %}>
+                                {{ info.flag }} {{ info.name }}
                             </option>
                             {% endfor %}
                         </select>
                     </div>
-                    <button class="btn btn-primary" onclick="registerWithEmail()">{{ translations.get('register', 'Register')}}</button>
+                    <button class="btn btn-primary" onclick="registerWithEmail()">{{ translations.get('register', 'Register') }}</button>
                 </div>
                 
                 <!-- أو -->
                 <div class="divider">
-                    <span>{{ translations.get('or', 'OR')}}</span>
+                    <span>{{ translations.get('or', 'OR') }}</span>
                 </div>
                 
                 <!-- التسجيل بالحسابات الاجتماعية -->
                 <div class="social-auth-section">
-                    <h3>🔗 {{ translations.get('register_with_social', 'Register with Social Accounts')}}</h3>
+                    <h3>🔗 {{ translations.get('register_with_social', 'Register with Social Accounts') }}</h3>
                     <div class="social-buttons">
                         <button class="btn-social btn-google" onclick="socialLogin('google')">
                             <span class="social-icon">🔍</span>
-                            {{ translations.get('register_google', 'Register with Google')}}
+                            {{ translations.get('register_google', 'Register with Google') }}
                         </button>
                         <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
-                            <span class="social-icon">��</span>
-                            {{ translations.get('register_twitter', 'Register with Twitter')}}
+                            <span class="social-icon">🐦</span>
+                            {{ translations.get('register_twitter', 'Register with Twitter') }}
                         </button>
                         <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
                             <span class="social-icon">📘</span>
-                            {{ translations.get('register_facebook', 'Register with Facebook')}}
+                            {{ translations.get('register_facebook', 'Register with Facebook') }}
                         </button>
                         <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
                             <span class="social-icon">📷</span>
-                            {{ translations.get('register_instagram', 'Register with Instagram')}}
+                            {{ translations.get('register_instagram', 'Register with Instagram') }}
                         </button>
                         <button class="btn-social btn-github" onclick="socialLogin('github')">
                             <span class="social-icon">💻</span>
-                            {{ translations.get('register_github', 'Register with GitHub')}}
+                            {{ translations.get('register_github', 'Register with GitHub') }}
                         </button>
                     </div>
                 </div>
@@ -108,50 +147,50 @@
             
             <!-- تسجيل الدخول -->
             <div id="login" class="tab-content">
-                <h2>{{ translations.get('login', 'Login')}}</h2>
+                <h2>{{ translations.get('login', 'Login') }}</h2>
                 
                 <!-- الدخول بالبريد الإلكتروني -->
                 <div class="auth-section">
-                    <h3>📧 {{ translations.get('login_with_email', 'Login with Email')}}</h3>
+                    <h3>📧 {{ translations.get('login_with_email', 'Login with Email') }}</h3>
                     <div class="form-group">
-                        <label for="loginEmail">{{ translations.get('email', 'Email')}}</label>
-                        <input type="email" id="loginEmail" placeholder="{{ translations.get('enter_email', 'Enter your email')}}">
+                        <label for="loginEmail">{{ translations.get('email', 'Email') }}</label>
+                        <input type="email" id="loginEmail" placeholder="{{ translations.get('enter_email', 'Enter your email') }}">
                     </div>
                     <div class="form-group">
-                        <label for="loginPassword">{{ translations.get('password', 'Password')}}}</label>
-                        <input type="password" id="loginPassword" placeholder="{{ translations.get('enter_password', 'Enter password')}}">
+                        <label for="loginPassword">{{ translations.get('password', 'Password') }}</label>
+                        <input type="password" id="loginPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }}">
                     </div>
-                    <button class="btn btn-primary" onclick="loginWithEmail()">{{ translations.get('login', 'Login')}}</button>
+                    <button class="btn btn-primary" onclick="loginWithEmail()">{{ translations.get('login', 'Login') }}</button>
                 </div>
                 
                 <!-- أو -->
                 <div class="divider">
-                    <span>{{ translations.get('or', 'OR')}}</span>
+                    <span>{{ translations.get('or', 'OR') }}</span>
                 </div>
                 
                 <!-- الدخول بالحسابات الاجتماعية -->
                 <div class="social-auth-section">
-                    <h3>🔗 {{ translations.get('login_with_social', 'Login with Social Accounts')}}</h3>
+                    <h3>🔗 {{ translations.get('login_with_social', 'Login with Social Accounts') }}</h3>
                     <div class="social-buttons">
                         <button class="btn-social btn-google" onclick="socialLogin('google')">
                             <span class="social-icon">🔍</span>
-                            {{ translations.get('login_google', 'Login with Google')}}
+                            {{ translations.get('login_google', 'Login with Google') }}
                         </button>
                         <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
                             <span class="social-icon">🐦</span>
-                            {{ translations.get('login_twitter', 'Login with Twitter')}}
+                            {{ translations.get('login_twitter', 'Login with Twitter') }}
                         </button>
                         <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
                             <span class="social-icon">📘</span>
-                            {{ translations.get('login_facebook', 'Login with Facebook')}}
+                            {{ translations.get('login_facebook', 'Login with Facebook') }}
                         </button>
                         <button class="btn-social btn-instagram" onclick="socialLogin('instagram')">
                             <span class="social-icon">📷</span>
-                            {{ translations.get('login_instagram', 'Login with Instagram')}}
+                            {{ translations.get('login_instagram', 'Login with Instagram') }}
                         </button>
                         <button class="btn-social btn-github" onclick="socialLogin('github')">
                             <span class="social-icon">💻</span>
-                            {{ translations.get('login_github', 'Login with GitHub')}}
+                            {{ translations.get('login_github', 'Login with GitHub') }}
                         </button>
                     </div>
                 </div>
@@ -161,98 +200,98 @@
             
             <!-- الملف الشخصي -->
             <div id="profile" class="tab-content">
-                <h2>{{ translations.get('profile', 'Profile')}}</h2>
-                <button class="btn btn-secondary" onclick="getProfile()">🔄 {{ translations.get('update_profile', 'Update Profile')}}</button>
+                <h2>{{ translations.get('profile', 'Profile') }}</h2>
+                <button class="btn btn-secondary" onclick="getProfile()">🔄 {{ translations.get('update_profile', 'Update Profile') }}</button>
                 
                 <div id="profileInfo" class="user-info"></div>
                 
                 <!-- تغيير اللغة -->
                 <div class="language-change-section">
-                    <h3>🌐 {{ translations.get('change_language', 'Change Language')}}</h3>
+                    <h3>🌐 {{ translations.get('change_language', 'Change Language') }}</h3>
                     <div class="form-group">
-                        <label for="profileLanguage">{{ translations.get('select_language', 'Select Language')}}</label>
+                        <label for="profileLanguage">{{ translations.get('select_language', 'Select Language') }}</label>
                         <select id="profileLanguage">
                             {% for code, info in languages.items() %}
-                            <option value="{{ code}}" {% if code == lang %}selected{% endif %}>
-                                {{ info.flag}}} {{ info.name}}
+                            <option value="{{ code }}" {% if code == lang %}selected{% endif %}>
+                                {{ info.flag }} {{ info.name }}
                             </option>
                             {% endfor %}
                         </select>
                     </div>
-                    <button class="btn btn-success" onclick="changeUserLanguage()">{{ translations.get('change_language', 'Change Language')}}</button>
+                    <button class="btn btn-success" onclick="changeUserLanguage()">{{ translations.get('change_language', 'Change Language') }}</button>
                     <div id="languageMessage" class="message"></div>
                 </div>
                 
                 <!-- ربط حسابات اجتماعية إضافية -->
                 <div class="link-social-section">
-                    <h3>🔗 {{ translations.get('link_additional_social', 'Link Additional Social Accounts')}}</h3>
+                    <h3>🔗 {{ translations.get('link_additional_social', 'Link Additional Social Accounts') }}</h3>
                     <div class="form-group">
-                        <label for="linkPlatform">{{ translations.get('platform', 'Platform')}}</label>
+                        <label for="linkPlatform">{{ translations.get('platform', 'Platform') }}</label>
                         <select id="linkPlatform">
-                            <option value="">{{ translations.get('choose_platform', 'Choose Platform')}}</option>
-                            <option value="google">{{ translations.get('google', 'Google')}}</option>
-                            <option value="twitter">{{ translations.get('twitter', 'Twitter')}}</option>
-                            <option value="facebook">{{ translations.get('facebook', 'Facebook')}}</option>
-                            <option value="instagram">{{ translations.get('instagram', 'Instagram')}}</option>
-                            <option value="github">{{ translations.get('github', 'GitHub')}}</option>
+                            <option value="">{{ translations.get('choose_platform', 'Choose Platform') }}</option>
+                            <option value="google">{{ translations.get('google', 'Google') }}</option>
+                            <option value="twitter">{{ translations.get('twitter', 'Twitter') }}</option>
+                            <option value="facebook">{{ translations.get('facebook', 'Facebook') }}</option>
+                            <option value="instagram">{{ translations.get('instagram', 'Instagram') }}</option>
+                            <option value="github">{{ translations.get('github', 'GitHub') }}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="linkSocialId">{{ translations.get('social_id', 'Social ID')}}}</label>
-                        <input type="text" id="linkSocialId" placeholder="{{ translations.get('enter_social_id', 'Enter your ID on the platform')}}">
+                        <label for="linkSocialId">{{ translations.get('social_id', 'Social ID') }}</label>
+                        <input type="text" id="linkSocialId" placeholder="{{ translations.get('enter_social_id', 'Enter your ID on the platform') }}">
                     </div>
-                    <button class="btn btn-success" onclick="linkSocialAccount()">{{ translations.get('link_account', 'Link Account')}}</button>
+                    <button class="btn btn-success" onclick="linkSocialAccount()">{{ translations.get('link_account', 'Link Account') }}</button>
                     <div id="linkMessage" class="message"></div>
                 </div>
             </div>
             
             <!-- الحسابات الاجتماعية -->
             <div id="social" class="tab-content">
-                <h2>{{ translations.get('manage_accounts', 'Manage Accounts')}}</h2>
+                <h2>{{ translations.get('manage_accounts', 'Manage Accounts') }}</h2>
                 
                 <div class="social-connect">
-                    <h3>🔗 {{ translations.get('connect_new_account', 'Connect New Account')}}</h3>
+                    <h3>🔗 {{ translations.get('connect_new_account', 'Connect New Account') }}</h3>
                     <div class="form-group">
-                        <label for="socialPlatform">{{ translations.get('platform', 'Platform')}}</label>
+                        <label for="socialPlatform">{{ translations.get('platform', 'Platform') }}</label>
                         <select id="socialPlatform">
-                            <option value="">{{ translations.get('choose_platform', 'Choose Platform')}}</option>
-                            <option value="twitter">{{ translations.get('twitter', 'Twitter')}}</option>
-                            <option value="facebook">{{ translations.get('facebook', 'Facebook')}}</option>
-                            <option value="instagram">{{ translations.get('instagram', 'Instagram')}}</option>
-                            <option value="linkedin">{{ translations.get('linkedin', 'LinkedIn')}}</option>
+                            <option value="">{{ translations.get('choose_platform', 'Choose Platform') }}</option>
+                            <option value="twitter">{{ translations.get('twitter', 'Twitter') }}</option>
+                            <option value="facebook">{{ translations.get('facebook', 'Facebook') }}</option>
+                            <option value="instagram">{{ translations.get('instagram', 'Instagram') }}</option>
+                            <option value="linkedin">{{ translations.get('linkedin', 'LinkedIn') }}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="socialUsername">{{ translations.get('social_username', 'Username on platform')}}</label>
-                        <input type="text" id="socialUsername" placeholder="{{ translations.get('enter_username', 'Enter username')}}">
+                        <label for="socialUsername">{{ translations.get('social_username', 'Username on platform') }}</label>
+                        <input type="text" id="socialUsername" placeholder="{{ translations.get('enter_username', 'Enter username') }}">
                     </div>
                     <div class="form-group">
-                        <label for="socialToken">{{ translations.get('access_token', 'Access Token')}}</label>
-                        <input type="text" id="socialToken" placeholder="{{ translations.get('enter_access_token', 'Enter access token')}}}">
+                        <label for="socialToken">{{ translations.get('access_token', 'Access Token') }}</label>
+                        <input type="text" id="socialToken" placeholder="{{ translations.get('enter_access_token', 'Enter access token') }}">
                     </div>
-                    <button class="btn btn-success" onclick="connectSocialAccount()">{{ translations.get('connect_account', 'Connect Account')}}}</button>
+                    <button class="btn btn-success" onclick="connectSocialAccount()">{{ translations.get('connect_account', 'Connect Account') }}</button>
                 </div>
                 
                 <div class="accounts-list">
-                    <h3>{{ translations.get('connected_accounts', 'Connected Accounts')}}}</h3>
-                    <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 {{ translations.get('refresh_list', 'Refresh List')}}}</button>
+                    <h3>{{ translations.get('connected_accounts', 'Connected Accounts') }}</h3>
+                    <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 {{ translations.get('refresh_list', 'Refresh List') }}</button>
                     <div id="accountsList" class="accounts-container"></div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>{{ translations.get('version', 'Version')}} 2.2 - {{ translations.get('multi_language_system', 'Multi-language System')}}</p>
+            <p>{{ translations.get('version', 'Version') }} 2.2 - {{ translations.get('multi_language_system', 'Multi-language System') }}</p>
         </div>
     </div>
 
     <!-- تمرير المتغيرات من Flask إلى JavaScript -->
     <script>
-        const CURRENT_LANG = '{{ lang}}';
-        const LANGUAGES = {{ languages | tojson}};
-        const TRANSLATIONS = {{ translations | tojson}};
+        const CURRENT_LANG = '{{ lang }}';
+        const LANGUAGES = {{ languages | tojson }};
+        const TRANSLATIONS = {{ translations | tojson }};
     </script>
 
-    <script src="{{ url_for('static', filename='js/app.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
