@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body class="loading">
+    
     <script>
         document.documentElement.dir = '{{ text_direction }}';
         document.documentElement.lang = '{{ lang }}';
@@ -38,6 +39,26 @@
             document.body.classList.add('loaded');
         });
     </script>
+
+    <!-- 🔥 القائمة العلوية المضافة -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{{ url_for('index') }}">🚀 {{ translations.get('social_media_platform', 'Social Media Platform') }}</a>
+            </div>
+            <div class="nav-menu">
+                <a href="{{ url_for('index') }}" class="nav-link">{{ translations.get('home', 'Home') }}</a>
+                <a href="{{ url_for('login') }}" class="nav-link active">{{ translations.get('login', 'Login') }}</a>
+                <a href="{{ url_for('profile') if 'profile' in url_for.__code__.co_varnames else '#' }}" class="nav-link">{{ translations.get('profile', 'Profile') }}</a>
+                <a href="{{ url_for('dashboard') if 'dashboard' in url_for.__code__.co_varnames else '#' }}" class="nav-link">{{ translations.get('dashboard', 'Dashboard') }}</a>
+                <div class="nav-user">
+                    <span class="user-greeting">{{ translations.get('welcome', 'Welcome') }}</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- أضف هذا 
 
     <div class="container">
         <!-- شريط اللغة -->
