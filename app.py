@@ -151,6 +151,11 @@ def hash_password(password):
 def generate_session_id():
     return str(uuid.uuid4())
 
+def get_language_direction(lang):
+    """الحصول على اتجاه اللغة من نظام الترجمات"""
+    from translations import get_language_direction as get_dir
+    return get_dir(lang)
+
 def get_current_user(session_id):
     user_id = sessions.get(session_id)
     return users_db.get(user_id) if user_id else None
@@ -174,12 +179,17 @@ def find_user_by_email(email):
 # المسارات الأساسية
 @app.route('/')
 def home():
-    """الصفحة الرئيسية مع دعم اللغات"""
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
         lang = 'en'
+                    
+         # الحصول على اتجاه اللغة من النظام المركزي
+    from translations import get_language_direction
+    text_direction = get_language_direction(lang)
+                                    
     return render_template('index.html', 
         lang=lang,
+        text_direction=text_direction,
         languages=SUPPORTED_LANGUAGES,
         translations=TRANSLATIONS.get(lang, {}))
 
