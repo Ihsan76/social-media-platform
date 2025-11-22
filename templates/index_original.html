@@ -4,9 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</title>
+    
+    <!-- تطبيق اتجاه الصفحة فوراً في الـhead -->
+    <style>
+        /* تطبيق الاتجاه فوراً قبل تحميل CSS */
+        html[dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        html[dir="ltr"] {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        /* منع الوميض المؤقت */
+        body {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.loaded {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="loading">
+    <!-- إضافة سكريبت فوري لتطبيق الاتجاه -->
+    <script>
+        // تطبيق الاتجاه فوراً قبل تحميل أي شيء
+        document.documentElement.dir = '{{ languages[lang].dir }}';
+        document.documentElement.lang = '{{ lang }}';
+        
+        // إظهار الصفحة بعد التحميل
+        window.addEventListener('load', function() {
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+        });
+    </script>
+
     <div class="container">
         <!-- شريط اللغة -->
         <div class="language-bar">
@@ -27,7 +65,7 @@
 
         <div class="header">
             <h1>🚀 {{ translations.get('social_media_platform', 'Social Media Platform') }} - {{ translations.get('version', 'Version') }} 2.2</h1>
-            <p>{{ translations.get('multi_language_system', 'Multi-language System') }}</p>
+            <p>{{ translations.get('login_with_email_social', 'Login with your email or social accounts') }}</p>
             <div class="status-badge" id="systemStatus">{{ translations.get('checking_system', 'Checking system...') }}</div>
         </div>
         
@@ -85,7 +123,7 @@
                             {{ translations.get('register_google', 'Register with Google') }}
                         </button>
                         <button class="btn-social btn-twitter" onclick="socialLogin('twitter')">
-                            <span class="social-icon">��</span>
+                            <span class="social-icon">🐦</span>
                             {{ translations.get('register_twitter', 'Register with Twitter') }}
                         </button>
                         <button class="btn-social btn-facebook" onclick="socialLogin('facebook')">
@@ -100,6 +138,22 @@
                             <span class="social-icon">💻</span>
                             {{ translations.get('register_github', 'Register with GitHub') }}
                         </button>
+                    </div>
+                    
+                    <!-- محاكاة بيانات التسجيل الاجتماعي -->
+                    <div class="social-mock-data">
+                        <h4>{{ translations.get('test_data', 'Test Data for Demonstration') }}:</h4>
+                        <div class="mock-accounts">
+                            <div class="mock-account" onclick="fillMockData('google')">
+                                <strong>Google:</strong> google_user_123456
+                            </div>
+                            <div class="mock-account" onclick="fillMockData('twitter')">
+                                <strong>Twitter:</strong> twitter_user_789012
+                            </div>
+                            <div class="mock-account" onclick="fillMockData('facebook')">
+                                <strong>Facebook:</strong> fb_user_345678
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -122,6 +176,17 @@
                         <input type="password" id="loginPassword" placeholder="{{ translations.get('enter_password', 'Enter password') }}">
                     </div>
                     <button class="btn btn-primary" onclick="loginWithEmail()">{{ translations.get('login', 'Login') }}</button>
+                    
+                    <!-- بيانات تجريبية -->
+                    <div class="demo-accounts">
+                        <h4>{{ translations.get('demo_accounts', 'Demo Accounts') }}:</h4>
+                        <div class="demo-account" onclick="fillDemoAccount('user1')">
+                            <strong>user1@demo.com</strong> - password: 123456
+                        </div>
+                        <div class="demo-account" onclick="fillDemoAccount('user2')">
+                            <strong>user2@demo.com</strong> - password: 123456
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- أو -->
@@ -164,7 +229,30 @@
                 <h2>{{ translations.get('profile', 'Profile') }}</h2>
                 <button class="btn btn-secondary" onclick="getProfile()">🔄 {{ translations.get('update_profile', 'Update Profile') }}</button>
                 
-                <div id="profileInfo" class="user-info"></div>
+                <div id="profileInfo" class="user-info">
+                    <div class="profile-placeholder">
+                        <p>{{ translations.get('please_login', 'Please login to view your profile') }}</p>
+                    </div>
+                </div>
+                
+                <!-- إحصائيات المستخدم -->
+                <div class="user-stats" id="userStats" style="display: none;">
+                    <h3>📊 {{ translations.get('user_statistics', 'User Statistics') }}</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="socialAccountsCount">0</div>
+                            <div class="stat-label">{{ translations.get('social_accounts', 'Social Accounts') }}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalFollowers">0</div>
+                            <div class="stat-label">{{ translations.get('total_followers', 'Total Followers') }}</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalPosts">0</div>
+                            <div class="stat-label">{{ translations.get('total_posts', 'Total Posts') }}</div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- تغيير اللغة -->
                 <div class="language-change-section">
@@ -236,7 +324,9 @@
                 <div class="accounts-list">
                     <h3>{{ translations.get('connected_accounts', 'Connected Accounts') }}</h3>
                     <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 {{ translations.get('refresh_list', 'Refresh List') }}</button>
-                    <div id="accountsList" class="accounts-container"></div>
+                    <div id="accountsList" class="accounts-container">
+                        <p class="no-accounts">{{ translations.get('no_accounts', 'No accounts connected yet') }}</p>
+                    </div>
                 </div>
             </div>
         </div>
