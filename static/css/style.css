@@ -1,4 +1,4 @@
-/* الأنماط الأساسية السابقة تبقى كما هي */
+/* الأنماط الأساسية */
 * {
     margin: 0;
     padding: 0;
@@ -18,6 +18,85 @@ body {
     margin: 0 auto;
 }
 
+/* شريط اللغة */
+.language-bar {
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.language-selector {
+    display: inline-block;
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 8px 20px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.current-language {
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.language-selector:hover .language-dropdown {
+    display: block;
+}
+
+.lang-btn {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.lang-btn:hover {
+    background: #f8f9fa;
+}
+
+.lang-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+/* اتجاه RTL للعربية */
+[dir="rtl"] .lang-btn {
+    text-align: right;
+}
+
+[dir="rtl"] .language-dropdown {
+    left: auto;
+    right: 0;
+}
+
+/* بقية الأنماط تبقى كما هي مع إضافة دعم RTL/LTR */
 .header {
     text-align: center;
     color: white;
@@ -64,6 +143,10 @@ body {
     flex-wrap: wrap;
 }
 
+[dir="rtl"] .tabs {
+    flex-direction: row-reverse;
+}
+
 .tab {
     padding: 15px 30px;
     cursor: pointer;
@@ -94,6 +177,20 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* دعم RTL للنماذج */
+[dir="rtl"] .form-group label {
+    text-align: right;
+}
+
+[dir="rtl"] .form-group input,
+[dir="rtl"] .form-group select {
+    text-align: right;
+}
+
+[dir="rtl"] .btn {
+    text-align: center;
 }
 
 /* الأنماط الجديدة للمصادقة الاجتماعية */
@@ -155,6 +252,10 @@ body {
     background: white;
 }
 
+[dir="rtl"] .btn-social {
+    flex-direction: row-reverse;
+}
+
 .btn-social:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -214,6 +315,7 @@ body {
     font-size: 1.2em;
 }
 
+.language-change-section,
 .link-social-section {
     background: #f8f9fa;
     padding: 20px;
@@ -295,6 +397,15 @@ body {
     to { opacity: 1; transform: translateX(0); }
 }
 
+[dir="rtl"] .message {
+    animation: slideInRTL 0.3s ease;
+}
+
+@keyframes slideInRTL {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
 .success {
     background: #d4edda;
     color: #155724;
@@ -336,6 +447,10 @@ body {
     gap: 15px;
 }
 
+[dir="rtl"] .account-card {
+    flex-direction: row-reverse;
+}
+
 .account-platform {
     font-weight: bold;
     color: #667eea;
@@ -369,6 +484,10 @@ body {
         flex-direction: column;
     }
     
+    [dir="rtl"] .tabs {
+        flex-direction: column;
+    }
+    
     .tab {
         text-align: center;
         border-bottom: 1px solid #eee;
@@ -380,11 +499,20 @@ body {
         border-bottom-color: #eee;
     }
     
+    [dir="rtl"] .tab.active {
+        border-left-color: transparent;
+        border-right-color: #667eea;
+    }
+    
     .dashboard {
         padding: 20px;
     }
     
     .social-buttons {
         grid-template-columns: 1fr;
+    }
+    
+    .language-selector {
+        width: 100%;
     }
 }
