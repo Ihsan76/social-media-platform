@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
+
 import os
 import json
 import hashlib
 import uuid
 from datetime import datetime
 from flask import Flask, request, Response, render_template
-
-# أضف هذا بعد استيرادات Flask
-TRANSLATIONS = {
-    'ar': load_translations('ar'),
-        'en': load_translations('en'), 
-            'fr': load_translations('fr')
-            }
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -24,6 +18,22 @@ social_accounts_db = {}
 # استيراد نظام اللغات
 from translations import get_translation, get_supported_languages, SUPPORTED_LANGUAGES
 
+# دالة تحميل الترجمات - يجب تعريفها قبل استخدامها
+def load_translations(lang='en'):
+    """دالة تحميل الترجمة"""
+    try:
+        with open(f'translations/{lang}.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        return {"error": str(e)}
+
+# الآن يمكننا تعريف TRANSLATIONS بعد تعريف الدالة
+TRANSLATIONS = {
+    'ar': load_translations('ar'),
+    'en': load_translations('en'), 
+    'fr': load_translations('fr')
+}
+
 def get_user_language(request):
     """الحصول على لغة المستخدم المفضلة"""
     # أولاً: التحقق من الجلسة
@@ -33,14 +43,14 @@ def get_user_language(request):
         user = users_db.get(user_id)
         if user and user.preferences.get('language'):
             return user.preferences['language']
-    
+
     # ثانياً: التحقق من header الطلب
     accept_language = request.headers.get('Accept-Language', '')
     if 'ar' in accept_language:
         return 'ar'
     elif 'fr' in accept_language:
         return 'fr'
-    
+
     # ثالثاً: الافتراضي للإنجليزية
     return 'en'
 
@@ -91,7 +101,7 @@ class User:
         }
         self.social_logins = []
         self.is_active = True
-    
+
     def to_dict(self, lang='en'):
         """تحويل الكائن إلى قاموس مع الترجمات"""
         return {
@@ -105,7 +115,7 @@ class User:
             "is_active": self.is_active,
             "language": self.preferences.get('language', 'en')
         }
-    
+
     def add_social_login(self, platform, social_id):
         """إضافة طريقة تسجيل دخول اجتماعية"""
         self.social_logins.append({
@@ -123,7 +133,7 @@ class SocialAccount:
         self.user_id = user_id
         self.connected_at = datetime.utcnow()
         self.stats = {"followers": 0, "posts": 0, "engagement": 0.0}
-    
+
     def to_dict(self, lang='en'):
         """تحويل الكائن إلى قاموس مع الترجمات"""
         return {
@@ -168,11 +178,10 @@ def home():
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
         lang = 'en'
-    
     return render_template('index.html', 
-                         lang=lang,
-                         languages=SUPPORTED_LANGUAGES,
-                         translations=TRANSLATIONS.get(lang, {}))
+        lang=lang,
+        languages=SUPPORTED_LANGUAGES,
+        translations=TRANSLATIONS.get(lang, {}))
 
 @app.route('/api/')
 def api_home():
@@ -209,23 +218,23 @@ def register():
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, lang)
-        
+
         username = data.get('username', '').strip()
         email = data.get('email', '').strip().lower()
         password = data.get('password', '').strip()
         preferred_lang = data.get('language', 'en')
-        
+
         if not all([username, email, password]):
             return error_response('all_fields_required', 400, lang)
-        
+
         if len(password) < 6:
             return error_response('password_min_length', 400, lang)
-        
+
         # التحقق من وجود المستخدم
         existing_user = find_user_by_email(email)
         if existing_user:
             return error_response('email_exists', 400, lang)
-        
+
         # إنشاء مستخدم جديد
         user_id = str(uuid.uuid4())
         new_user = User(
@@ -236,13 +245,12 @@ def register():
             auth_method='email'
         )
         new_user.preferences['language'] = preferred_lang if preferred_lang in SUPPORTED_LANGUAGES else 'en'
-        
         users_db[user_id] = new_user
-        
+
         # إنشاء جلسة
         session_id = generate_session_id()
         sessions[session_id] = user_id
-        
+
         return success_response(
             'account_created',
             {
@@ -252,7 +260,7 @@ def register():
             201,
             preferred_lang
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -265,27 +273,26 @@ def login():
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, lang)
-        
+
         email = data.get('email', '').strip().lower()
         password = data.get('password', '').strip()
-        
+
         if not all([email, password]):
             return error_response('all_fields_required', 400, lang)
-        
+
         # البحث عن المستخدم
         user = find_user_by_email(email)
         if not user or user.password_hash != hash_password(password):
             return error_response('invalid_credentials', 401, lang)
-        
+
         if not user.is_active:
             return error_response('unauthorized', 403, lang)
-        
+
         # إنشاء جلسة
         session_id = generate_session_id()
         sessions[session_id] = user.user_id
-        
+
         user_lang = user.preferences.get('language', 'en')
-        
         return success_response(
             'login_success',
             {
@@ -295,7 +302,7 @@ def login():
             200,
             user_lang
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -308,30 +315,28 @@ def social_login():
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, lang)
-        
+
         platform = data.get('platform', '').strip().lower()
         social_id = data.get('social_id', '').strip()
         email = data.get('email', '').strip().lower()
         username = data.get('username', '').strip()
         preferred_lang = data.get('language', 'en')
-        
+
         if not all([platform, social_id]):
             return error_response('all_fields_required', 400, lang)
-        
+
         supported_platforms = ['google', 'twitter', 'facebook', 'instagram', 'github']
         if platform not in supported_platforms:
             return error_response('platform_not_supported', 400, lang)
-        
+
         # البحث عن مستخدم موجود بنفس الحساب الاجتماعي
         existing_user = find_user_by_social_login(platform, social_id)
-        
         if existing_user:
             # تسجيل دخول مستخدم موجود
             session_id = generate_session_id()
             sessions[session_id] = existing_user.user_id
-            
+
             user_lang = existing_user.preferences.get('language', 'en')
-            
             return success_response(
                 'login_success',
                 {
@@ -345,15 +350,13 @@ def social_login():
         else:
             # إنشاء حساب جديد
             user_id = str(uuid.uuid4())
-            
             # إذا لم يتم提供 بريد إلكتروني، إنشاء بريد افتراضي
             if not email:
                 email = f"{social_id}@{platform}.social"
-            
             # إذا لم يتم提供 اسم مستخدم، إنشاء اسم افتراضي
             if not username:
                 username = f"{platform}_user_{social_id[:8]}"
-            
+
             new_user = User(
                 user_id=user_id,
                 username=username,
@@ -361,16 +364,14 @@ def social_login():
                 auth_method=platform
             )
             new_user.preferences['language'] = preferred_lang if preferred_lang in SUPPORTED_LANGUAGES else 'en'
-            
             # إضافة طريقة التسجيل الاجتماعي
             new_user.add_social_login(platform, social_id)
-            
             users_db[user_id] = new_user
-            
+
             # إنشاء جلسة
             session_id = generate_session_id()
             sessions[session_id] = user_id
-            
+
             return success_response(
                 'account_created',
                 {
@@ -381,7 +382,7 @@ def social_login():
                 201,
                 preferred_lang
             )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -392,21 +393,20 @@ def change_language():
     try:
         session_id = request.headers.get('Authorization', '').replace('Bearer ', '')
         user = get_current_user(session_id)
-        
         if not user:
             return error_response('unauthorized', 401, 'en')
-        
+
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, user.preferences.get('language', 'en'))
-        
+
         new_language = data.get('language', '').strip()
         if new_language not in SUPPORTED_LANGUAGES:
             return error_response('platform_not_supported', 400, user.preferences.get('language', 'en'))
-        
+
         # تحديث لغة المستخدم
         user.preferences['language'] = new_language
-        
+
         return success_response(
             'profile_loaded',
             {
@@ -417,7 +417,7 @@ def change_language():
             200,
             new_language
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -428,36 +428,35 @@ def link_social_account():
     try:
         session_id = request.headers.get('Authorization', '').replace('Bearer ', '')
         user = get_current_user(session_id)
-        
         if not user:
             return error_response('unauthorized', 401, 'en')
-        
+
         lang = user.preferences.get('language', 'en')
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, lang)
-        
+
         platform = data.get('platform', '').strip().lower()
         social_id = data.get('social_id', '').strip()
-        
+
         if not all([platform, social_id]):
             return error_response('all_fields_required', 400, lang)
-        
+
         # التحقق إذا كان الحساب الاجتماعي مستخدماً مسبقاً
         existing_user = find_user_by_social_login(platform, social_id)
         if existing_user and existing_user.user_id != user.user_id:
             return error_response('email_exists', 400, lang)
-        
+
         # إضافة طريقة التسجيل الاجتماعي
         user.add_social_login(platform, social_id)
-        
+
         return success_response(
             'social_connected',
             {"user": user.to_dict(lang)},
             200,
             lang
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -466,12 +465,10 @@ def link_social_account():
 def get_profile():
     session_id = request.headers.get('Authorization', '').replace('Bearer ', '')
     user = get_current_user(session_id)
-    
     if not user:
         return error_response('unauthorized', 401, 'en')
-    
+
     lang = user.preferences.get('language', 'en')
-    
     return success_response('profile_loaded', {"user": user.to_dict(lang)}, 200, lang)
 
 # الحسابات الاجتماعية (لإدارة المحتوى)
@@ -480,38 +477,37 @@ def connect_social_account():
     try:
         session_id = request.headers.get('Authorization', '').replace('Bearer ', '')
         user = get_current_user(session_id)
-        
         if not user:
             return error_response('unauthorized', 401, 'en')
-        
+
         lang = user.preferences.get('language', 'en')
         data = request.get_json()
         if not data:
             return error_response('all_fields_required', 400, lang)
-        
+
         platform = data.get('platform', '').strip().lower()
         username = data.get('username', '').strip()
         access_token = data.get('access_token', '').strip()
-        
+
         if not all([platform, username, access_token]):
             return error_response('all_fields_required', 400, lang)
-        
+
         supported_platforms = ['twitter', 'facebook', 'instagram', 'linkedin']
         if platform not in supported_platforms:
             return error_response('platform_not_supported', 400, lang)
-        
+
         # إنشاء حساب اجتماعي
         account_id = str(uuid.uuid4())
         social_account = SocialAccount(account_id, platform, username, access_token, user.user_id)
         social_accounts_db[account_id] = social_account
-        
+
         return success_response(
             'social_connected',
             {"account": social_account.to_dict(lang)},
             201,
             lang
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
@@ -521,16 +517,14 @@ def get_social_accounts():
     try:
         session_id = request.headers.get('Authorization', '').replace('Bearer ', '')
         user = get_current_user(session_id)
-        
         if not user:
             return error_response('unauthorized', 401, 'en')
-        
+
         lang = user.preferences.get('language', 'en')
-        
         # الحصول على حسابات المستخدم
         user_accounts = [acc for acc in social_accounts_db.values() if acc.user_id == user.user_id]
         accounts_data = [account.to_dict(lang) for account in user_accounts]
-        
+
         return success_response(
             'profile_loaded',
             {
@@ -540,7 +534,7 @@ def get_social_accounts():
             200,
             lang
         )
-    
+
     except Exception as e:
         lang = get_user_language(request)
         return error_response('server_error', 500, lang)
