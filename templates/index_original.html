@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ lang }}" dir="{{ languages[lang].dir }}">
+<html lang="{{ lang }}" dir="{{ text_direction }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
     <!-- إضافة سكريبت فوري لتطبيق الاتجاه -->
     <script>
         // تطبيق الاتجاه فوراً قبل تحميل أي شيء
-        document.documentElement.dir = '{{ languages[lang].dir }}';
+        document.documentElement.dir = '{{ text_direction }}';
         document.documentElement.lang = '{{ lang }}';
         
         // إظهار الصفحة بعد التحميل
@@ -339,6 +339,7 @@
     <!-- تمرير المتغيرات من Flask إلى JavaScript -->
     <script>
         const CURRENT_LANG = '{{ lang }}';
+        const TEXT_DIRECTION = '{{ text_direction }}';
         const LANGUAGES = {{ languages | tojson }};
         const TRANSLATIONS = {{ translations | tojson }};
     </script>
