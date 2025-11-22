@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إدارة الوسائط الاجتماعية - الإصدار 2.0</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 منصة إدارة الوسائط الاجتماعية - الإصدار 2.0</h1>
+            <p>نظام متكامل ومهني لإدارة جميع حساباتك الاجتماعية من مكان واحد</p>
+            <div class="status-badge" id="systemStatus">جاري التحقق...</div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('register')">إنشاء حساب</div>
+                <div class="tab" onclick="switchTab('login')">تسجيل الدخول</div>
+                <div class="tab" onclick="switchTab('profile')">الملف الشخصي</div>
+                <div class="tab" onclick="switchTab('social')">الحسابات الاجتماعية</div>
+            </div>
+            
+            <!-- تسجيل جديد -->
+            <div id="register" class="tab-content active">
+                <h2>إنشاء حساب جديد</h2>
+                <div class="form-group">
+                    <label for="regUsername">اسم المستخدم</label>
+                    <input type="text" id="regUsername" placeholder="أدخل اسم المستخدم">
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">البريد الإلكتروني</label>
+                    <input type="email" id="regEmail" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">كلمة المرور</label>
+                    <input type="password" id="regPassword" placeholder="أدخل كلمة المرور (6 أحرف على الأقل)">
+                </div>
+                <button class="btn btn-primary" onclick="register()">إنشاء الحساب</button>
+                <div id="registerMessage" class="message"></div>
+            </div>
+            
+            <!-- تسجيل الدخول -->
+            <div id="login" class="tab-content">
+                <h2>تسجيل الدخول</h2>
+                <div class="form-group">
+                    <label for="loginEmail">البريد الإلكتروني</label>
+                    <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">كلمة المرور</label>
+                    <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                </div>
+                <button class="btn btn-primary" onclick="login()">تسجيل الدخول</button>
+                <div id="loginMessage" class="message"></div>
+            </div>
+            
+            <!-- الملف الشخصي -->
+            <div id="profile" class="tab-content">
+                <h2>الملف الشخصي</h2>
+                <button class="btn btn-secondary" onclick="getProfile()">🔄 تحميل الملف الشخصي</button>
+                <div id="profileInfo" class="user-info"></div>
+            </div>
+            
+            <!-- الحسابات الاجتماعية -->
+            <div id="social" class="tab-content">
+                <h2>إدارة الحسابات الاجتماعية</h2>
+                
+                <div class="social-connect">
+                    <h3>ربط حساب جديد</h3>
+                    <div class="form-group">
+                        <label for="socialPlatform">المنصة</label>
+                        <select id="socialPlatform">
+                            <option value="">اختر المنصة</option>
+                            <option value="twitter">تويتر (X)</option>
+                            <option value="facebook">فيسبوك</option>
+                            <option value="instagram">إنستغرام</option>
+                            <option value="linkedin">لينكدإن</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="socialUsername">اسم المستخدم</label>
+                        <input type="text" id="socialUsername" placeholder="اسم المستخدم في المنصة">
+                    </div>
+                    <div class="form-group">
+                        <label for="socialToken">رمز الوصول</label>
+                        <input type="text" id="socialToken" placeholder="أدخل رمز الوصول (للتجربة فقط)">
+                    </div>
+                    <button class="btn btn-success" onclick="connectSocialAccount()">ربط الحساب</button>
+                </div>
+                
+                <div class="accounts-list">
+                    <h3>الحسابات المربوطة</h3>
+                    <button class="btn btn-secondary" onclick="loadSocialAccounts()">🔄 تحديث القائمة</button>
+                    <div id="accountsList" class="accounts-container"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>الإصدار 2.0 - نظام مهني متكامل</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
