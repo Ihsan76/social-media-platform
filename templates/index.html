@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="loading">
+<body class="loading landing-layout">
     <script>
         document.documentElement.dir = '{{ text_direction }}';
         document.documentElement.lang = '{{ lang }}';
@@ -24,7 +24,7 @@
     <header class="main-header">
         <div class="container">
             <nav class="main-nav">
-                <!-- الشعار فقط ثابت -->
+                <!-- الشعار -->
                 <div class="logo">
                     <div class="logo-icon">
                         <i class="fas fa-paper-plane"></i>
@@ -32,7 +32,7 @@
                     <span>نشرتي</span>
                 </div>
 
-                <!-- القائمة العلوية الثابتة -->
+                <!-- القائمة العلوية -->
                 <div class="nav-links">
                     <a href="#features" class="nav-link">
                         {{ get_translation('landing.nav.features', 'المميزات') }}
@@ -76,30 +76,13 @@
         </div>
     </header>
 
-    <!-- باقي محتوى index.html يبقى كما هو -->
-    <!-- القسم البطولي -->
-    <section class="hero-section">
-        <!-- ... محتوى الهيرو ... -->
-    </section>
-
-    <!-- قسم المميزات -->
-    <section id="features" class="features-section">
-        <!-- ... محتوى المميزات ... -->
-    </section>
-
-    <!-- ... باقي الأقسام ... -->
-
-</body>
-</html>
-
-
-
-
-
-
-
-    <!-- القسم البطولي -->
-    <section class="hero-section">
+    <!-- المحتوى الرئيسي -->
+    <main class="content-wrapper">
+        <!-- القسم البطولي -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <!-- محتوى الهيرو الحالي -->
         <div class="floating-shapes">
             <div class="shape" style="top: 10%; left: 10%; width: 100px; height: 100px; background: var(--white); border-radius: 50%;"></div>
             <div class="shape" style="top: 60%; right: 15%; width: 150px; height: 150px; background: var(--white); border-radius: 30%;"></div>
@@ -143,9 +126,11 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- قسم المميزات -->
+    
+                </div>
+            </div>
+        </section>
+  <!-- قسم المميزات -->
     <section id="features" class="features-section">
         <div class="container">
             <div class="text-center mb-8">
@@ -494,6 +479,52 @@
             </div>
         </div>
     </footer>
+  
+        </main>
+
+    <script>
+        // نظام القفز السلس المحسن
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            const headerHeight = 80;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // إدارة حالة القائمة النشطة
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+            
+            function setActiveLink() {
+                let current = '';
+                const headerHeight = 80;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - headerHeight;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+        });
+    </script>
+
     <script>
         function changeLanguage(lang) {
             window.location.href = `/?lang=${lang}`;
