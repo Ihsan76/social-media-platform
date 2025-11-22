@@ -22,7 +22,6 @@ class SocialMediaManager {
     }
 
     applyLanguageDirection() {
-        // تطبيق اتجاه الصفحة بناءً على اللغة
         const direction = this.languages[this.currentLang]?.dir || 'ltr';
         document.documentElement.dir = direction;
     }
@@ -38,17 +37,14 @@ class SocialMediaManager {
     }
 
     addEnterKeyListeners() {
-        // التسجيل
         document.getElementById('regPassword')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.registerWithEmail();
         });
 
-        // تسجيل الدخول
         document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.loginWithEmail();
         });
 
-        // ربط الحسابات
         document.getElementById('linkSocialId')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.linkSocialAccount();
         });
@@ -56,6 +52,32 @@ class SocialMediaManager {
         document.getElementById('socialToken')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.connectSocialAccount();
         });
+    }
+
+    // وظائف جديدة للبيانات التوضيحية
+    fillMockData(platform) {
+        const mockData = {
+            'google': 'google_user_123456',
+            'twitter': 'twitter_user_789012', 
+            'facebook': 'fb_user_345678'
+        };
+        
+        // محاكاة تسجيل الدخول الاجتماعي
+        this.socialLogin(platform);
+    }
+
+    fillDemoAccount(type) {
+        const accounts = {
+            'user1': { email: 'user1@demo.com', password: '123456' },
+            'user2': { email: 'user2@demo.com', password: '123456' }
+        };
+        
+        const account = accounts[type];
+        if (account) {
+            document.getElementById('loginEmail').value = account.email;
+            document.getElementById('loginPassword').value = account.password;
+            this.showMessage('loginMessage', `Demo account filled: ${account.email}`, 'success');
+        }
     }
 
     async checkSystemStatus() {
@@ -78,7 +100,6 @@ class SocialMediaManager {
     }
 
     t(key) {
-        // دالة الترجمة
         return this.translations[key] || key;
     }
 
@@ -113,34 +134,7 @@ class SocialMediaManager {
         }
     }
 
-    // تغيير لغة الواجهة
-    changeLanguage(lang) {
-        window.location.href = `/?lang=${lang}`;
-    }
-
-    // تغيير لغة المستخدم
-    async changeUserLanguage() {
-        const newLanguage = document.getElementById('profileLanguage').value;
-
-        const result = await this.apiCall('/auth/change-language', {
-            method: 'POST',
-            body: JSON.stringify({ language: newLanguage })
-        });
-
-        if (result.success) {
-            this.showMessage('languageMessage', this.t('profile_loaded'), 'success');
-            this.currentLang = newLanguage;
-            this.translations = result.data.translations || this.translations;
-            // إعادة تحميل الصفحة لتطبيق اللغة الجديدة
-            setTimeout(() => {
-                this.changeLanguage(newLanguage);
-            }, 1000);
-        } else {
-            this.showMessage('languageMessage', result.data.error, 'error');
-        }
-    }
-
-    // التسجيل بالبريد الإلكتروني
+    // وظائف المصادقة (تبقى كما هي)
     async registerWithEmail() {
         const username = document.getElementById('regUsername').value;
         const email = document.getElementById('regEmail').value;
@@ -165,7 +159,6 @@ class SocialMediaManager {
         this.handleAuthResponse(result, 'registerMessage', 'profile');
     }
 
-    // تسجيل الدخول بالبريد الإلكتروني
     async loginWithEmail() {
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
@@ -183,7 +176,6 @@ class SocialMediaManager {
         this.handleAuthResponse(result, 'loginMessage', 'profile');
     }
 
-    // التسجيل/الدخول بالحسابات الاجتماعية
     async socialLogin(platform) {
         const socialId = this.generateMockSocialId(platform);
         const email = `${socialId}@${platform}.com`;
@@ -204,7 +196,93 @@ class SocialMediaManager {
         this.handleAuthResponse(result, 'loginMessage', 'profile', platform);
     }
 
-    // ربط حساب اجتماعي بحساب موجود
+    // وظائف إضافية جديدة
+    updateUserStats(user, accounts) {
+        const statsElement = document.getElementById('userStats');
+        if (user && accounts) {
+            statsElement.style.display = 'block';
+            
+            const totalFollowers = accounts.reduce((sum, acc) => sum + (acc.stats.followers || 0), 0);
+            const totalPosts = accounts.reduce((sum, acc) => sum + (acc.stats.posts || 0), 0);
+            
+            document.getElementById('socialAccountsCount').textContent = accounts.length;
+            document.getElementById('totalFollowers').textContent = totalFollowers.toLocaleString();
+            document.getElementById('totalPosts').textContent = totalPosts.toLocaleString();
+        } else {
+            statsElement.style.display = 'none';
+        }
+    }
+
+    // باقي الوظائف تبقى كما هي
+    generateMockSocialId(platform) {
+        const prefixes = {
+            google: 'google',
+            twitter: 'twitter', 
+            facebook: 'fb',
+            instagram: 'ig',
+            github: 'gh'
+        };
+        return `${prefixes[platform]}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    handleAuthResponse(result, messageElementId, nextTab, platform = null) {
+        if (result.success) {
+            this.sessionId = result.data.session_id;
+            this.currentUser = result.data.user;
+            localStorage.setItem('sessionId', this.sessionId);
+            
+            const action = result.data.action === 'register' ? this.t('account_created') : this.t('login_success');
+            const method = platform ? ` ${this.t('using')} ${this.t(platform)}` : '';
+            
+            this.showMessage(messageElementId, `${action}${method}`, 'success');
+            this.switchTab(nextTab);
+            this.loadUserData();
+        } else {
+            this.showMessage(messageElementId, result.data.error, 'error');
+        }
+    }
+
+    async getProfile() {
+        const result = await this.apiCall('/auth/profile');
+        
+        if (result.success) {
+            this.currentUser = result.data.user;
+            this.displayUserProfile(result.data.user);
+            
+            // تحميل الحسابات لتحديث الإحصائيات
+            const accountsResult = await this.apiCall('/social/accounts');
+            if (accountsResult.success) {
+                this.updateUserStats(result.data.user, accountsResult.data.accounts);
+            }
+        } else {
+            this.showMessage('profileInfo', result.data.error, 'error');
+            this.logout();
+        }
+    }
+
+    displayUserProfile(user) {
+        const profileElement = document.getElementById('profileInfo');
+        const socialLogins = user.social_logins_count > 0 ? 
+            ` (${user.social_logins_count} ${this.t('linked_social_accounts')})` : '';
+        
+        profileElement.innerHTML = `
+            <div class="profile-header">
+                <h3>${this.t('user_information')}</h3>
+            </div>
+            <div class="profile-details">
+                <p><strong>${this.t('username')}:</strong> ${user.username}</p>
+                <p><strong>${this.t('email')}:</strong> ${user.email}</p>
+                <p><strong>${this.t('auth_method')}:</strong> ${user.auth_method}${socialLogins}</p>
+                <p><strong>${this.t('creation_date')}:</strong> ${new Date(user.created_at).toLocaleDateString(this.currentLang)}</p>
+                <p><strong>${this.t('language')}:</strong> ${this.languages[user.language]?.name || user.language}</p>
+                <p><strong>${this.t('timezone')}:</strong> ${user.preferences.timezone}</p>
+                <p><strong>${this.t('status')}:</strong> ${user.is_active ? this.t('active') : this.t('inactive')}</p>
+            </div>
+            <button class="btn btn-secondary" onclick="app.logout()">${this.t('logout')}</button>
+        `;
+    }
+
+    // باقي الوظائف بدون تغيير
     async linkSocialAccount() {
         const platform = document.getElementById('linkPlatform').value;
         const socialId = document.getElementById('linkSocialId').value;
@@ -225,49 +303,6 @@ class SocialMediaManager {
             document.getElementById('linkSocialId').value = '';
         } else {
             this.showMessage('linkMessage', result.data.error, 'error');
-        }
-    }
-
-    // معالجة استجابة المصادقة
-    handleAuthResponse(result, messageElementId, nextTab, platform = null) {
-        if (result.success) {
-            this.sessionId = result.data.session_id;
-            this.currentUser = result.data.user;
-            localStorage.setItem('sessionId', this.sessionId);
-            
-            const action = result.data.action === 'register' ? this.t('account_created') : this.t('login_success');
-            const method = platform ? ` ${this.t('using')} ${this.t(platform)}` : '';
-            
-            this.showMessage(messageElementId, `${action}${method}`, 'success');
-            this.switchTab(nextTab);
-            this.loadUserData();
-        } else {
-            this.showMessage(messageElementId, result.data.error, 'error');
-        }
-    }
-
-    // توليد معرف اجتماعي تجريبي
-    generateMockSocialId(platform) {
-        const prefixes = {
-            google: 'google',
-            twitter: 'twitter', 
-            facebook: 'fb',
-            instagram: 'ig',
-            github: 'gh'
-        };
-        return `${prefixes[platform]}_${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    // باقي الدوال تبقى كما هي مع إضافة الترجمة
-    async getProfile() {
-        const result = await this.apiCall('/auth/profile');
-        
-        if (result.success) {
-            this.currentUser = result.data.user;
-            this.displayUserProfile(result.data.user);
-        } else {
-            this.showMessage('profileInfo', result.data.error, 'error');
-            this.logout();
         }
     }
 
@@ -301,32 +336,13 @@ class SocialMediaManager {
         
         if (result.success) {
             this.displaySocialAccounts(result.data.accounts);
+            // تحديث الإحصائيات
+            if (this.currentUser) {
+                this.updateUserStats(this.currentUser, result.data.accounts);
+            }
         } else {
             this.showMessage('accountsList', this.t('cannot_connect'), 'error');
         }
-    }
-
-    displayUserProfile(user) {
-        const profileElement = document.getElementById('profileInfo');
-        const socialLogins = user.social_logins_count > 0 ? 
-            ` (${user.social_logins_count} ${this.t('linked_social_accounts')})` : '';
-        
-        profileElement.innerHTML = `
-            <div class="profile-header">
-                <h3>${this.t('user_information')}</h3>
-            </div>
-            <div class="profile-details">
-                <p><strong>${this.t('username')}:</strong> ${user.username}</p>
-                <p><strong>${this.t('email')}:</strong> ${user.email}</p>
-                <p><strong>${this.t('auth_method')}:</strong> ${user.auth_method}${socialLogins}</p>
-                <p><strong>${this.t('creation_date')}:</strong> ${new Date(user.created_at).toLocaleDateString(this.currentLang)}</p>
-                <p><strong>${this.t('language')}:</strong> ${this.languages[user.language]?.name || user.language}</p>
-                <p><strong>${this.t('timezone')}:</strong> ${user.preferences.timezone}</p>
-                <p><strong>${this.t('status')}:</strong> ${user.is_active ? this.t('active') : this.t('inactive')}</p>
-            </div>
-            <button class="btn btn-secondary" onclick="app.logout()">${this.t('logout')}</button>
-        `;
-        profileElement.classList.add('active');
     }
 
     displaySocialAccounts(accounts) {
@@ -428,12 +444,39 @@ class SocialMediaManager {
         this.currentUser = null;
         localStorage.removeItem('sessionId');
         
-        document.getElementById('profileInfo').innerHTML = '';
-        document.getElementById('profileInfo').classList.remove('active');
-        document.getElementById('accountsList').innerHTML = '';
+        document.getElementById('profileInfo').innerHTML = `
+            <div class="profile-placeholder">
+                <p>${this.t('please_login')}</p>
+            </div>
+        `;
+        document.getElementById('accountsList').innerHTML = `<p class="no-accounts">${this.t('no_accounts')}</p>`;
+        document.getElementById('userStats').style.display = 'none';
         
         this.switchTab('login');
         this.showMessage('loginMessage', this.t('disconnected'), 'success');
+    }
+
+    changeLanguage(lang) {
+        window.location.href = `/?lang=${lang}`;
+    }
+
+    async changeUserLanguage() {
+        const newLanguage = document.getElementById('profileLanguage').value;
+
+        const result = await this.apiCall('/auth/change-language', {
+            method: 'POST',
+            body: JSON.stringify({ language: newLanguage })
+        });
+
+        if (result.success) {
+            this.showMessage('languageMessage', this.t('profile_loaded'), 'success');
+            this.currentLang = newLanguage;
+            setTimeout(() => {
+                this.changeLanguage(newLanguage);
+            }, 1000);
+        } else {
+            this.showMessage('languageMessage', result.data.error, 'error');
+        }
     }
 }
 
@@ -479,4 +522,13 @@ function connectSocialAccount() {
 
 function loadSocialAccounts() {
     app.loadSocialAccounts();
+}
+
+// الدوال الجديدة للبيانات التوضيحية
+function fillMockData(platform) {
+    app.fillMockData(platform);
+}
+
+function fillDemoAccount(type) {
+    app.fillDemoAccount(type);
 }
