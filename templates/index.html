@@ -1,179 +1,379 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ lang }}" dir="{{ text_direction }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نشرتي - منصة الناشرين المحترفين</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{ translations.get('landing_page_title', 'نشرتي - منصة الناشرين المحترفين') }}</title>
+    
+    <!-- ربط ملف التنسيق المحسن -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- خط Tajawal للغة العربية -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        body { 
-            font-family: 'Tajawal', sans-serif;
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* تحسينات إضافية */
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="loading">
+    <script>
+        document.documentElement.dir = '{{ text_direction }}';
+        document.documentElement.lang = '{{ lang }}';
+        
+        window.addEventListener('load', function() {
+            document.body.classList.remove('loading');
+            document.body.classList.add('loaded');
+        });
+    </script>
+
+    <!-- شريط اللغة -->
+    <div class="language-bar">
+        <div class="language-selector">
+            <span class="current-language">
+                <i class="fas fa-globe"></i>
+                {{ languages[lang].name }}
+            </span>
+            <div class="language-dropdown">
+                {% for code, info in languages.items() %}
+                <button class="lang-btn {% if code == lang %}active{% endif %}" 
+                        onclick="changeLanguage('{{ code }}')">
+                    {{ info.flag }} {{ info.name }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <!-- الهيدر -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- الشعار -->
-            <div class="flex items-center space-x-2 space-x-reverse">
-                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">ن</span>
+    <header class="landing-header">
+        <div class="container">
+            <nav class="landing-nav">
+                <!-- الشعار -->
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <span>{{ translations.get('platform_name', 'نشرتي') }}</span>
                 </div>
-                <span class="text-xl font-bold text-gray-800">نشرتي</span>
-            </div>
 
-            <!-- القائمة -->
-            <div class="hidden md:flex space-x-8 space-x-reverse">
-                <a href="#features" class="text-gray-600 hover:text-blue-500 transition duration-300">المميزات</a>
-                <a href="#how-it-works" class="text-gray-600 hover:text-blue-500 transition duration-300">كيف تعمل</a>
-                <a href="#testimonials" class="text-gray-600 hover:text-blue-500 transition duration-300">آراء العملاء</a>
-            </div>
+                <!-- القائمة -->
+                <div class="nav-links">
+                    <a href="#features" class="nav-link">
+                        {{ translations.get('features', 'المميزات') }}
+                    </a>
+                    <a href="#how-it-works" class="nav-link">
+                        {{ translations.get('how_it_works', 'كيف تعمل') }}
+                    </a>
+                    <a href="#testimonials" class="nav-link">
+                        {{ translations.get('testimonials', 'آراء العملاء') }}
+                    </a>
+                    <a href="/login?lang={{ lang }}" class="nav-link">
+                        {{ translations.get('login', 'تسجيل الدخول') }}
+                    </a>
+                </div>
 
-            <!-- أزرار -->
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <a href="/login" class="text-gray-600 hover:text-blue-500 transition duration-300">تسجيل الدخول</a>
-                <a href="/login" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition duration-300 transform hover:-translate-y-0.5">
-                    ابدأ مجاناً
+                <!-- زر البدء -->
+                <a href="/login?lang={{ lang }}" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    {{ translations.get('get_started', 'ابدأ مجاناً') }}
                 </a>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
 
     <!-- القسم البطولي -->
-    <section class="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-20">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <!-- النص -->
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight mb-6">
-                        منصة 
-                        <span class="gradient-text">
-                            الناشرين المحترفين
-                        </span>
-                    </h1>
-                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
-                        واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. 
-                        أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.
-                    </p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
-                        <a href="/login" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl hover:shadow-xl transition duration-300 transform hover:-translate-y-1 text-center font-medium">
-                            ابدأ رحلتك الآن
-                        </a>
-                        <button class="border border-blue-500 text-blue-500 px-8 py-4 rounded-xl hover:bg-blue-50 transition duration-300 text-center font-medium">
-                            شاهد العرض التوضيحي
-                        </button>
+    <section class="hero-section">
+        <div class="floating-shapes">
+            <div class="shape" style="top: 10%; left: 10%; width: 100px; height: 100px; background: var(--white); border-radius: 50%;"></div>
+            <div class="shape" style="top: 60%; right: 15%; width: 150px; height: 150px; background: var(--white); border-radius: 30%;"></div>
+            <div class="shape" style="bottom: 20%; left: 20%; width: 80px; height: 80px; background: var(--white); border-radius: 40%;"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1 class="hero-title">
+                    {{ translations.get('hero_title', 'منصة الناشرين المحترفين') }}
+                </h1>
+                <p class="hero-subtitle">
+                    {{ translations.get('hero_subtitle', 'واجهتك الذكية للتواصل مع جمهورك بطريقة أكثر فعالية وأناقة. أدوات متكاملة لتحويل متابعيك إلى مجتمع متفاعل.') }}
+                </p>
+                
+                <!-- إحصائيات سريعة -->
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-6); margin: var(--space-8) auto; max-width: 500px;">
+                    <div class="stat-card" style="text-align: center;">
+                        <div class="stat-number">+500</div>
+                        <div style="color: var(--white); opacity: 0.9;">{{ translations.get('publishers', 'ناشر') }}</div>
+                    </div>
+                    <div class="stat-card" style="text-align: center;">
+                        <div class="stat-number">+50K</div>
+                        <div style="color: var(--white); opacity: 0.9;">{{ translations.get('posts', 'منشور') }}</div>
+                    </div>
+                    <div class="stat-card" style="text-align: center;">
+                        <div class="stat-number">+1M</div>
+                        <div style="color: var(--white); opacity: 0.9;">{{ translations.get('interactions', 'تفاعل') }}</div>
                     </div>
                 </div>
-
-                <!-- الصورة -->
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="bg-white p-6 rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition duration-500 max-w-md">
-                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 h-80 rounded-lg flex items-center justify-center relative overflow-hidden">
-                            <!-- صورة وهمية للواجهة -->
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-500/20"></div>
-                            <div class="relative z-10 text-center p-8">
-                                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                    <span class="text-white text-2xl">📱</span>
-                                </div>
-                                <p class="text-gray-600 font-medium">واجهة الناشر الذكية</p>
-                                <p class="text-gray-500 text-sm mt-2">تصميم مبسط وسلس</p>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div class="hero-buttons">
+                    <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-play-circle"></i>
+                        {{ translations.get('start_journey', 'ابدأ رحلتك الآن') }}
+                    </a>
+                    <button class="btn btn-secondary btn-lg" onclick="scrollToSection('features')">
+                        <i class="fas fa-info-circle"></i>
+                        {{ translations.get('learn_more', 'اعرف المزيد') }}
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- قسم المميزات -->
-    <section id="features" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                    كل ما يحتاجه الناشر المحترف
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2 class="section-title">
+                    {{ translations.get('features_title', 'كل ما يحتاجه الناشر المحترف') }}
                 </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى
+                <p class="section-subtitle">
+                    {{ translations.get('features_subtitle', 'أدوات متكاملة صممت خصيصاً لتلبية احتياجات الناشرين ورواد المحتوى') }}
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- بطاقة 1 -->
-                <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-blue-100">
-                    <div class="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <span class="text-white text-2xl">📊</span>
+            <div class="features-grid">
+                <!-- مميزة 1 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">تحليلات متقدمة</h3>
-                    <p class="text-gray-600 text-center">
-                        فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.
+                    <h3 class="feature-title">
+                        {{ translations.get('analytics_title', 'تحليلات متقدمة') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('analytics_desc', 'فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك.') }}
                     </p>
                 </div>
 
-                <!-- بطاقة 2 -->
-                <div class="bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-purple-100">
-                    <div class="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <span class="text-white text-2xl">🎯</span>
+                <!-- مميزة 2 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullseye"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">استهداف دقيق</h3>
-                    <p class="text-gray-600 text-center">
-                        وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.
+                    <h3 class="feature-title">
+                        {{ translations.get('targeting_title', 'استهداف دقيق') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('targeting_desc', 'وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية.') }}
                     </p>
                 </div>
 
-                <!-- بطاقة 3 -->
-                <div class="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border border-green-100">
-                    <div class="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                        <span class="text-white text-2xl">💬</span>
+                <!-- مميزة 3 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">تفاعل حقيقي</h3>
-                    <p class="text-gray-600 text-center">
-                        حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.
+                    <h3 class="feature-title">
+                        {{ translations.get('engagement_title', 'تفاعل حقيقي') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('engagement_desc', 'حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين.') }}
+                    </p>
+                </div>
+
+                <!-- مميزة 4 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('multiplatform_title', 'منصات متعددة') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('multiplatform_desc', 'ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.') }}
+                    </p>
+                </div>
+
+                <!-- مميزة 5 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('automation_title', 'أتمتة ذكية') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('automation_desc', 'وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.') }}
+                    </p>
+                </div>
+
+                <!-- مميزة 6 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('security_title', 'أمان متكامل') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('security_desc', 'بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.') }}
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- قسم دعوة للعمل -->
-    <section class="py-20 bg-gradient-to-r from-blue-500 to-purple-600">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-                مستعد لبدء رحلتك؟
-            </h2>
-            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل
-            </p>
-            <a href="/login" class="bg-white text-blue-600 px-8 py-4 rounded-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 inline-block font-bold text-lg">
-                سجل حسابك مجاناً
-            </a>
+    <!-- قسم كيف تعمل -->
+    <section id="how-it-works" class="features-section" style="background: var(--white);">
+        <div class="container">
+            <div class="text-center mb-8">
+                <h2 class="section-title">
+                    {{ translations.get('how_it_works_title', 'كيف تعمل المنصة') }}
+                </h2>
+                <p class="section-subtitle">
+                    {{ translations.get('how_it_works_subtitle', '3 خطوات بسيطة لبدء رحلتك في النشر المحترف') }}
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <!-- خطوة 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <span class="step-number">1</span>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('step1_title', 'أنشئ حسابك') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('step1_desc', 'سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.') }}
+                    </p>
+                </div>
+
+                <!-- خطوة 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <span class="step-number">2</span>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('step2_title', 'اربط حساباتك') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('step2_desc', 'أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.') }}
+                    </p>
+                </div>
+
+                <!-- خطوة 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <span class="step-number">3</span>
+                    </div>
+                    <h3 class="feature-title">
+                        {{ translations.get('step3_title', 'ابدأ النشر') }}
+                    </h3>
+                    <p class="feature-description">
+                        {{ translations.get('step3_desc', 'استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم الدعوة للعمل -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="cta-title">
+                    {{ translations.get('cta_title', 'مستعد لبدء رحلتك؟') }}
+                </h2>
+                <p class="cta-subtitle">
+                    {{ translations.get('cta_subtitle', 'انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل') }}
+                </p>
+                <div class="hero-buttons">
+                    <a href="/login?lang={{ lang }}" class="btn btn-primary btn-lg" style="background: var(--white); color: var(--primary-500);">
+                        <i class="fas fa-user-plus"></i>
+                        {{ translations.get('cta_button', 'سجل حسابك مجاناً') }}
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- الفوتر -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0">
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold">ن</span>
-                        </div>
-                        <span class="text-xl font-bold">نشرتي</span>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-paper-plane"></i>
                     </div>
-                    <p class="text-gray-400 mt-2">منصة الناشرين المحترفين</p>
+                    <span>{{ translations.get('platform_name', 'نشرتي') }}</span>
                 </div>
-                <div class="text-gray-400">
-                    <p>© 2024 نشرتي. جميع الحقوق محفوظة</p>
+                <div class="footer-text">
+                    © 2024 {{ translations.get('platform_name', 'نشرتي') }}. {{ translations.get('all_rights_reserved', 'جميع الحقوق محفوظة') }}
                 </div>
             </div>
         </div>
     </footer>
+
+    <script>
+        function changeLanguage(lang) {
+            window.location.href = `/?lang=${lang}`;
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // إضافة تأثير fade-in عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                fadeObserver.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
