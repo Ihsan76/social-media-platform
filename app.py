@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 from config import config
-from routes import all_blueprints
+from routes.auth import auth_bp
+from routes.social import social_bp
 from utils.helpers import json_response
 
 def create_app(config_name='default'):
@@ -13,8 +14,8 @@ def create_app(config_name='default'):
     app.config.from_object(config[config_name])
     
     # تسجيل الـBlueprints
-    for blueprint in all_blueprints:
-        app.register_blueprint(blueprint, url_prefix='/api')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(social_bp, url_prefix='/api/social')
     
     # المسارات الأساسية
     @app.route('/')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request
-from models.social_account import SocialAccountManager
+from models.social_account import SocialAccount, SocialAccountManager
 from routes.auth import get_current_user
 from utils.helpers import success_response, error_response
 
