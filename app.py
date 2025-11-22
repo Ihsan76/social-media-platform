@@ -245,6 +245,20 @@ def login_page():
                          languages=SUPPORTED_LANGUAGES,
                          translations=TRANSLATIONS.get(lang, {}))
 
+@app.route('/dashboard')
+def dashboard():
+    """لوحة التحكم بعد تسجيل الدخول"""
+    lang = request.args.get('lang', 'en')
+    if lang not in SUPPORTED_LANGUAGES:
+        lang = 'en'
+    
+    text_direction = get_language_direction(lang)
+    return render_template('dashboard.html', 
+                         lang=lang,
+                         text_direction=text_direction,
+                         languages=SUPPORTED_LANGUAGES,
+                         translations=TRANSLATIONS.get(lang, {}))
+
 @app.route('/api/')
 def api_home():
     """الصفحة الرئيسية للـAPI مع دعم اللغات"""
