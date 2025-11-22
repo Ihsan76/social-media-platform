@@ -1,196 +1,126 @@
-/* تطبيق الاتجاه فوراً في CSS */
-html[dir="rtl"] {
-    direction: rtl;
-    text-align: right;
-}
-
-html[dir="ltr"] {
-    direction: ltr;
-    text-align: left;
-}
-
-/* منع الوميض المؤقت */
-body.loading {
-    visibility: hidden;
-    opacity: 0;
-}
-
-body.loaded {
-    visibility: visible;
-    opacity: 1;
-    transition: opacity 0.2s ease;
-}
-
-/* الأنماط الأساسية */
+/* أساسيات التصميم */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    color: #333;
+    background: #f4f4f4;
+    padding: 20px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
-}
-
-/* شريط اللغة */
-.language-bar {
-    position: sticky;
-    top: 10px;
-    z-index: 1000;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.language-selector {
-    display: inline-block;
-    position: relative;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 25px;
-    padding: 8px 20px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.current-language {
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.language-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
     background: white;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    display: none;
-    margin-top: 5px;
-    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.language-selector:hover .language-dropdown {
-    display: block;
-}
-
-.lang-btn {
-    width: 100%;
-    padding: 12px 20px;
-    border: none;
-    background: white;
-    cursor: pointer;
-    text-align: left;
-    transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-}
-
-.lang-btn:hover {
-    background: #f8f9fa;
-}
-
-.lang-btn.active {
-    background: #667eea;
-    color: white;
-}
-
-/* اتجاه RTL للعربية */
-html[dir="rtl"] .lang-btn {
+/* دعم RTL للغة العربية */
+[dir="rtl"] .container {
     text-align: right;
 }
 
-html[dir="rtl"] .language-dropdown {
-    left: auto;
-    right: 0;
+[dir="rtl"] .language-switcher {
+    text-align: left;
 }
 
-/* بقية الأنماط تبقى كما هي مع إضافة دعم RTL/LTR */
-.header {
-    text-align: center;
-    color: white;
-    margin-bottom: 40px;
-    padding: 30px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+[dir="rtl"] .input-group {
+    text-align: right;
 }
 
-.header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+[dir="rtl"] .input-group label {
+    text-align: right;
 }
 
-.header p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    margin-bottom: 15px;
+[dir="rtl"] .input-group input {
+    text-align: right;
 }
 
-.status-badge {
-    display: inline-block;
-    padding: 8px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
+[dir="rtl"] .social-buttons {
+    text-align: right;
 }
 
-.dashboard {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+[dir="rtl"] .tabs {
+    text-align: right;
+}
+
+[dir="rtl"] .tab-button {
+    float: right;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+[dir="rtl"] .data-section {
+    text-align: right;
+}
+
+[dir="rtl"] .stats-grid {
+    text-align: right;
+}
+
+/* الهيدر */
+header {
     margin-bottom: 30px;
 }
 
+header h1 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+.language-switcher {
+    margin-bottom: 20px;
+}
+
+.language-switcher button {
+    margin: 0 5px;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.language-switcher button:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* نظام التبويب */
 .tabs {
     display: flex;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #eee;
-    flex-wrap: wrap;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
-html[dir="rtl"] .tabs {
-    flex-direction: row-reverse;
-}
-
-.tab {
-    padding: 15px 30px;
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: none;
     cursor: pointer;
     border-bottom: 3px solid transparent;
+    font-size: 16px;
     transition: all 0.3s ease;
-    font-weight: 500;
 }
 
-.tab:hover {
-    background: #f8f9fa;
-}
-
-.tab.active {
-    border-bottom-color: #667eea;
-    color: #667eea;
+.tab-button.active {
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
     font-weight: bold;
 }
 
 .tab-content {
     display: none;
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn 0.5s ease;
 }
 
 .tab-content.active {
@@ -198,344 +128,178 @@ html[dir="rtl"] .tabs {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* دعم RTL للنماذج */
-html[dir="rtl"] .form-group label {
-    text-align: right;
-}
-
-html[dir="rtl"] .form-group input,
-html[dir="rtl"] .form-group select {
-    text-align: right;
-}
-
-html[dir="rtl"] .btn {
-    text-align: center;
-}
-
-/* الأنماط الجديدة للمصادقة الاجتماعية */
-.auth-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
+/* نماذج الإدخال */
+.input-group {
     margin-bottom: 20px;
 }
 
-.social-auth-section {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px dashed #e9ecef;
-}
-
-.divider {
-    text-align: center;
-    margin: 25px 0;
-    position: relative;
-}
-
-.divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #e9ecef;
-}
-
-.divider span {
-    background: white;
-    padding: 0 15px;
-    color: #6c757d;
-    font-weight: bold;
-}
-
-.social-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
-}
-
-.btn-social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 20px;
-    border: 2px solid;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-}
-
-html[dir="rtl"] .btn-social {
-    flex-direction: row-reverse;
-}
-
-.btn-social:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.btn-google {
-    border-color: #db4437;
-    color: #db4437;
-}
-
-.btn-google:hover {
-    background: #db4437;
-    color: white;
-}
-
-.btn-twitter {
-    border-color: #1da1f2;
-    color: #1da1f2;
-}
-
-.btn-twitter:hover {
-    background: #1da1f2;
-    color: white;
-}
-
-.btn-facebook {
-    border-color: #1877f2;
-    color: #1877f2;
-}
-
-.btn-facebook:hover {
-    background: #1877f2;
-    color: white;
-}
-
-.btn-instagram {
-    border-color: #e4405f;
-    color: #e4405f;
-}
-
-.btn-instagram:hover {
-    background: #e4405f;
-    color: white;
-}
-
-.btn-github {
-    border-color: #333;
-    color: #333;
-}
-
-.btn-github:hover {
-    background: #333;
-    color: white;
-}
-
-.social-icon {
-    font-size: 1.2em;
-}
-
-.language-change-section,
-.link-social-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 25px;
-}
-
-/* الأنماط الأساسية للعناصر */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
+.input-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #333;
+    color: #555;
 }
 
-.form-group input,
-.form-group select {
+.input-group input {
     width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 16px;
-    transition: all 0.3s ease;
+    transition: border 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.input-group input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.btn {
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 100%;
+    padding: 14px;
+    background: #007bff;
     color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-}
-
-.btn-success {
-    background: #28a745;
-    color: white;
-}
-
-.btn:hover {
+.btn-primary:hover {
+    background: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.message {
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    display: none;
-    animation: slideIn 0.3s ease;
+/* أزرار وسائل التواصل */
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-html[dir="rtl"] .message {
-    animation: slideInRTL 0.3s ease;
-}
-
-@keyframes slideInRTL {
-    from { opacity: 0; transform: translateX(10px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    display: block;
-}
-
-.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    display: block;
-}
-
-.user-info {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    display: none;
-}
-
-.user-info.active {
-    display: block;
-}
-
-.accounts-container {
-    margin-top: 20px;
-}
-
-.account-card {
+.social-btn {
+    padding: 12px 16px;
+    border: 1px solid #ddd;
     background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
+    border-radius: 6px;
+    cursor: pointer;
     display: flex;
     align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.social-btn:hover {
+    background: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.social-btn .icon {
+    font-weight: bold;
+    width: 20px;
+    text-align: center;
+}
+
+.social-btn.google { border-left: 4px solid #db4437; }
+.social-btn.twitter { border-left: 4px solid #1da1f2; }
+.social-btn.facebook { border-left: 4px solid #1877f2; }
+.social-btn.instagram { border-left: 4px solid #e4405f; }
+.social-btn.github { border-left: 4px solid #333; }
+
+/* قسم الإحصائيات */
+.data-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.data-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
 }
 
-html[dir="rtl"] .account-card {
-    flex-direction: row-reverse;
-}
-
-.account-platform {
-    font-weight: bold;
-    color: #667eea;
-}
-
-.account-username {
-    color: #6c757d;
-}
-
-.social-connect {
+.stat-card {
+    padding: 20px;
     background: #f8f9fa;
-    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 30px;
+    text-align: center;
+    transition: transform 0.3s ease;
 }
 
-.footer {
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-card h4 {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 0;
+}
+
+/* الفوتر */
+footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    color: #666;
     text-align: center;
-    color: white;
-    padding: 20px;
-    opacity: 0.8;
+}
+
+.version {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
 }
 
 /* تصميم متجاوب */
 @media (max-width: 768px) {
-    .header h1 {
-        font-size: 2rem;
+    .container {
+        padding: 20px;
+        margin: 10px;
     }
     
     .tabs {
         flex-direction: column;
     }
     
-    html[dir="rtl"] .tabs {
-        flex-direction: column;
-    }
-    
-    .tab {
+    .tab-button {
         text-align: center;
-        border-bottom: 1px solid #eee;
-        border-left: 3px solid transparent;
     }
     
-    .tab.active {
-        border-left-color: #667eea;
-        border-bottom-color: #eee;
-    }
-    
-    html[dir="rtl"] .tab.active {
-        border-left-color: transparent;
-        border-right-color: #667eea;
-    }
-    
-    .dashboard {
-        padding: 20px;
-    }
-    
-    .social-buttons {
+    .stats-grid {
         grid-template-columns: 1fr;
     }
-    
-    .language-selector {
-        width: 100%;
-    }
 }
+
+[dir="rtl"] .social-btn {
+    border-left: none;
+    border-right: 4px solid;
+}
+
+[dir="rtl"] .social-btn.google { border-right-color: #db4437; }
+[dir="rtl"] .social-btn.twitter { border-right-color: #1da1f2; }
+[dir="rtl"] .social-btn.facebook { border-right-color: #1877f2; }
+[dir="rtl"] .social-btn.instagram { border-right-color: #e4405f; }
+[dir="rtl"] .social-btn.github { border-right-color: #333; }

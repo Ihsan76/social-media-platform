@@ -24,8 +24,9 @@ def load_translation_file(lang):
 def get_translation(lang, key):
     """الحصول على ترجمة محددة"""
     translations = load_translation_file(lang)
-    return translations.get(key, key)  # إرجاع المفتاح نفسه إذا لم توجد ترجمة
+    return translations.get(key, key)
 
+# 🔥 أضف هذه الدالة المفقودة
 def get_language_direction(lang):
     """الحصول على اتجاه اللغة"""
     return SUPPORTED_LANGUAGES.get(lang, {}).get('dir', 'ltr')

@@ -177,19 +177,21 @@ def find_user_by_email(email):
     return None
 
 # المسارات الأساسية
+# استبدل دالة home فقط
 @app.route('/')
 def home():
+    """الصفحة الرئيسية مع دعم اللغات"""
     lang = request.args.get('lang', 'en')
     if lang not in SUPPORTED_LANGUAGES:
         lang = 'en'
-                    
-         # الحصول على اتجاه اللغة من النظام المركزي
+    
+    # 🔥 استخدم الدالة الجديدة من translations
     from translations import get_language_direction
     text_direction = get_language_direction(lang)
-                                    
+    
     return render_template('index.html', 
         lang=lang,
-        text_direction=text_direction,
+        text_direction=text_direction,  # 🔥 أضف هذا
         languages=SUPPORTED_LANGUAGES,
         translations=TRANSLATIONS.get(lang, {}))
 
