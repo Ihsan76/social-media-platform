@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
+import json
 
 app = Flask(__name__)
 
-# إعدادات للغة العربية
-app.config['JSON_AS_ASCII'] = False
-
+# حل جذري للعربية - استخدام Response مباشرة
 @app.route('/')
 def home():
-    return jsonify({
+    data = {
         "message": "مرحباً! منصة إدارة الوسائط الاجتماعية تعمل بنجاح! 🚀",
         "status": "نشط",
         "version": "1.0.0",
@@ -17,18 +16,32 @@ def home():
             "health": "/health",
             "test": "/test"
         }
-    })
+    }
+    response = Response(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        mimetype='application/json; charset=utf-8'
+    )
+    return response
 
 @app.route('/health')
 def health():
-    return jsonify({"status": "صحي", "message": "الخدمة تعمل بشكل طبيعي"})
+    data = {"status": "صحي", "message": "الخدمة تعمل بشكل طبيعي"}
+    return Response(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        mimetype='application/json; charset=utf-8'
+    )
 
 @app.route('/test')
 def test():
-    return jsonify({
+    data = {
         "arabic_test": "اختبار النص العربي ✅",
-        "welcome": "أهلاً وسهلاً في منصتنا"
-    })
+        "welcome": "أهلاً وسهلاً في منصتنا",
+        "features": "ميزات المنصة قيد التطوير"
+    }
+    return Response(
+        json.dumps(data, ensure_ascii=False, indent=2),
+        mimetype='application/json; charset=utf-8'
+    )
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
