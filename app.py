@@ -245,6 +245,12 @@ def login_page():
                          languages=SUPPORTED_LANGUAGES,
                          translations=TRANSLATIONS.get(lang, {}))
 
+# إضافة alias للتوافق مع القوالب
+@app.route('/login')
+def login():
+    """Alias for login_page for template compatibility"""
+    return login_page()
+
 @app.route('/dashboard')
 def dashboard():
     """لوحة التحكم بعد تسجيل الدخول"""

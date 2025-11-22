@@ -62,15 +62,16 @@
                 <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">
                     {{ translations.get('home', 'Home') }}
                 </a>
-                <a href="{{ url_for('login') }}" class="nav-link {% if request.endpoint == 'login' %}active{% endif %}">
+                <!-- استخدام الـ endpoint الصحيح بناءً على السجلات -->
+                <a href="{{ url_for('api_login') if 'api_login' in url_for.__code__.co_varnames else '/login' }}" 
+                   class="nav-link {% if request.endpoint == 'api_login' %}active{% endif %}">
                     {{ translations.get('login', 'Login') }}
                 </a>
-                <a href="{{ url_for('profile') if 'profile' in url_for.__code__.co_varnames else '#' }}" 
-                   class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}">
+                <!-- روابط مؤقتة للصفحات غير الموجودة بعد -->
+                <a href="#" class="nav-link">
                     {{ translations.get('profile', 'Profile') }}
                 </a>
-                <a href="{{ url_for('dashboard') if 'dashboard' in url_for.__code__.co_varnames else '#' }}" 
-                   class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                <a href="#" class="nav-link">
                     {{ translations.get('dashboard', 'Dashboard') }}
                 </a>
             </div>
