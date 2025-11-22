@@ -1,45 +1,4 @@
-{ 
-  "landing": {
-    "nav": {
-      "features": "Features",
-      "how_it_works": "How It Works",
-      "testimonials": "Testimonials", 
-      "login": "Login",
-      "get_started": "Get Started Free"
-    },
-    "hero": {
-      "title": "Professional Publishers Platform",
-      "subtitle": "Your smart interface to communicate with your audience in a more effective and elegant way. Integrated tools to turn your followers into an interactive community.",
-      "start_journey": "Start Your Journey Now", 
-      "watch_demo": "Watch Demo"
-    },
-    "features": {
-      "title": "Everything Professional Publishers Need",
-      "subtitle": "Integrated tools specifically designed to meet the needs of publishers and content creators",
-      "analytics": {
-        "title": "Advanced Analytics",
-        "desc": "Understand your audience more deeply with detailed statistics and smart analytics that help you develop your strategy."
-      },
-      "targeting": {
-        "title": "Precise Targeting",
-        "desc": "Reach the right audience at the right time using smart targeting tools."
-      },
-      "engagement": {
-        "title": "Real Engagement", 
-        "desc": "Turn your followers into an interactive community with dialogue and interaction tools specifically designed for publishers."
-      }
-    },
-    "cta": {
-      "title": "Ready to Start Your Journey?",
-      "subtitle": "Join thousands of publishers who have turned their followers into an interactive community",
-      "button": "Register Your Account Free"
-    },
-    "footer": {
-      "tagline": "Professional Publishers Platform", 
-      "copyright": "All rights reserved"
-    }
-  },
-
+{
     "welcome": "Welcome! Social Media Management Platform is working successfully! 🚀",
     "active": "Active",
     "healthy": "Healthy",
@@ -141,5 +100,45 @@
     "access_token": "Access Token",
     "connecting": "Connecting to",
     "register_success": "Registration successful",
-    "accounts_loaded": "Accounts loaded successfully"
+    "accounts_loaded": "Accounts loaded successfully",
+    "landing": {
+        "nav": {
+            "features": "Features",
+            "how_it_works": "How It Works",
+            "testimonials": "Testimonials",
+            "login": "Login",
+            "get_started": "Get Started Free"
+        },
+        "hero": {
+            "title": "Professional Publishers Platform",
+            "subtitle": "Your smart interface to communicate with your audience in a more effective and elegant way. Integrated tools to turn your followers into an interactive community.",
+            "start_journey": "Start Your Journey Now",
+            "watch_demo": "Watch Demo"
+        },
+        "features": {
+            "title": "Everything Professional Publishers Need",
+            "subtitle": "Integrated tools specifically designed to meet the needs of publishers and content creators",
+            "analytics": {
+                "title": "Advanced Analytics",
+                "desc": "Understand your audience more deeply with detailed statistics and smart analytics that help you develop your strategy."
+            },
+            "targeting": {
+                "title": "Precise Targeting",
+                "desc": "Reach the right audience at the right time using smart targeting tools."
+            },
+            "engagement": {
+                "title": "Real Engagement",
+                "desc": "Turn your followers into an interactive community with dialogue and interaction tools specifically designed for publishers."
+            }
+        },
+        "cta": {
+            "title": "Ready to Start Your Journey?",
+            "subtitle": "Join thousands of publishers who have turned their followers into an interactive community",
+            "button": "Register Your Account Free"
+        },
+        "footer": {
+            "tagline": "Professional Publishers Platform",
+            "copyright": "All rights reserved"
+        }
+    }
 }
