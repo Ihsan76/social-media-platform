@@ -15,24 +15,43 @@ users_db = {}
 sessions = {}
 social_accounts_db = {}
 
-# استيراد نظام اللغات
-from translations import get_translation, get_supported_languages, get_language_direction, SUPPORTED_LANGUAGES
-
-# دالة تحميل الترجمات - يجب تعريفها قبل استخدامها
+# تعريف دوال الترجمة أولاً لتجنب الاستيراد الدائري
 def load_translations(lang='en'):
     """دالة تحميل الترجمة"""
     try:
         with open(f'translations/{lang}.json', 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception as e:
-        return {"error": str(e)}
+        print(f"Error loading translation for {lang}: {e}")
+        return {}
 
-# الآن يمكننا تعريف TRANSLATIONS بعد تعريف الدالة
+# تحميل الترجمات أولاً
 TRANSLATIONS = {
     'ar': load_translations('ar'),
     'en': load_translations('en'), 
     'fr': load_translations('fr')
 }
+
+# الآن استيراد من translations بعد تحميل الترجمات
+try:
+    from translations import get_translation, get_supported_languages, get_language_direction, SUPPORTED_LANGUAGES
+except ImportError:
+    # تعريفات احتياطية إذا لم يكن translations.py موجوداً
+    print("Warning: translations module not found, using fallback implementations")
+    
+    SUPPORTED_LANGUAGES = ['ar', 'en', 'fr']
+    
+    def get_translation(lang, key):
+        """دالة احتياطية للحصول على الترجمة"""
+        return TRANSLATIONS.get(lang, {}).get(key, key)
+    
+    def get_supported_languages():
+        """دالة احتياطية للحصول على اللغات المدعومة"""
+        return SUPPORTED_LANGUAGES
+    
+    def get_language_direction(lang):
+        """دالة احتياطية للحصول على اتجاه اللغة"""
+        return 'rtl' if lang == 'ar' else 'ltr'
 
 def get_user_language(request):
     """الحصول على لغة المستخدم المفضلة"""
@@ -53,6 +72,24 @@ def get_user_language(request):
 
     # ثالثاً: الافتراضي للإنجليزية
     return 'en'
+
+def is_translation_key(key):
+    """التحقق ديناميكياً إذا كان المفتاح موجوداً في أي لغة"""
+    def search_in_dict(data, search_key):
+        """بحث متكرر في القاموس"""
+        if isinstance(data, dict):
+            if search_key in data:
+                return True
+            for value in data.values():
+                if search_in_dict(value, search_key):
+                    return True
+        return False
+    
+    # البحث في جميع اللغات
+    for lang_data in TRANSLATIONS.values():
+        if search_in_dict(lang_data, key):
+            return True
+    return False
 
 def get_text(lang, key):
     """دالة مساعدة للحصول على النص المترجم - محسنة للهياكل المتداخلة"""
@@ -77,8 +114,9 @@ def get_text(lang, key):
             
             return value
         else:
-            # للمفاتيح البسيطة، استخدم الدالة الأصلية
-            return get_translation(lang, key)
+            # للمفاتيح البسيطة
+            return TRANSLATIONS.get(lang, {}).get(key, 
+                   TRANSLATIONS.get('en', {}).get(key, key))
     except Exception as e:
         print(f"Translation error for key '{key}' in language '{lang}': {e}")
         # حاول الإنجليزية كبديل
@@ -107,23 +145,16 @@ def json_response(data, status=200):
 
 def error_response(message, status=400, lang='en'):
     """إنشاء استجابة خطأ مترجمة"""
-    translated_message = get_text(lang, message) if isinstance(message, str) and message in TRANSLATION_KEYS else message
+    translated_message = get_text(lang, message) if is_translation_key(message) else message
     return json_response({"error": translated_message}, status)
 
 def success_response(message, data=None, status=200, lang='en'):
     """إنشاء استجابة نجاح مترجمة"""
-    translated_message = get_text(lang, message) if isinstance(message, str) and message in TRANSLATION_KEYS else message
+    translated_message = get_text(lang, message) if is_translation_key(message) else message
     response = {"message": translated_message}
     if data:
         response.update(data)
     return json_response(response, status)
-
-# قائمة مفاتيح الترجمات المستخدمة في API
-TRANSLATION_KEYS = [
-    'all_fields_required', 'password_min_length', 'email_exists', 'account_created',
-    'login_success', 'invalid_credentials', 'unauthorized', 'user_not_found',
-    'profile_loaded', 'social_connected', 'platform_not_supported', 'server_error'
-]
 
 # نماذج البيانات
 class User:
@@ -190,11 +221,6 @@ def hash_password(password):
 
 def generate_session_id():
     return str(uuid.uuid4())
-
-def get_language_direction(lang):
-    """الحصول على اتجاه اللغة من نظام الترجمات"""
-    from translations import get_language_direction as get_dir
-    return get_dir(lang)
 
 def get_current_user(session_id):
     user_id = sessions.get(session_id)

@@ -107,6 +107,50 @@
   "accounts_loaded": "Comptes chargés avec succès",
   
   "landing": {
+    "nav": {
+      "features": "Fonctionnalités",
+      "how_it_works": "Comment ça marche", 
+      "testimonials": "Témoignages",
+      "pricing": "Tarifs",
+      "login": "Connexion",
+      "get_started": "Commencer gratuitement"
+    },
+    
+    "hero": {
+      "title": "Plateforme des Éditeurs Professionnels",
+      "subtitle": "Votre interface intelligente pour communiquer avec votre audience de manière efficace. Des outils intégrés pour transformer vos abonnés en une communauté interactive.",
+      "start_journey": "Commencez votre voyage maintenant",
+      "watch_demo": "Voir la démo"
+    },
+    
+    "features": {
+      "title": "Tout ce dont les éditeurs professionnels ont besoin",
+      "subtitle": "Des outils intégrés spécialement conçus pour répondre aux besoins des éditeurs et créateurs de contenu",
+      "analytics": {
+        "title": "Analyses avancées",
+        "desc": "Comprenez votre audience avec des statistiques détaillées et des analyses intelligentes pour développer votre stratégie."
+      },
+      "targeting": {
+        "title": "Ciblage précis",
+        "desc": "Atteignez le bon public au bon moment en utilisant des outils de ciblage intelligents."
+      },
+      "engagement": {
+        "title": "Engagement réel",
+        "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
+      },
+      "platforms": {
+        "title": "Plateformes multiples",
+        "desc": "Intégrez tous vos comptes sociaux en un seul endroit et gérez votre contenu facilement."
+      },
+      "automation": {
+        "title": "Automatisation intelligente",
+        "desc": "Gagnez du temps et des efforts avec des outils d'automatisation intelligente pour la publication de contenu et l'engagement des abonnés."
+      },
+      "security": {
+        "title": "Sécurité intégrée",
+        "desc": "Un environnement sécurisé et protégé pour vos comptes et données avec un chiffrement avancé et des sauvegardes."
+      }
+    },
     "how_it_works": {
       "title": "Comment fonctionne la plateforme",
       "subtitle": "3 étapes simples pour commencer votre voyage d'édition professionnelle",
@@ -123,7 +167,6 @@
         "desc": "Utilisez nos outils intelligents pour publier du contenu, analyser les performances et développer votre stratégie."
       }
     },
-    
     "testimonials": {
       "title": "Témoignages clients",
       "subtitle": "Ce que les éditeurs disent de notre plateforme",
@@ -140,7 +183,6 @@
         "text": "Une plateforme complète qui rassemble tout ce dont un éditeur professionnel a besoin. Le support technique est excellent et les mises à jour sont continues."
       }
     },
-    
     "pricing": {
       "title": "Plans tarifaires",
       "subtitle": "Choisissez le plan qui correspond à vos besoins",
@@ -177,62 +219,16 @@
         ]
       }
     },
-    
-    "stats": {
-      "publishers": "Éditeurs",
-      "posts": "Publications",
-      "engagement": "Engagement"
-    },
-    
-    "targeting": {
-      "title": "Ciblage précis",
-      "desc": "Atteignez le bon public au bon moment en utilisant des outils de ciblage intelligents."
-    },
-    
-    "engagement": {
-      "title": "Engagement réel",
-      "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
-    },
-    
-    "nav": {
-      "features": "Fonctionnalités",
-      "how_it_works": "Comment ça marche", 
-      "testimonials": "Témoignages",
-      "pricing": "Tarifs",
-      "login": "Connexion",
-      "get_started": "Commencer gratuitement"
-    },
-    
-    "hero": {
-      "title": "Plateforme des Éditeurs Professionnels",
-      "subtitle": "Votre interface intelligente pour communiquer avec votre audience de manière efficace. Des outils intégrés pour transformer vos abonnés en une communauté interactive.",
-      "start_journey": "Commencez votre voyage maintenant",
-      "watch_demo": "Voir la démo"
-    },
-    
-    "features": {
-      "title": "Tout ce dont les éditeurs professionnels ont besoin",
-      "subtitle": "Des outils intégrés spécialement conçus pour répondre aux besoins des éditeurs et créateurs de contenu",
-      "analytics": {
-        "title": "Analyses avancées",
-        "desc": "Comprenez votre audience avec des statistiques détaillées et des analyses intelligentes pour développer votre stratégie."
-      },
-      "targeting": {
-        "title": "Ciblage précis",
-        "desc": "Atteignez le bon public au bon moment en utilisant des outils de ciblage intelligents."
-      },
-      "engagement": {
-        "title": "Engagement réel",
-        "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
-      }
-    },
-    
     "cta": {
       "title": "Prêt à commencer votre voyage ?",
       "subtitle": "Rejoignez des milliers d'éditeurs qui ont transformé leurs abonnés en une communauté interactive",
       "button": "Inscrivez-vous gratuitement"
     },
-    
+    "stats": {
+      "publishers": "Éditeurs",
+      "posts": "Publications",
+      "engagement": "Engagement"
+    },
     "footer": {
       "tagline": "Plateforme des Éditeurs Professionnels",
       "copyright": "Tous droits réservés"

@@ -105,8 +105,10 @@
   "connecting": "Connecting to",
   "register_success": "Registration successful",
   "accounts_loaded": "Accounts loaded successfully",
+  
   "landing": {
-    "nav": {
+  
+      "nav": {
       "features": "Features",
       "how_it_works": "How It Works",
       "testimonials": "Testimonials",
@@ -121,6 +123,19 @@
       "watch_demo": "Watch Demo"
     },
     "features": {
+    "platforms": {
+      "title": "Multiple Platforms",
+      "desc": "Integrate all your social accounts in one place and manage your content easily."
+    },
+    "automation": {
+      "title": "Smart Automation", 
+      "desc": "Save your time and effort with smart automation tools for content publishing and follower engagement."
+    },
+    "security": {
+      "title": "Integrated Security",
+      "desc": "A safe and protected environment for your accounts and data with advanced encryption and backups."
+    },
+  
       "title": "Everything Professional Publishers Need",
       "subtitle": "Integrated tools specifically designed to meet the needs of publishers and content creators",
       "analytics": {

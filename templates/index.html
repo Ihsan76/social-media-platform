@@ -25,15 +25,21 @@
             <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-6); margin: var(--space-8) auto; max-width: 500px;">
                 <div class="stat-card" style="text-align: center;">
                     <div class="stat-number">+500</div>
-                    <div style="color: var(--white); opacity: 0.9;">ناشر</div>
+                    <div style="color: var(--white); opacity: 0.9;">
+                        {{ get_translation('landing.stats.publishers', 'ناشر') }}
+                    </div>
                 </div>
                 <div class="stat-card" style="text-align: center;">
                     <div class="stat-number">+50K</div>
-                    <div style="color: var(--white); opacity: 0.9;">منشور</div>
+                    <div style="color: var(--white); opacity: 0.9;">
+                        {{ get_translation('landing.stats.posts', 'منشور') }}
+                    </div>
                 </div>
                 <div class="stat-card" style="text-align: center;">
                     <div class="stat-number">+1M</div>
-                    <div style="color: var(--white); opacity: 0.9;">تفاعل</div>
+                    <div style="color: var(--white); opacity: 0.9;">
+                        {{ get_translation('landing.stats.engagement', 'تفاعل') }}
+                    </div>
                 </div>
             </div>
             
@@ -109,10 +115,10 @@
                     <i class="fas fa-mobile-alt"></i>
                 </div>
                 <h3 class="feature-title">
-                    منصات متعددة
+                    {{ get_translation('landing.features.platforms.title', 'منصات متعددة') }}
                 </h3>
                 <p class="feature-description">
-                    ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.
+                    {{ get_translation('landing.features.platforms.desc', 'ادمج كل حساباتك الاجتماعية في مكان واحد وأدار محتواك بكل سهولة.') }}
                 </p>
             </div>
 
@@ -122,10 +128,10 @@
                     <i class="fas fa-robot"></i>
                 </div>
                 <h3 class="feature-title">
-                    أتمتة ذكية
+                    {{ get_translation('landing.features.automation.title', 'أتمتة ذكية') }}
                 </h3>
                 <p class="feature-description">
-                    وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.
+                    {{ get_translation('landing.features.automation.desc', 'وفر وقتك وجهدك مع أدوات الأتمتة الذكية في نشر المحتوى والتفاعل مع المتابعين.') }}
                 </p>
             </div>
 
@@ -135,10 +141,10 @@
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3 class="feature-title">
-                    أمان متكامل
+                    {{ get_translation('landing.features.security.title', 'أمان متكامل') }}
                 </h3>
                 <p class="feature-description">
-                    بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.
+                    {{ get_translation('landing.features.security.desc', 'بيئة آمنة ومحمية لحساباتك وبياناتك مع تشفير متقدم ونسخ احتياطية.') }}
                 </p>
             </div>
         </div>
@@ -150,10 +156,10 @@
     <div class="container">
         <div class="text-center mb-8">
             <h2 class="section-title">
-                كيف تعمل المنصة
+                {{ get_translation('landing.how_it_works.title', 'كيف تعمل المنصة') }}
             </h2>
             <p class="section-subtitle">
-                3 خطوات بسيطة لبدء رحلتك في النشر المحترف
+                {{ get_translation('landing.how_it_works.subtitle', '3 خطوات بسيطة لبدء رحلتك في النشر المحترف') }}
             </p>
         </div>
 
@@ -164,10 +170,10 @@
                     <span class="step-number">1</span>
                 </div>
                 <h3 class="feature-title">
-                    أنشئ حسابك
+                    {{ get_translation('landing.how_it_works.step1.title', 'أنشئ حسابك') }}
                 </h3>
                 <p class="feature-description">
-                    سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.
+                    {{ get_translation('landing.how_it_works.step1.desc', 'سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية.') }}
                 </p>
             </div>
 
@@ -177,10 +183,10 @@
                     <span class="step-number">2</span>
                 </div>
                 <h3 class="feature-title">
-                    اربط حساباتك
+                    {{ get_translation('landing.how_it_works.step2.title', 'اربط حساباتك') }}
                 </h3>
                 <p class="feature-description">
-                    أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.
+                    {{ get_translation('landing.how_it_works.step2.desc', 'أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد.') }}
                 </p>
             </div>
 
@@ -190,10 +196,10 @@
                     <span class="step-number">3</span>
                 </div>
                 <h3 class="feature-title">
-                    ابدأ النشر
+                    {{ get_translation('landing.how_it_works.step3.title', 'ابدأ النشر') }}
                 </h3>
                 <p class="feature-description">
-                    استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.
+                    {{ get_translation('landing.how_it_works.step3.desc', 'استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك.') }}
                 </p>
             </div>
         </div>
@@ -205,10 +211,10 @@
     <div class="container">
         <div class="text-center mb-8">
             <h2 class="section-title" style="color: white;">
-                {{ get_translation('landing.nav.testimonials', 'آراء العملاء') }}
+                {{ get_translation('landing.testimonials.title', 'آراء العملاء') }}
             </h2>
             <p class="section-subtitle" style="color: rgba(255,255,255,0.8);">
-                ماذا يقول الناشرون عن منصتنا
+                {{ get_translation('landing.testimonials.subtitle', 'ماذا يقول الناشرون عن منصتنا') }}
             </p>
         </div>
 
@@ -219,10 +225,10 @@
                     <i class="fas fa-user" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title" style="color: white;">
-                    أحمد محمد
+                    {{ get_translation('landing.testimonials.testimonial1.name', 'أحمد محمد') }}
                 </h3>
                 <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                    "المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%."
+                    "{{ get_translation('landing.testimonials.testimonial1.text', 'المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%.') }}"
                 </p>
                 <div style="color: gold; margin-top: 15px;">
                     <i class="fas fa-star"></i>
@@ -239,10 +245,10 @@
                     <i class="fas fa-user" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title" style="color: white;">
-                    سارة عبدالله
+                    {{ get_translation('landing.testimonials.testimonial2.name', 'سارة عبدالله') }}
                 </h3>
                 <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                    "وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً."
+                    "{{ get_translation('landing.testimonials.testimonial2.text', 'وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً.') }}"
                 </p>
                 <div style="color: gold; margin-top: 15px;">
                     <i class="fas fa-star"></i>
@@ -259,10 +265,10 @@
                     <i class="fas fa-user" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title" style="color: white;">
-                    خالد المصري
+                    {{ get_translation('landing.testimonials.testimonial3.name', 'خالد المصري') }}
                 </h3>
                 <p class="feature-description" style="color: rgba(255,255,255,0.9); font-style: italic;">
-                    "منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة."
+                    "{{ get_translation('landing.testimonials.testimonial3.text', 'منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة.') }}"
                 </p>
                 <div style="color: gold; margin-top: 15px;">
                     <i class="fas fa-star"></i>
@@ -281,10 +287,10 @@
     <div class="container">
         <div class="text-center mb-8">
             <h2 class="section-title">
-                خطط الأسعار
+                {{ get_translation('landing.pricing.title', 'خطط الأسعار') }}
             </h2>
             <p class="section-subtitle">
-                اختر الخطة التي تناسب احتياجاتك
+                {{ get_translation('landing.pricing.subtitle', 'اختر الخطة التي تناسب احتياجاتك') }}
             </p>
         </div>
 
@@ -295,45 +301,53 @@
                     <i class="fas fa-user" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title">
-                    الأساسية
+                    {{ get_translation('landing.pricing.basic', 'الأساسية') }}
                 </h3>
                 <div style="text-align: center; margin: 20px 0;">
-                    <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">مجاناً</span>
-                    <div style="color: var(--text-secondary);">للبدء</div>
+                    <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">
+                        {{ get_translation('landing.pricing.free', 'مجاناً') }}
+                    </span>
+                    <div style="color: var(--text-secondary);">
+                        {{ get_translation('landing.pricing.for_start', 'للبدء') }}
+                    </div>
                 </div>
                 <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                    <li style="padding: 8px 0;">✓ 3 حسابات اجتماعية</li>
-                    <li style="padding: 8px 0;">✓ 50 منشور شهرياً</li>
-                    <li style="padding: 8px 0;">✓ تحليلات أساسية</li>
-                    <li style="padding: 8px 0;">✓ دعم عبر البريد الإلكتروني</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.basic.0', '3 حسابات اجتماعية') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.basic.1', '50 منشور شهرياً') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.basic.2', 'تحليلات أساسية') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.basic.3', 'دعم عبر البريد الإلكتروني') }}</li>
                 </ul>
                 <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
-                    ابدأ مجاناً
+                    {{ get_translation('landing.pricing.start_free', 'ابدأ مجاناً') }}
                 </a>
             </div>
 
             <!-- الخطة الاحترافية -->
             <div class="feature-card pricing-card popular fade-in">
-                <div class="popular-badge">الأكثر شيوعاً</div>
+                <div class="popular-badge">
+                    {{ get_translation('landing.pricing.most_popular', 'الأكثر شيوعاً') }}
+                </div>
                 <div class="feature-icon" style="background: var(--primary-500);">
                     <i class="fas fa-crown" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title">
-                    الاحترافية
+                    {{ get_translation('landing.pricing.professional', 'الاحترافية') }}
                 </h3>
                 <div style="text-align: center; margin: 20px 0;">
                     <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">49</span>
-                    <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
+                    <span style="color: var(--text-secondary);">
+                        {{ get_translation('landing.pricing.monthly', 'ر.س/شهرياً') }}
+                    </span>
                 </div>
                 <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                    <li style="padding: 8px 0;">✓ 10 حسابات اجتماعية</li>
-                    <li style="padding: 8px 0;">✓ منشورات غير محدودة</li>
-                    <li style="padding: 8px 0;">✓ تحليلات متقدمة</li>
-                    <li style="padding: 8px 0;">✓ أتمتة ذكية</li>
-                    <li style="padding: 8px 0;">✓ دعم فني مميز</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.professional.0', '10 حسابات اجتماعية') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.professional.1', 'منشورات غير محدودة') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.professional.2', 'تحليلات متقدمة') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.professional.3', 'أتمتة ذكية') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.professional.4', 'دعم فني مميز') }}</li>
                 </ul>
                 <a href="/login?lang={{ lang }}" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
-                    جرب مجاناً
+                    {{ get_translation('landing.pricing.try_free', 'جرب مجاناً') }}
                 </a>
             </div>
 
@@ -343,21 +357,23 @@
                     <i class="fas fa-building" style="color: white;"></i>
                 </div>
                 <h3 class="feature-title">
-                    المؤسسية
+                    {{ get_translation('landing.pricing.enterprise', 'المؤسسية') }}
                 </h3>
                 <div style="text-align: center; margin: 20px 0;">
                     <span style="font-size: 2.5rem; font-weight: bold; color: var(--primary-500);">99</span>
-                    <span style="color: var(--text-secondary);">ر.س/شهرياً</span>
+                    <span style="color: var(--text-secondary);">
+                        {{ get_translation('landing.pricing.monthly', 'ر.س/شهرياً') }}
+                    </span>
                 </div>
                 <ul style="text-align: right; list-style: none; padding: 0; margin: 20px 0;">
-                    <li style="padding: 8px 0;">✓ حسابات غير محدودة</li>
-                    <li style="padding: 8px 0;">✓ فريق عمل متكامل</li>
-                    <li style="padding: 8px 0;">✓ تقارير مخصصة</li>
-                    <li style="padding: 8px 0;">✓ API متكامل</li>
-                    <li style="padding: 8px 0;">✓ دعم فني 24/7</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.enterprise.0', 'حسابات غير محدودة') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.enterprise.1', 'فريق عمل متكامل') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.enterprise.2', 'تقارير مخصصة') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.enterprise.3', 'API متكامل') }}</li>
+                    <li style="padding: 8px 0;">✓ {{ get_translation('landing.pricing.features.enterprise.4', 'دعم فني 24/7') }}</li>
                 </ul>
                 <a href="/login?lang={{ lang }}" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">
-                    اتصل بنا
+                    {{ get_translation('landing.pricing.contact_us', 'اتصل بنا') }}
                 </a>
             </div>
         </div>
@@ -392,10 +408,10 @@
                 <div class="logo-icon">
                     <i class="fas fa-paper-plane"></i>
                 </div>
-                <span>نشرتي</span>
+                <span>{{ get_translation('platform_name', 'نشرتي') }}</span>
             </div>
             <div class="footer-text">
-                © 2024 نشرتي. {{ get_translation('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
+                © 2024 {{ get_translation('platform_name', 'نشرتي') }}. {{ get_translation('landing.footer.copyright', 'جميع الحقوق محفوظة') }}
             </div>
         </div>
     </div>
