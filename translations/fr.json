@@ -115,14 +115,12 @@
       "login": "Connexion",
       "get_started": "Commencer gratuitement"
     },
-    
     "hero": {
       "title": "Plateforme des Éditeurs Professionnels",
       "subtitle": "Votre interface intelligente pour communiquer avec votre audience de manière efficace. Des outils intégrés pour transformer vos abonnés en une communauté interactive.",
       "start_journey": "Commencez votre voyage maintenant",
       "watch_demo": "Voir la démo"
     },
-    
     "features": {
       "title": "Tout ce dont les éditeurs professionnels ont besoin",
       "subtitle": "Des outils intégrés spécialement conçus pour répondre aux besoins des éditeurs et créateurs de contenu",
@@ -185,28 +183,28 @@
     },
     "pricing": {
       "title": "Plans tarifaires",
-      "subtitle": "Choisissez le plan qui correspond à vos besoins",
+      "subtitle": "Choisissez le plan qui correspond à vos besoins", 
       "basic": "Basique",
       "professional": "Professionnel",
-      "enterprise": "Entreprise",
+      "enterprise": "Entreprise", 
       "free": "Gratuit",
       "for_start": "Pour démarrer",
       "monthly": "Mensuel",
       "most_popular": "Le plus populaire",
       "start_free": "Commencer gratuitement",
-      "try_free": "Essayer gratuitement",
+      "try_free": "Essayer gratuitement", 
       "contact_us": "Contactez-nous",
       "features": {
         "basic": [
           "3 comptes sociaux",
-          "50 publications mensuelles",
+          "50 publications mensuelles", 
           "Analyses de base",
           "Support par email"
         ],
         "professional": [
           "10 comptes sociaux",
           "Publications illimitées",
-          "Analyses avancées",
+          "Analyses avancées", 
           "Automatisation intelligente",
           "Support prioritaire"
         ],
@@ -214,7 +212,7 @@
           "Comptes illimités",
           "Collaboration d'équipe",
           "Rapports personnalisés",
-          "Intégration API",
+          "Intégration API", 
           "Support technique 24/7"
         ]
       }

@@ -183,14 +183,15 @@
         "text": "A comprehensive platform that brings together everything a professional publisher needs. Technical support is excellent and updates are continuous."
       }
     },
+    
     "pricing": {
       "title": "Pricing Plans",
       "subtitle": "Choose the plan that fits your needs",
-      "basic": "Basic",
+      "basic": "Basic", 
       "professional": "Professional",
       "enterprise": "Enterprise",
       "free": "Free",
-      "for_start": "For Start",
+      "for_start": "For Start", 
       "monthly": "Monthly",
       "most_popular": "Most Popular",
       "start_free": "Start Free",
@@ -199,7 +200,7 @@
       "features": {
         "basic": [
           "3 social accounts",
-          "50 monthly posts",
+          "50 monthly posts", 
           "Basic analytics",
           "Email support"
         ],
@@ -207,7 +208,7 @@
           "10 social accounts",
           "Unlimited posts",
           "Advanced analytics",
-          "Smart automation",
+          "Smart automation", 
           "Priority support"
         ],
         "enterprise": [
