@@ -1,54 +1,6 @@
 /* ===== LOGIN PAGE SPECIFIC STYLES ===== */
-.navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 0.8rem 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-.nav-logo a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.nav-menu {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.nav-link:hover, .nav-link.active {
-    background-color: rgba(255,255,255,0.2);
-}
-
-.user-greeting {
-    color: white;
-    font-style: italic;
-}
-
 .container {
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 /* تطبيق الاتجاه فوراً في CSS */
@@ -97,10 +49,6 @@ body {
 /* دعم RTL للغة العربية */
 [dir="rtl"] .container {
     text-align: right;
-}
-
-[dir="rtl"] .language-switcher {
-    text-align: left;
 }
 
 [dir="rtl"] .input-group {
@@ -226,15 +174,6 @@ html[dir="rtl"] .language-dropdown {
     font-size: 1.2rem;
     opacity: 0.9;
     margin-bottom: 15px;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 8px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
 }
 
 .dashboard {
@@ -457,14 +396,6 @@ html[dir="rtl"] .btn-social {
     font-size: 1.2em;
 }
 
-.language-change-section,
-.link-social-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 25px;
-}
-
 .form-group {
     margin-bottom: 20px;
 }
@@ -662,14 +593,6 @@ html[dir="rtl"] .account-card {
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
-    .nav-menu {
-        gap: 1rem;
-    }
-    
-    .nav-container {
-        padding: 0 1rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -679,14 +602,5 @@ html[dir="rtl"] .account-card {
     
     .tab {
         padding: 12px 20px;
-    }
-    
-    .nav-menu {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .language-bar {
-        top: 120px;
     }
 }
