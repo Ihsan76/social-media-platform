@@ -195,26 +195,27 @@
       "try_free": "Essayer gratuitement", 
       "contact_us": "Contactez-nous",
       "features": {
-        "basic": [
-          "3 comptes sociaux",
-          "50 publications mensuelles", 
-          "Analyses de base",
-          "Support par email"
-        ],
-        "professional": [
-          "10 comptes sociaux",
-          "Publications illimitées",
-          "Analyses avancées", 
-          "Automatisation intelligente",
-          "Support prioritaire"
-        ],
-        "enterprise": [
-          "Comptes illimités",
-          "Collaboration d'équipe",
-          "Rapports personnalisés",
-          "Intégration API", 
-          "Support technique 24/7"
-        ]
+      "basic": {
+      "social_accounts": "3 comptes sociaux",
+      "monthly_posts": "50 publications mensuelles", 
+      "analytics": "Analyses de base",
+      "email_support": "Support par email"
+    },
+    "professional": {
+      "social_accounts": "10 comptes sociaux",
+      "unlimited_posts": "Publications illimitées",
+      "advanced_analytics": "Analyses avancées", 
+      "automation": "Automatisation intelligente",
+      "priority_support": "Support prioritaire"
+    },
+    "enterprise": {
+      "unlimited_accounts": "Comptes illimités",
+      "team_collaboration": "Collaboration d'équipe",
+      "custom_reports": "Rapports personnalisés",
+      "api_integration": "Intégration API", 
+      "technical_support": "Support technique 24/7"
+    }
+      
       }
     },
     "cta": {

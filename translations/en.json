@@ -198,26 +198,27 @@
       "try_free": "Try Free",
       "contact_us": "Contact Us",
       "features": {
-       "basic": [
-          "3 social accounts",
-          "50 monthly posts", 
-          "Basic analytics",
-          "Email support"
-        ],
-        "professional": [
-          "10 social accounts",
-          "Unlimited posts",
-          "Advanced analytics",
-          "Smart automation", 
-          "Priority support"
-        ],
-        "enterprise": [
-          "Unlimited accounts",
-          "Team collaboration",
-          "Custom reports",
-          "API integration",
-          "24/7 technical support"
-        ]
+       "basic": {
+      "social_accounts": "3 social accounts",
+      "monthly_posts": "50 monthly posts", 
+      "analytics": "Basic analytics",
+      "email_support": "Email support"
+    },
+    "professional": {
+      "social_accounts": "10 social accounts",
+      "unlimited_posts": "Unlimited posts",
+      "advanced_analytics": "Advanced analytics",
+      "automation": "Smart automation", 
+      "priority_support": "Priority support"
+    },
+    "enterprise": {
+      "unlimited_accounts": "Unlimited accounts",
+      "team_collaboration": "Team collaboration",
+      "custom_reports": "Custom reports",
+      "api_integration": "API integration",
+      "technical_support": "24/7 technical support"
+    }
+       
       }
     },
     "cta": {

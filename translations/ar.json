@@ -195,26 +195,27 @@
       "try_free": "جرب مجاناً",
       "contact_us": "اتصل بنا",
       "features": {
-        "basic": [
-          "3 حسابات اجتماعية",
-          "50 منشور شهرياً",
-          "تحليلات أساسية",
-          "دعم عبر البريد الإلكتروني"
-        ],
-        "professional": [
-          "10 حسابات اجتماعية", 
-          "منشورات غير محدودة",
-          "تحليلات متقدمة",
-          "أتمتة ذكية",
-          "دعم فني مميز"
-        ],
-        "enterprise": [
-          "حسابات غير محدودة",
-          "فريق عمل متكامل",
-          "تقارير مخصصة",
-          "API متكامل",
-          "دعم فني 24/7"
-        ]
+    "basic": {
+      "social_accounts": "3 حسابات اجتماعية",
+      "monthly_posts": "50 منشور شهرياً",
+      "analytics": "تحليلات أساسية",
+      "email_support": "دعم عبر البريد الإلكتروني"
+    },
+    "professional": {
+      "social_accounts": "10 حسابات اجتماعية",
+      "unlimited_posts": "منشورات غير محدودة",
+      "advanced_analytics": "تحليلات متقدمة",
+      "automation": "أتمتة ذكية",
+      "priority_support": "دعم فني مميز"
+    },
+    "enterprise": {
+      "unlimited_accounts": "حسابات غير محدودة",
+      "team_collaboration": "فريق عمل متكامل",
+      "custom_reports": "تقارير مخصصة",
+      "api_integration": "API متكامل",
+      "technical_support": "دعم فني 24/7"
+    }
+    
       }
     },
     "cta": {
