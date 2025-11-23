@@ -1,5 +1,7 @@
 {
-    "welcome": "Bienvenue! La plateforme de gestion des médias sociaux fonctionne avec succès! 🚀",
+  "home": "Accueil",
+  "dashboard": "Tableau de bord",
+  "welcome": "Bienvenue! La plateforme de gestion des médias sociaux  🚀",
     "active": "Actif",
     "healthy": "Sain",
     "service_normal": "Le service fonctionne normalement",
@@ -102,26 +104,7 @@
     "register_success": "Inscription réussie",
     "accounts_loaded": "Comptes chargés avec succès",
     "landing": {
-        "nav": {
-            "features": "Fonctionnalités",
-            "how_it_works": "Comment ça marche",
-            "testimonials": "Témoignages",
-            "login": "Connexion",
-            "get_started": "Commencer gratuitement"
-        },
-        "hero": {
-            "title": "Plateforme des Éditeurs Professionnels",
-            "subtitle": "Votre interface intelligente pour communiquer avec votre audience de manière plus efficace et élégante. Des outils intégrés pour transformer vos abonnés en une communauté interactive.",
-            "start_journey": "Commencez votre voyage maintenant",
-            "watch_demo": "Voir la démo"
-        },
-        "features": {
-            "title": "Tout ce dont les éditeurs professionnels ont besoin",
-            "subtitle": "Des outils intégrés spécialement conçus pour répondre aux besoins des éditeurs et créateurs de contenu",
-            "analytics": {
-                "title": "Analyses avancées",
-                "desc": "Comprenez votre audience plus profondément avec des statistiques détaillées et des analyses intelligentes qui vous aident à développer votre stratégie."
-            },
+        
             "targeting": {
                 "title": "Ciblage précis",
                 "desc": "Atteignez le bon public au bon moment en utilisant des outils de ciblage intelligents."
@@ -129,16 +112,64 @@
             "engagement": {
                 "title": "Engagement réel",
                 "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
-            }
-        },
-        "cta": {
-            "title": "Prêt à commencer votre voyage ?",
-            "subtitle": "Rejoignez des milliers d'éditeurs qui ont transformé leurs abonnés en une communauté interactive",
-            "button": "Inscrivez-vous gratuitement"
-        },
-        "footer": {
-            "tagline": "Plateforme des Éditeurs Professionnels",
-            "copyright": "Tous droits réservés"
-        }
+            },
+        
+        
+    "nav": {
+      "features": "Fonctionnalités",
+      "how_it_works": "Comment ça marche", 
+      "testimonials": "Témoignages",
+      "pricing": "Tarifs",
+      "login": "Connexion",
+      "get_started": "Commencer gratuitement"
+    },
+    "hero": {
+      "title": "Plateforme des Éditeurs Professionnels",
+      "subtitle": "Votre interface intelligente pour communiquer avec votre audience de manière plus efficace et élégante. Des outils intégrés pour transformer vos abonnés en une communauté interactive.",
+      "start_journey": "Commencez votre voyage maintenant",
+      "watch_demo": "Voir la démo"
+    },
+    "features": {
+      "title": "Tout ce dont les éditeurs professionnels ont besoin",
+      "subtitle": "Des outils intégrés spécialement conçus pour répondre aux besoins des éditeurs et créateurs de contenu",
+      "analytics": {
+        "title": "Analyses avancées",
+        "desc": "Comprenez votre audience plus profondément avec des statistiques détaillées et des analyses intelligentes qui vous aident à développer votre stratégie."
+      },
+      "targeting": {
+        "title": "Ciblage précis",
+        "desc": "Atteignez le bon public au bon moment en utilisant des outils de ciblage intelligents."
+      },
+      "engagement": {
+        "title": "Engagement réel",
+        "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
+      }
+    },
+    "how_it_works": {
+      "title": "Comment fonctionne la plateforme",
+      "subtitle": "3 étapes simples pour commencer votre voyage d'édition professionnelle"
+    },
+    "pricing": {
+      "title": "Plans tarifaires",
+      "subtitle": "Choisissez le plan qui correspond à vos besoins",
+      "basic": "Basique",
+      "professional": "Professionnel",
+      "enterprise": "Entreprise",
+      "free": "Gratuit", 
+      "monthly": "Mensuel",
+      "most_popular": "Le plus populaire",
+      "start_free": "Commencer gratuitement",
+      "try_free": "Essayer gratuitement",
+      "contact_us": "Contactez-nous"
+    },
+    "cta": {
+      "title": "Prêt à commencer votre voyage ?",
+      "subtitle": "Rejoignez des milliers d'éditeurs qui ont transformé leurs abonnés en une communauté interactive",
+      "button": "Inscrivez-vous gratuitement"
+    },
+    "footer": {
+      "tagline": "Plateforme des Éditeurs Professionnels",
+      "copyright": "Tous droits réservés"
     }
+  }
 }
