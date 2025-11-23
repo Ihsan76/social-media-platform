@@ -1,199 +1,114 @@
 {
   "platform_name": "نشرتي",
   "pricing": "الأسعار",
-    "welcome": "مرحباً! منصة إدارة  🚀",
-    "active": "نشط",
-    "home": "الرئيسية",
-    "dashboard": "لوحة التحكم",
-    "healthy": "صحي",
-    "service_normal": "الخدمة تعمل بشكل طبيعي",
-    "all_fields_required": "جميع الحقول مطلوبة",
-    "password_min_length": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
-    "email_exists": "البريد الإلكتروني مستخدم مسبقاً",
-    "account_created": "تم إنشاء الحساب بنجاح!",
-    "login_success": "تم تسجيل الدخول بنجاح!",
-    "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
-    "unauthorized": "غير مصرح بالوصول",
-    "user_not_found": "المستخدم غير موجود",
-    "profile_loaded": "تم تحميل الملف الشخصي",
-    "social_connected": "تم ربط الحساب الاجتماعي بنجاح!",
-    "platform_not_supported": "المنصة غير مدعومة",
-    "server_error": "حدث خطأ في السيرفر",
-    "register": "إنشاء حساب",
-    "login": "تسجيل الدخول",
-    "social_login": "تسجيل الدخول الاجتماعي",
-    "profile": "الملف الشخصي",
-    "social_accounts": "الحسابات الاجتماعية",
-    "email": "البريد الإلكتروني",
-    "username": "اسم المستخدم",
-    "password": "كلمة المرور",
-    "platform": "المنصة",
-    "social_id": "المعرف الاجتماعي",
-    "link_account": "ربط الحساب",
-    "manage_accounts": "إدارة الحسابات",
-    "connect_account": "ربط حساب جديد",
-    "connected_accounts": "الحسابات المربوطة",
-    "no_accounts": "لا توجد حسابات مربوطة بعد",
-    "language": "اللغة",
-    "logout": "تسجيل الخروج",
-    "register_with_email": "التسجيل بالبريد الإلكتروني",
-    "login_with_email": "تسجيل الدخول بالبريد الإلكتروني",
-    "register_with_social": "التسجيل باستخدام الحسابات الاجتماعية",
-    "login_with_social": "تسجيل الدخول باستخدام الحسابات الاجتماعية",
-    "link_additional_social": "ربط حسابات اجتماعية إضافية",
-    "connect_new_account": "ربط حساب جديد (لإدارة المحتوى)",
-    "choose_platform": "اختر المنصة",
-    "enter_username": "أدخل اسم المستخدم",
-    "enter_email": "أدخل بريدك الإلكتروني",
-    "enter_password": "أدخل كلمة المرور",
-    "enter_social_id": "أدخل المعرف الخاص بك في المنصة",
-    "enter_access_token": "أدخل رمز الوصول",
-    "social_username": "اسم المستخدم في المنصة",
-    "or": "أو",
-    "update_profile": "تحديث الملف الشخصي",
-    "refresh_list": "تحديث القائمة",
-    "system_working": "النظام يعمل بشكل طبيعي",
-    "system_issue": "هناك مشكلة في النظام",
-    "cannot_connect": "تعذر الاتصال بالنظام",
-    "disconnected": "تم تسجيل الخروج بنجاح",
-    "version": "الإصدار",
-    "multi_language_system": "نظام متعدد اللغات",
-    "auth_method": "طريقة التسجيل",
-    "creation_date": "تاريخ الإنشاء",
-    "status": "الحالة",
-    "timezone": "المنطقة الزمنية",
-    "linked_social_accounts": "حسابات اجتماعية مرتبطة",
-    "posts": "منشورات",
-    "followers": "متابعون",
-    "engagement": "تفاعل",
-    "google": "جوجل",
-    "twitter": "تويتر",
-    "facebook": "فيسبوك",
-    "instagram": "إنستغرام",
-    "github": "جيت هاب",
-    "linkedin": "لينكدإن",
-    "register_google": "التسجيل باستخدام Google",
-    "register_twitter": "التسجيل باستخدام Twitter",
-    "register_facebook": "التسجيل باستخدام Facebook",
-    "register_instagram": "التسجيل باستخدام Instagram",
-    "register_github": "التسجيل باستخدام GitHub",
-    "login_google": "الدخول باستخدام Google",
-    "login_twitter": "الدخول باستخدام Twitter",
-    "login_facebook": "الدخول باستخدام Facebook",
-    "login_instagram": "الدخول باستخدام Instagram",
-    "login_github": "الدخول باستخدام GitHub",
-    "social_platforms": "المنصات الاجتماعية",
-    "user_information": "معلومات المستخدم",
-    "social_accounts_count": "عدد الحسابات الاجتماعية",
-    "change_language": "تغيير اللغة",
-    "current_language": "اللغة الحالية",
-    "social_media_platform": "منصة الوسائط الاجتماعية",
-    "login_with_email_social": "سجل الدخول باستخدام بريدك الإلكتروني أو الحسابات الاجتماعية",
-    "checking_system": "جاري فحص النظام...",
-    "total_users": "إجمالي المستخدمين",
-    "active_sessions": "الجلسات النشطة",
-    "system_status": "حالة النظام",
-    "preferred_language": "اللغة المفضلة",
-    "characters_min": "أحرف على الأقل",
-    "test_data": "بيانات اختبار للعرض التوضيحي",
-    "demo_accounts": "حسابات تجريبية",
-    "user_statistics": "إحصائيات المستخدم",
-    "total_followers": "إجمالي المتابعين",
-    "total_posts": "إجمالي المنشورات",
-    "select_language": "اختر اللغة",
-    "access_token": "رمز الوصول",
-    "connecting": "جاري الاتصال بـ",
-    "register_success": "تم التسجيل بنجاح",
-    "accounts_loaded": "تم تحميل الحسابات",
+  "welcome": "مرحباً! منصة إدارة الوسائط الاجتماعية تعمل بنجاح! 🚀",
+  "active": "نشط",
+  "home": "الرئيسية",
+  "dashboard": "لوحة التحكم",
+  "healthy": "صحي",
+  "service_normal": "الخدمة تعمل بشكل طبيعي",
+  "all_fields_required": "جميع الحقول مطلوبة",
+  "password_min_length": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+  "email_exists": "البريد الإلكتروني مستخدم مسبقاً",
+  "account_created": "تم إنشاء الحساب بنجاح!",
+  "login_success": "تم تسجيل الدخول بنجاح!",
+  "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "unauthorized": "غير مصرح بالوصول",
+  "user_not_found": "المستخدم غير موجود",
+  "profile_loaded": "تم تحميل الملف الشخصي",
+  "social_connected": "تم ربط الحساب الاجتماعي بنجاح!",
+  "platform_not_supported": "المنصة غير مدعومة",
+  "server_error": "حدث خطأ في السيرفر",
+  "register": "إنشاء حساب",
+  "login": "تسجيل الدخول",
+  "social_login": "تسجيل الدخول الاجتماعي",
+  "profile": "الملف الشخصي",
+  "social_accounts": "الحسابات الاجتماعية",
+  "email": "البريد الإلكتروني",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "platform": "المنصة",
+  "social_id": "المعرف الاجتماعي",
+  "link_account": "ربط الحساب",
+  "manage_accounts": "إدارة الحسابات",
+  "connect_account": "ربط حساب جديد",
+  "connected_accounts": "الحسابات المربوطة",
+  "no_accounts": "لا توجد حسابات مربوطة بعد",
+  "language": "اللغة",
+  "logout": "تسجيل الخروج",
+  "register_with_email": "التسجيل بالبريد الإلكتروني",
+  "login_with_email": "تسجيل الدخول بالبريد الإلكتروني",
+  "register_with_social": "التسجيل باستخدام الحسابات الاجتماعية",
+  "login_with_social": "تسجيل الدخول باستخدام الحسابات الاجتماعية",
+  "link_additional_social": "ربط حسابات اجتماعية إضافية",
+  "connect_new_account": "ربط حساب جديد (لإدارة المحتوى)",
+  "choose_platform": "اختر المنصة",
+  "enter_username": "أدخل اسم المستخدم",
+  "enter_email": "أدخل بريدك الإلكتروني",
+  "enter_password": "أدخل كلمة المرور",
+  "enter_social_id": "أدخل المعرف الخاص بك في المنصة",
+  "enter_access_token": "أدخل رمز الوصول",
+  "social_username": "اسم المستخدم في المنصة",
+  "or": "أو",
+  "update_profile": "تحديث الملف الشخصي",
+  "refresh_list": "تحديث القائمة",
+  "system_working": "النظام يعمل بشكل طبيعي",
+  "system_issue": "هناك مشكلة في النظام",
+  "cannot_connect": "تعذر الاتصال بالنظام",
+  "disconnected": "تم تسجيل الخروج بنجاح",
+  "version": "الإصدار",
+  "multi_language_system": "نظام متعدد اللغات",
+  "auth_method": "طريقة التسجيل",
+  "creation_date": "تاريخ الإنشاء",
+  "status": "الحالة",
+  "timezone": "المنطقة الزمنية",
+  "linked_social_accounts": "حسابات اجتماعية مرتبطة",
+  "posts": "منشورات",
+  "followers": "متابعون",
+  "engagement": "تفاعل",
+  "google": "جوجل",
+  "twitter": "تويتر",
+  "facebook": "فيسبوك",
+  "instagram": "إنستغرام",
+  "github": "جيت هاب",
+  "linkedin": "لينكدإن",
+  "register_google": "التسجيل باستخدام Google",
+  "register_twitter": "التسجيل باستخدام Twitter",
+  "register_facebook": "التسجيل باستخدام Facebook",
+  "register_instagram": "التسجيل باستخدام Instagram",
+  "register_github": "التسجيل باستخدام GitHub",
+  "login_google": "الدخول باستخدام Google",
+  "login_twitter": "الدخول باستخدام Twitter",
+  "login_facebook": "الدخول باستخدام Facebook",
+  "login_instagram": "الدخول باستخدام Instagram",
+  "login_github": "الدخول باستخدام GitHub",
+  "social_platforms": "المنصات الاجتماعية",
+  "user_information": "معلومات المستخدم",
+  "social_accounts_count": "عدد الحسابات الاجتماعية",
+  "change_language": "تغيير اللغة",
+  "current_language": "اللغة الحالية",
+  "social_media_platform": "منصة الوسائط الاجتماعية",
+  "login_with_email_social": "سجل الدخول باستخدام بريدك الإلكتروني أو الحسابات الاجتماعية",
+  "checking_system": "جاري فحص النظام...",
+  "total_users": "إجمالي المستخدمين",
+  "active_sessions": "الجلسات النشطة",
+  "system_status": "حالة النظام",
+  "preferred_language": "اللغة المفضلة",
+  "characters_min": "أحرف على الأقل",
+  "test_data": "بيانات اختبار للعرض التوضيحي",
+  "demo_accounts": "حسابات تجريبية",
+  "user_statistics": "إحصائيات المستخدم",
+  "total_followers": "إجمالي المتابعين",
+  "total_posts": "إجمالي المنشورات",
+  "select_language": "اختر اللغة",
+  "access_token": "رمز الوصول",
+  "connecting": "جاري الاتصال بـ",
+  "register_success": "تم التسجيل بنجاح",
+  "accounts_loaded": "تم تحميل الحسابات",
   "landing": {
-    "how_it_works": {
-      "title": "كيف تعمل المنصة",
-      "subtitle": "3 خطوات بسيطة لبدء رحلتك في النشر المحترف",
-      "step1": {
-        "title": "أنشئ حسابك",
-        "desc": "سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية."
-      },
-      "step2": {
-        "title": "اربط حساباتك", 
-        "desc": "أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد."
-      },
-      "step3": {
-        "title": "ابدأ النشر",
-        "desc": "استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك."
-      }
-    },
-    
-    "testimonials": {
-      "title": "آراء العملاء",
-      "subtitle": "ماذا يقول الناشرون عن منصتنا",
-      "testimonial1": {
-        "name": "أحمد محمد",
-        "text": "المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%."
-      },
-      "testimonial2": {
-        "name": "سارة عبدالله", 
-        "text": "وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً."
-      },
-      "testimonial3": {
-        "name": "خالد المصري",
-        "text": "منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة."
-      }
-    },
-    
-    "pricing": {
-      "title": "خطط الأسعار",
-      "subtitle": "اختر الخطة التي تناسب احتياجاتك",
-      "basic": "الأساسية",
-      "professional": "الاحترافية",
-      "enterprise": "المؤسسية",
-      "free": "مجاناً",
-      "for_start": "للبدء",
-      "monthly": "شهرياً",
-      "most_popular": "الأكثر شيوعاً",
-      "start_free": "ابدأ مجاناً",
-      "try_free": "جرب مجاناً", 
-      "contact_us": "اتصل بنا",
-      "features": {
-        "basic": [
-          "3 حسابات اجتماعية",
-          "50 منشور شهرياً", 
-          "تحليلات أساسية",
-          "دعم عبر البريد الإلكتروني"
-        ],
-        "professional": [
-          "10 حسابات اجتماعية",
-          "منشورات غير محدودة",
-          "تحليلات متقدمة", 
-          "أتمتة ذكية",
-          "دعم فني مميز"
-        ],
-        "enterprise": [
-          "حسابات غير محدودة",
-          "فريق عمل متكامل",
-          "تقارير مخصصة",
-          "API متكامل", 
-          "دعم فني 24/7"
-        ]
-      }
-    },
-    
-    "stats": {
-      "publishers": "ناشر",
-      "posts": "منشور", 
-      "engagement": "تفاعل"
-    },
-    "targeting": {
-        "title": "استهداف دقيق", 
-        "desc": "وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية."
-      },
-      "engagement": {
-        "title": "تفاعل حقيقي",
-        "desc": "حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين."
-      },
-    
-      "nav": {
+    "nav": {
       "features": "المميزات",
-      "how_it_works": "كيف تعمل", 
+      "how_it_works": "كيف تعمل",
       "testimonials": "آراء العملاء",
       "pricing": "الأسعار",
       "login": "تسجيل الدخول",
@@ -213,7 +128,7 @@
         "desc": "فهم جمهورك بشكل أعمق مع إحصائيات مفصلة وتحليلات ذكية تساعدك في تطوير استراتيجيتك."
       },
       "targeting": {
-        "title": "استهداف دقيق", 
+        "title": "استهداف دقيق",
         "desc": "وصل محتواك للجمهور المناسب في الوقت المناسب باستخدام أدوات الاستهداف الذكية."
       },
       "engagement": {
@@ -221,11 +136,83 @@
         "desc": "حوّل متابعيك إلى مجتمع متفاعل مع أدوات حوار وتفاعل مصممة خصيصاً للناشرين."
       }
     },
-    
+    "how_it_works": {
+      "title": "كيف تعمل المنصة",
+      "subtitle": "3 خطوات بسيطة لبدء رحلتك في النشر المحترف",
+      "step1": {
+        "title": "أنشئ حسابك",
+        "desc": "سجل في المنصة خلال دقائق باستخدام بريدك الإلكتروني أو حساباتك الاجتماعية."
+      },
+      "step2": {
+        "title": "اربط حساباتك",
+        "desc": "أضف حساباتك على وسائل التواصل الاجتماعي لإدارة محتواك من مكان واحد."
+      },
+      "step3": {
+        "title": "ابدأ النشر",
+        "desc": "استخدم أدواتنا الذكية لنشر المحتوى وتحليل الأداء وتطوير استراتيجيتك."
+      }
+    },
+    "testimonials": {
+      "title": "آراء العملاء",
+      "subtitle": "ماذا يقول الناشرون عن منصتنا",
+      "testimonial1": {
+        "name": "أحمد محمد",
+        "text": "المنصة غيرت طريقة تعاملي مع متابعيني. التحليلات المتقدمة ساعدتني في فهم جمهوري بشكل أفضل وزيادة التفاعل بنسبة 300%."
+      },
+      "testimonial2": {
+        "name": "سارة عبدالله",
+        "text": "وفرت علي ساعات من العمل اليومي. الأتمتة الذكية جعلت نشر المحتوى أسهل بكثير وأكثر تنظيماً."
+      },
+      "testimonial3": {
+        "name": "خالد المصري",
+        "text": "منصة شاملة تجمع كل ما يحتاجه الناشر المحترف. الدعم الفني ممتاز والتحديثات مستمرة."
+      }
+    },
+    "pricing": {
+      "title": "خطط الأسعار",
+      "subtitle": "اختر الخطة التي تناسب احتياجاتك",
+      "basic": "الأساسية",
+      "professional": "الاحترافية",
+      "enterprise": "المؤسسية",
+      "free": "مجاناً",
+      "for_start": "للبدء",
+      "monthly": "شهرياً",
+      "most_popular": "الأكثر شيوعاً",
+      "start_free": "ابدأ مجاناً",
+      "try_free": "جرب مجاناً",
+      "contact_us": "اتصل بنا",
+      "features": {
+        "basic": [
+          "3 حسابات اجتماعية",
+          "50 منشور شهرياً",
+          "تحليلات أساسية",
+          "دعم عبر البريد الإلكتروني"
+        ],
+        "professional": [
+          "10 حسابات اجتماعية",
+          "منشورات غير محدودة",
+          "تحليلات متقدمة",
+          "أتمتة ذكية",
+          "دعم فني مميز"
+        ],
+        "enterprise": [
+          "حسابات غير محدودة",
+          "فريق عمل متكامل",
+          "تقارير مخصصة",
+          "API متكامل",
+          "دعم فني 24/7"
+        ]
+      }
+    },
     "cta": {
       "title": "مستعد لبدء رحلتك؟",
       "subtitle": "انضم إلى آلاف الناشرين الذين حولوا متابعيهم إلى مجتمع متفاعل",
       "button": "سجل حسابك مجاناً"
+    },
+    "stats": {
+      "publishers": "ناشر",
+      "posts": "منشور",
+      "engagement": "تفاعل"
     },
     "footer": {
       "tagline": "منصة الناشرين المحترفين",
