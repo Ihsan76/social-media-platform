@@ -5,6 +5,12 @@
     margin-top: 0;
 }
 
+/* 🔥 إصلاح خلفية الصفحة الرئيسية */
+body {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
+    min-height: 100vh;
+}
+
 /* شريط اللغة */
 .language-bar {
     position: sticky;

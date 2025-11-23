@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+/* ===== COLOR SYSTEM ===== */
 :root {
     /* Color System */
     --primary-50: #f0f4ff;
