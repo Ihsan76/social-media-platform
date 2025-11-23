@@ -1,4 +1,6 @@
 {
+ "platform_name": "Nashrati",
+  "pricing": "Tarifs",
   "home": "Accueil",
   "dashboard": "Tableau de bord",
   "welcome": "Bienvenue! La plateforme de gestion des médias sociaux  🚀",
@@ -103,7 +105,85 @@
     "connecting": "Connexion à",
     "register_success": "Inscription réussie",
     "accounts_loaded": "Comptes chargés avec succès",
-    "landing": {
+     
+  "landing": { 
+    "how_it_works": {
+      "title": "Comment fonctionne la plateforme",
+      "subtitle": "3 étapes simples pour commencer votre voyage d'édition professionnelle",
+      "step1": {
+        "title": "Créez votre compte",
+        "desc": "Inscrivez-vous sur la plateforme en quelques minutes en utilisant votre email ou vos comptes sociaux."
+      },
+      "step2": {
+        "title": "Connectez vos comptes",
+        "desc": "Ajoutez vos comptes de médias sociaux pour gérer votre contenu depuis un seul endroit."
+      },
+      "step3": {
+        "title": "Commencez à publier",
+        "desc": "Utilisez nos outils intelligents pour publier du contenu, analyser les performances et développer votre stratégie."
+      }
+    },
+    
+    "testimonials": {
+      "title": "Témoignages clients",
+      "subtitle": "Ce que les éditeurs disent de notre plateforme",
+      "testimonial1": {
+        "name": "Ahmed Mohamed",
+        "text": "La plateforme a changé ma façon d'interagir avec mes abonnés. Les analyses avancées m'ont aidé à mieux comprendre mon audience et à augmenter l'engagement de 300%."
+      },
+      "testimonial2": {
+        "name": "Sarah Abdullah",
+        "text": "Elle m'a fait gagner des heures de travail quotidien. L'automatisation intelligente a rendu la publication de contenu beaucoup plus facile et organisée."
+      },
+      "testimonial3": {
+        "name": "Khaled Al-Masry",
+        "text": "Une plateforme complète qui rassemble tout ce dont un éditeur professionnel a besoin. Le support technique est excellent et les mises à jour sont continues."
+      }
+    },
+    
+    "pricing": {
+      "title": "Plans tarifaires",
+      "subtitle": "Choisissez le plan qui correspond à vos besoins",
+      "basic": "Basique",
+      "professional": "Professionnel",
+      "enterprise": "Entreprise",
+      "free": "Gratuit",
+      "for_start": "Pour démarrer",
+      "monthly": "Mensuel",
+      "most_popular": "Le plus populaire",
+      "start_free": "Commencer gratuitement",
+      "try_free": "Essayer gratuitement",
+      "contact_us": "Contactez-nous",
+      "features": {
+        "basic": [
+          "3 comptes sociaux",
+          "50 publications mensuelles",
+          "Analyses de base",
+          "Support par email"
+        ],
+        "professional": [
+          "10 comptes sociaux",
+          "Publications illimitées",
+          "Analyses avancées",
+          "Automatisation intelligente",
+          "Support prioritaire"
+        ],
+        "enterprise": [
+          "Comptes illimités",
+          "Collaboration d'équipe",
+          "Rapports personnalisés",
+          "Intégration API",
+          "Support technique 24/7"
+        ]
+      }
+    },
+    
+    "stats": {
+      "publishers": "Éditeurs",
+      "posts": "Publications",
+      "engagement": "Engagement"
+    },
+  
         
             "targeting": {
                 "title": "Ciblage précis",
@@ -144,23 +224,6 @@
         "title": "Engagement réel",
         "desc": "Transformez vos abonnés en une communauté interactive avec des outils de dialogue et d'interaction spécialement conçus pour les éditeurs."
       }
-    },
-    "how_it_works": {
-      "title": "Comment fonctionne la plateforme",
-      "subtitle": "3 étapes simples pour commencer votre voyage d'édition professionnelle"
-    },
-    "pricing": {
-      "title": "Plans tarifaires",
-      "subtitle": "Choisissez le plan qui correspond à vos besoins",
-      "basic": "Basique",
-      "professional": "Professionnel",
-      "enterprise": "Entreprise",
-      "free": "Gratuit", 
-      "monthly": "Mensuel",
-      "most_popular": "Le plus populaire",
-      "start_free": "Commencer gratuitement",
-      "try_free": "Essayer gratuitement",
-      "contact_us": "Contactez-nous"
     },
     "cta": {
       "title": "Prêt à commencer votre voyage ?",

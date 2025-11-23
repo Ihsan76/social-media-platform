@@ -1,4 +1,6 @@
 {
+  "platform_name": "Nashrati",
+  "pricing": "Pricing",
   "home": "Home",
   "dashboard": "Dashboard", 
   "welcome": "Welcome! Social Media Management 🚀",
@@ -103,7 +105,85 @@
     "connecting": "Connecting to",
     "register_success": "Registration successful",
     "accounts_loaded": "Accounts loaded successfully",
-    "landing": {
+    
+  "landing": {
+    "how_it_works": {
+      "title": "How the Platform Works",
+      "subtitle": "3 simple steps to start your professional publishing journey",
+      "step1": {
+        "title": "Create Your Account",
+        "desc": "Sign up on the platform in minutes using your email or social accounts."
+      },
+      "step2": {
+        "title": "Connect Your Accounts",
+        "desc": "Add your social media accounts to manage your content from one place."
+      },
+      "step3": {
+        "title": "Start Publishing",
+        "desc": "Use our smart tools to publish content, analyze performance, and develop your strategy."
+      }
+    },
+    
+    "testimonials": {
+      "title": "Customer Testimonials", 
+      "subtitle": "What publishers say about our platform",
+      "testimonial1": {
+        "name": "Ahmed Mohamed",
+        "text": "The platform changed how I interact with my followers. Advanced analytics helped me understand my audience better and increase engagement by 300%."
+      },
+      "testimonial2": {
+        "name": "Sarah Abdullah",
+        "text": "It saved me hours of daily work. Smart automation made content publishing much easier and more organized."
+      },
+      "testimonial3": {
+        "name": "Khaled Al-Masry", 
+        "text": "A comprehensive platform that brings together everything a professional publisher needs. Technical support is excellent and updates are continuous."
+      }
+    },
+    
+    "pricing": {
+      "title": "Pricing Plans",
+      "subtitle": "Choose the plan that fits your needs",
+      "basic": "Basic",
+      "professional": "Professional",
+      "enterprise": "Enterprise", 
+      "free": "Free",
+      "for_start": "For Start",
+      "monthly": "Monthly",
+      "most_popular": "Most Popular",
+      "start_free": "Start Free",
+      "try_free": "Try Free",
+      "contact_us": "Contact Us",
+      "features": {
+        "basic": [
+          "3 social accounts",
+          "50 monthly posts", 
+          "Basic analytics",
+          "Email support"
+        ],
+        "professional": [
+          "10 social accounts",
+          "Unlimited posts",
+          "Advanced analytics",
+          "Smart automation", 
+          "Priority support"
+        ],
+        "enterprise": [
+          "Unlimited accounts",
+          "Team collaboration",
+          "Custom reports",
+          "API integration",
+          "24/7 technical support"
+        ]
+      }
+    },
+    
+    "stats": {
+      "publishers": "Publishers",
+      "posts": "Posts",
+      "engagement": "Engagement" 
+    },
+
       "nav": {
       "features": "Features",
       "how_it_works": "How It Works",
@@ -143,24 +223,7 @@
         "desc": "Turn your followers into an interactive community with dialogue and interaction tools specifically designed for publishers."
       }
     },
-    "how_it_works": {
-      "title": "How the Platform Works", 
-      "subtitle": "3 simple steps to start your professional publishing journey"
-    },
-    "pricing": {
-      "title": "Pricing Plans",
-      "subtitle": "Choose the plan that fits your needs",
-      "basic": "Basic",
-      "professional": "Professional",
-      "enterprise": "Enterprise", 
-      "free": "Free",
-      "monthly": "Monthly",
-      "most_popular": "Most Popular",
-      "start_free": "Start Free",
-      "try_free": "Try Free", 
-      "contact_us": "Contact Us"
-    },
-    "cta": {
+     "cta": {
       "title": "Ready to Start Your Journey?",
       "subtitle": "Join thousands of publishers who have turned their followers into an interactive community",
       "button": "Register Your Account Free"
