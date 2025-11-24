@@ -19,6 +19,17 @@ def create_app():
     # إعداد JWT
     jwt = JWTManager(app)
     
+    @app.route('/')
+    def home():
+        return jsonify({
+            "message": "مرحباً بك في نظام إدارة وسائل التواصل الاجتماعي",
+            "endpoints": {
+                "health": "/api/health",
+                "version": "/api/version"
+            },
+            "documentation": "https://github.com/Ihsan76/social-media-platform"
+        })
+    
     @app.route('/api/health')
     def health_check():
         return jsonify({"status": "healthy", "message": "Social Media Platform API is running"})
@@ -31,5 +42,5 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    port = int(os.environ.get('PORT', 8080))  # تغيير إلى 8080 ليتناسب مع Railway
+    port = int(os.environ.get('PORT', 8080))
     app.run(debug=False, host='0.0.0.0', port=port)
