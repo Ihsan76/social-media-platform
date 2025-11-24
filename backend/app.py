@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, render_template_string
+from flask import Flask, jsonify, render_template_string, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
+from models import db, User, SocialAccount, ScheduledPost
 
 load_dotenv()
 
@@ -12,12 +14,17 @@ def create_app():
     # الإعدادات الأساسية
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///social_media.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    # تمكين CORS للـ Vue.js
+    # تهيئة الإضافات
+    db.init_app(app)
     CORS(app)
-    
-    # إعداد JWT
     jwt = JWTManager(app)
+    
+    # إنشاء الجداول
+    with app.app_context():
+        db.create_all()
     
     @app.route('/')
     def home():
@@ -46,6 +53,7 @@ def create_app():
                     <ul>
                         <li><a href="/api/health">/api/health</a> - حالة الخدمة</li>
                         <li><a href="/api/version">/api/version</a> - معلومات النسخة</li>
+                        <li><a href="/api/accounts">/api/accounts</a> - إدارة الحسابات</li>
                     </ul>
                 </div>
                 
@@ -63,6 +71,17 @@ def create_app():
     @app.route('/api/version')
     def version():
         return jsonify({"version": "1.0.0", "platform": "Social Media Manager"})
+    
+    # واجهات برمجة التطبيقات الجديدة
+    @app.route('/api/accounts', methods=['GET'])
+    def get_accounts():
+        # TODO: جلب الحسابات من قاعدة البيانات
+        return jsonify({"accounts": [], "total": 0})
+    
+    @app.route('/api/schedule', methods=['POST'])
+    def schedule_post():
+        # TODO: جدولة منشور جديد
+        return jsonify({"message": "سيتم تنفيذ جدولة المنشورات قريباً", "status": "development"})
     
     return app
 
