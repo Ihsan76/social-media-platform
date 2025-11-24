@@ -19,7 +19,6 @@ def create_app():
     # إعداد JWT
     jwt = JWTManager(app)
     
-    # routes سندرجها لاحقاً
     @app.route('/api/health')
     def health_check():
         return jsonify({"status": "healthy", "message": "Social Media Platform API is running"})
