@@ -1,11 +1,8 @@
 [phases.setup]
-cmds = ["cd backend && pip install -r requirements.txt"]
-
-[phases.install]
-cmds = ["echo \"Installation complete\""]
-
-[phases.build]
-cmds = ["echo \"Build complete\""]
+cmds = [
+    "cd backend && python -m pip install --upgrade pip",
+    "cd backend && python -m pip install -r requirements.txt"
+]
 
 [start]
 cmd = "cd backend && python app.py"
