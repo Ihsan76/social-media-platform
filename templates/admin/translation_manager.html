@@ -1,0 +1,196 @@
+<!-- templates/admin/translation_manager.html -->
+{% extends "base.html" %}
+
+{% block title %}إدارة الترجمة - {{ get_translation('platform_name', 'نشرتي') }}{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- رأس الصفحة -->
+    <div class="admin-header">
+        <h1>نظام إدارة الترجمة</h1>
+        <p>إدارة جميع اللغات والترجمات في منصة واحدة</p>
+    </div>
+
+    <!-- تبويبات الواجهة -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('languages-tab')">إدارة اللغات</button>
+            <button class="tab-btn" onclick="openTab('translations-tab')">إدارة الترجمات</button>
+            <button class="tab-btn" onclick="openTab('add-key-tab')">إضافة مفتاح جديد</button>
+        </div>
+
+        <!-- تبويب إدارة اللغات -->
+        <div id="languages-tab" class="tab-content active">
+            <div class="section-header">
+                <h2>اللغات المدعومة</h2>
+                <button class="btn btn-primary" onclick="showAddLanguageModal()">
+                    <i class="fas fa-plus"></i> إضافة لغة جديدة
+                </button>
+            </div>
+            
+            <div class="languages-grid">
+                {% for code, info in languages.items() %}
+                <div class="language-card {% if not info.enabled %}disabled{% endif %}">
+                    <div class="language-header">
+                        <h3>{{ info.native_name }} ({{ info.name }})</h3>
+                        <div class="language-actions">
+                            <label class="toggle-switch">
+                                <input type="checkbox" {% if info.enabled %}checked{% endif %} 
+                                       onchange="toggleLanguage('{{ code }}', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                            <button class="btn-icon" onclick="editLanguage('{{ code }}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            {% if code not in ['ar', 'en'] %}
+                            <button class="btn-icon btn-danger" onclick="deleteLanguage('{{ code }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="language-info">
+                        <div class="info-item">
+                            <span>الكود:</span>
+                            <strong>{{ code }}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>الاتجاه:</span>
+                            <strong>{{ info.direction }}</strong>
+                        </div>
+                        <div class="info-item">
+                            <span>الحالة:</span>
+                            <span class="status-badge {% if info.enabled %}active{% else %}inactive{% endif %}">
+                                {{ 'مفعل' if info.enabled else 'معطل' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- تبويب إدارة الترجمات -->
+        <div id="translations-tab" class="tab-content">
+            <div class="section-header">
+                <h2>إدارة الترجمات</h2>
+                <div class="filters">
+                    <select id="language-filter" onchange="filterTranslations()">
+                        <option value="">جميع اللغات</option>
+                        {% for code, info in languages.items() %}
+                        <option value="{{ code }}">{{ info.native_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" id="key-search" placeholder="البحث في المفاتيح..." onkeyup="filterTranslations()">
+                </div>
+            </div>
+
+            <div class="translations-table-container">
+                <table class="translations-table">
+                    <thead>
+                        <tr>
+                            <th>مفتاح الترجمة</th>
+                            {% for code, info in languages.items() if info.enabled %}
+                            <th>{{ info.native_name }}</th>
+                            {% endfor %}
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="translations-body">
+                        {% for key in translation_keys %}
+                        <tr>
+                            <td class="translation-key">
+                                <code>{{ key }}</code>
+                            </td>
+                            {% for code, info in languages.items() if info.enabled %}
+                            <td>
+                                <input type="text" 
+                                       value="{{ get_translation_value(key, code) }}" 
+                                       data-key="{{ key }}" 
+                                       data-lang="{{ code }}"
+                                       onchange="updateTranslation('{{ key }}', '{{ code }}', this.value)"
+                                       class="translation-input">
+                            </td>
+                            {% endfor %}
+                            <td class="actions">
+                                <button class="btn-icon btn-danger" onclick="deleteTranslationKey('{{ key }}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تبويب إضافة مفتاح جديد -->
+        <div id="add-key-tab" class="tab-content">
+            <div class="section-header">
+                <h2>إضافة مفتاح ترجمة جديد</h2>
+            </div>
+            
+            <div class="add-key-form">
+                <div class="form-group">
+                    <label for="new-key">مفتاح الترجمة:</label>
+                    <input type="text" id="new-key" placeholder="مثال: landing.hero.new_feature.title">
+                </div>
+                
+                <div class="translations-grid">
+                    {% for code, info in languages.items() if info.enabled %}
+                    <div class="translation-field">
+                        <label for="translation-{{ code }}">{{ info.native_name }}:</label>
+                        <textarea id="translation-{{ code }}" 
+                                  placeholder="أدخل الترجمة {{ info.native_name }}"></textarea>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="addNewTranslationKey()">
+                        <i class="fas fa-plus"></i> إضافة المفتاح
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearAddKeyForm()">
+                        <i class="fas fa-times"></i> مسح النموذج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة إضافة لغة جديدة -->
+<div id="add-language-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>إضافة لغة جديدة</h3>
+            <span class="close" onclick="closeAddLanguageModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="lang-code">كود اللغة (ISO):</label>
+                <input type="text" id="lang-code" placeholder="مثال: es, de, ru" maxlength="5">
+            </div>
+            <div class="form-group">
+                <label for="lang-name">اسم اللغة (إنجليزي):</label>
+                <input type="text" id="lang-name" placeholder="مثال: Spanish">
+            </div>
+            <div class="form-group">
+                <label for="lang-native">اسم اللغة الأصلي:</label>
+                <input type="text" id="lang-native" placeholder="مثال: Español">
+            </div>
+            <div class="form-group">
+                <label for="lang-direction">اتجاه النص:</label>
+                <select id="lang-direction">
+                    <option value="ltr">من اليسار لليمين (LTR)</option>
+                    <option value="rtl">من اليمين لليسار (RTL)</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="saveNewLanguage()">حفظ اللغة</button>
+            <button class="btn btn-secondary" onclick="closeAddLanguageModal()">إلغاء</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

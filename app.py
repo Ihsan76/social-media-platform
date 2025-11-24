@@ -15,43 +15,141 @@ users_db = {}
 sessions = {}
 social_accounts_db = {}
 
-# تعريف دوال الترجمة أولاً لتجنب الاستيراد الدائري
+# نظام إدارة الترجمة
+class TranslationManager:
+    def __init__(self):
+        self.translations_dir = "translations"
+        self.languages_file = os.path.join(self.translations_dir, "languages.json")
+        self.ensure_directories()
+    
+    def ensure_directories(self):
+        """إنشاء المجلدات الضرورية"""
+        if not os.path.exists(self.translations_dir):
+            os.makedirs(self.translations_dir)
+        if not os.path.exists('templates/admin'):
+            os.makedirs('templates/admin')
+    
+    def get_all_languages(self):
+        """الحصول على جميع اللغات المدعومة"""
+        try:
+            with open(self.languages_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except:
+            return {
+                "ar": {"name": "العربية", "native_name": "العربية", "direction": "rtl", "enabled": True},
+                "en": {"name": "English", "native_name": "English", "direction": "ltr", "enabled": True},
+                "fr": {"name": "French", "native_name": "Français", "direction": "ltr", "enabled": True}
+            }
+    
+    def save_languages(self, languages):
+        with open(self.languages_file, 'w', encoding='utf-8') as f:
+            json.dump(languages, f, ensure_ascii=False, indent=2)
+    
+    def get_translation_keys(self):
+        all_keys = set()
+        for lang_file in os.listdir(self.translations_dir):
+            if lang_file.endswith('.json') and lang_file != 'languages.json':
+                try:
+                    with open(os.path.join(self.translations_dir, lang_file), 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        self._extract_keys(data, '', all_keys)
+                except Exception as e:
+                    print(f"Error reading {lang_file}: {e}")
+        return sorted(list(all_keys))
+    
+    def _extract_keys(self, data, current_path, keys_set):
+        for key, value in data.items():
+            new_path = f"{current_path}.{key}" if current_path else key
+            if isinstance(value, dict):
+                self._extract_keys(value, new_path, keys_set)
+            else:
+                keys_set.add(new_path)
+    
+    def get_translation_file(self, lang):
+        file_path = os.path.join(self.translations_dir, f"{lang}.json")
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except:
+            return {}
+    
+    def save_translation_file(self, lang, data):
+        file_path = os.path.join(self.translations_dir, f"{lang}.json")
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    def update_translation(self, lang, key, value):
+        data = self.get_translation_file(lang)
+        keys = key.split('.')
+        
+        current = data
+        for k in keys[:-1]:
+            if k not in current:
+                current[k] = {}
+            current = current[k]
+        
+        current[keys[-1]] = value
+        self.save_translation_file(lang, data)
+        return True
+    
+    def add_new_key(self, key, translations):
+        for lang, value in translations.items():
+            self.update_translation(lang, key, value)
+        return True
+    
+    def delete_key(self, key):
+        for lang_file in os.listdir(self.translations_dir):
+            if lang_file.endswith('.json') and lang_file != 'languages.json':
+                lang = lang_file.replace('.json', '')
+                data = self.get_translation_file(lang)
+                self._delete_key_from_data(data, key.split('.'))
+                self.save_translation_file(lang, data)
+        return True
+    
+    def _delete_key_from_data(self, data, keys):
+        if len(keys) == 1:
+            if keys[0] in data:
+                del data[keys[0]]
+        else:
+            if keys[0] in data:
+                self._delete_key_from_data(data[keys[0]], keys[1:])
+                if not data[keys[0]]:
+                    del data[keys[0]]
+
+# تهيئة مدير الترجمة
+translation_manager = TranslationManager()
+
+# دالة تحميل الترجمات
 def load_translations(lang='en'):
     """دالة تحميل الترجمة"""
     try:
-        with open(f'translations/{lang}.json', 'r', encoding='utf-8') as f:
-            return json.load(f)
+        return translation_manager.get_translation_file(lang)
     except Exception as e:
         print(f"Error loading translation for {lang}: {e}")
         return {}
 
-# تحميل الترجمات أولاً
+# تحميل الترجمات
 TRANSLATIONS = {
     'ar': load_translations('ar'),
     'en': load_translations('en'), 
     'fr': load_translations('fr')
 }
 
-# الآن استيراد من translations بعد تحميل الترجمات
-try:
-    from translations import get_translation, get_supported_languages, get_language_direction, SUPPORTED_LANGUAGES
-except ImportError:
-    # تعريفات احتياطية إذا لم يكن translations.py موجوداً
-    print("Warning: translations module not found, using fallback implementations")
-    
-    SUPPORTED_LANGUAGES = ['ar', 'en', 'fr']
-    
-    def get_translation(lang, key):
-        """دالة احتياطية للحصول على الترجمة"""
-        return TRANSLATIONS.get(lang, {}).get(key, key)
-    
-    def get_supported_languages():
-        """دالة احتياطية للحصول على اللغات المدعومة"""
-        return SUPPORTED_LANGUAGES
-    
-    def get_language_direction(lang):
-        """دالة احتياطية للحصول على اتجاه اللغة"""
-        return 'rtl' if lang == 'ar' else 'ltr'
+# الحصول على اللغات المدعومة
+SUPPORTED_LANGUAGES = ['ar', 'en', 'fr']
+
+def get_language_direction(lang):
+    """الحصول على اتجاه اللغة"""
+    languages = translation_manager.get_all_languages()
+    return languages.get(lang, {}).get('direction', 'ltr')
+
+def get_translation(lang, key):
+    """دالة احتياطية للحصول على الترجمة"""
+    return TRANSLATIONS.get(lang, {}).get(key, key)
+
+def get_supported_languages():
+    """دالة احتياطية للحصول على اللغات المدعومة"""
+    return SUPPORTED_LANGUAGES
 
 def get_user_language(request):
     """الحصول على لغة المستخدم المفضلة"""
@@ -236,7 +334,7 @@ def find_user_by_social_login(platform, social_id):
     return None
 
 def find_user_by_email(email):
-    """البحث عن مستخدم بواسطة البريد الإلكتروني"""
+    """البحق عن مستخدم بواسطة البريد الإلكتروني"""
     for user in users_db.values():
         if user.email.lower() == email.lower():
             return user
@@ -251,10 +349,14 @@ def index():
         lang = 'en'
     
     text_direction = get_language_direction(lang)
+    languages_data = translation_manager.get_all_languages()
+    current_language_name = languages_data.get(lang, {}).get('native_name', lang)
+    
     return render_template('index.html', 
                          lang=lang,
                          text_direction=text_direction,
-                         languages=SUPPORTED_LANGUAGES,
+                         languages=languages_data,
+                         current_language_name=current_language_name,
                          translations=TRANSLATIONS.get(lang, {}))
 
 @app.route('/login')
@@ -265,10 +367,14 @@ def login_page():
         lang = 'en'
     
     text_direction = get_language_direction(lang)
+    languages_data = translation_manager.get_all_languages()
+    current_language_name = languages_data.get(lang, {}).get('native_name', lang)
+    
     return render_template('login.html', 
                          lang=lang,
                          text_direction=text_direction,
-                         languages=SUPPORTED_LANGUAGES,
+                         languages=languages_data,
+                         current_language_name=current_language_name,
                          translations=TRANSLATIONS.get(lang, {}))
 
 # إضافة alias للتوافق مع القوالب
@@ -285,10 +391,14 @@ def dashboard():
         lang = 'en'
     
     text_direction = get_language_direction(lang)
+    languages_data = translation_manager.get_all_languages()
+    current_language_name = languages_data.get(lang, {}).get('native_name', lang)
+    
     return render_template('dashboard.html', 
                          lang=lang,
                          text_direction=text_direction,
-                         languages=SUPPORTED_LANGUAGES,
+                         languages=languages_data,
+                         current_language_name=current_language_name,
                          translations=TRANSLATIONS.get(lang, {}))
 
 @app.route('/api/')
@@ -665,6 +775,121 @@ def health():
         "auth_methods": ["email", "google", "twitter", "facebook", "instagram", "github"]
     }
     return json_response(data)
+
+# ===== مسارات إدارة الترجمة الجديدة =====
+
+@app.route('/admin/translation-manager')
+def translation_manager_page():
+    """صفحة إدارة الترجمة"""
+    lang = request.args.get('lang', 'ar')
+    
+    languages = translation_manager.get_all_languages()
+    translation_keys = translation_manager.get_translation_keys()
+    enabled_languages = sum(1 for info in languages.values() if info.get('enabled', True))
+    
+    def get_translation_value(key, lang_code):
+        """دالة مساعدة للحصول على قيمة ترجمة محددة"""
+        data = translation_manager.get_translation_file(lang_code)
+        keys = key.split('.')
+        value = data
+        for k in keys:
+            if isinstance(value, dict) and k in value:
+                value = value[k]
+            else:
+                return ""
+        return value if isinstance(value, str) else ""
+    
+    return render_template('admin/translation_manager.html',
+                         lang=lang,
+                         languages=languages,
+                         translation_keys=translation_keys,
+                         enabled_languages=enabled_languages,
+                         get_translation_value=get_translation_value)
+
+# مسارات API للإدارة
+@app.route('/admin/toggle-language', methods=['POST'])
+def toggle_language():
+    """تفعيل/تعطيل لغة"""
+    data = request.get_json()
+    lang = data.get('lang')
+    enabled = data.get('enabled')
+    
+    languages = translation_manager.get_all_languages()
+    if lang in languages:
+        languages[lang]['enabled'] = enabled
+        translation_manager.save_languages(languages)
+        return json_response({"success": True})
+    
+    return json_response({"success": False, "message": "اللغة غير موجودة"})
+
+@app.route('/admin/add-language', methods=['POST'])
+def add_language():
+    """إضافة لغة جديدة"""
+    data = request.get_json()
+    code = data.get('code')
+    name = data.get('name')
+    native_name = data.get('native_name')
+    direction = data.get('direction')
+    
+    if not code or not name or not native_name:
+        return json_response({"success": False, "message": "جميع الحقول مطلوبة"})
+    
+    languages = translation_manager.get_all_languages()
+    if code in languages:
+        return json_response({"success": False, "message": "اللغة موجودة مسبقاً"})
+    
+    languages[code] = {
+        "name": name,
+        "native_name": native_name,
+        "direction": direction,
+        "enabled": True
+    }
+    
+    translation_manager.save_languages(languages)
+    
+    # إنشاء ملف ترجمة فارغ للغة الجديدة
+    translation_manager.save_translation_file(code, {})
+    
+    return json_response({"success": True})
+
+@app.route('/admin/update-translation', methods=['POST'])
+def update_translation():
+    """تحديث ترجمة محددة"""
+    data = request.get_json()
+    key = data.get('key')
+    lang = data.get('lang')
+    value = data.get('value')
+    
+    if translation_manager.update_translation(lang, key, value):
+        return json_response({"success": True})
+    
+    return json_response({"success": False})
+
+@app.route('/admin/add-translation-key', methods=['POST'])
+def add_translation_key():
+    """إضافة مفتاح ترجمة جديد"""
+    data = request.get_json()
+    key = data.get('key')
+    translations = data.get('translations', {})
+    
+    if not key:
+        return json_response({"success": False, "message": "مفتاح الترجمة مطلوب"})
+    
+    if translation_manager.add_new_key(key, translations):
+        return json_response({"success": True})
+    
+    return json_response({"success": False})
+
+@app.route('/admin/delete-translation-key', methods=['POST'])
+def delete_translation_key():
+    """حذف مفتاح ترجمة"""
+    data = request.get_json()
+    key = data.get('key')
+    
+    if translation_manager.delete_key(key):
+        return json_response({"success": True})
+    
+    return json_response({"success": False})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

@@ -1,0 +1,20 @@
+{
+  "ar": {
+    "name": "Arabic",
+    "native_name": "العربية",
+    "direction": "rtl",
+    "enabled": true
+  },
+  "en": {
+    "name": "English", 
+    "native_name": "English",
+    "direction": "ltr",
+    "enabled": true
+  },
+  "fr": {
+    "name": "French",
+    "native_name": "Français",
+    "direction": "ltr",
+    "enabled": true
+  }
+}

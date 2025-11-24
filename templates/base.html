@@ -3,95 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ translations.get('social_media_platform', 'Social Media Platform') }}{% endblock %}</title>
+    <title>{% block title %}{{ get_translation('social_media_platform', 'Social Media Platform') }}{% endblock %}</title>
     
-    <!-- ملف الأنماط الرئيسي -->
+    <!-- ملفات CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
-        html[dir="rtl"] {
-            direction: rtl;
-            text-align: right;
-        }
-        html[dir="ltr"] {
-            direction: ltr;
-            text-align: left;
-        }
-        
-        body {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        body.loaded {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .content-wrapper {
-            padding-top: 80px; /* تعويض ارتفاع القائمة الثابتة */
-        }
-    </style>
     
     {% block extra_css %}{% endblock %}
 </head>
 <body class="loading {% block body_class %}{% endblock %}">
     <script>
+        // تهيئة اتجاه النص واللغة
         document.documentElement.dir = '{{ text_direction }}';
         document.documentElement.lang = '{{ lang }}';
         
+        // إظهار الصفحة بعد التحميل
         window.addEventListener('load', function() {
             document.body.classList.remove('loading');
             document.body.classList.add('loaded');
         });
     </script>
 
-    <!-- القائمة العلوية الموحدة -->
+    <!-- القائمة العلوية -->
     <header class="main-header">
         <nav class="main-nav">
-            <a href="{{ url_for('index') }}" class="logo">
+            <!-- الشعار -->
+            <a href="{{ url_for('index') }}?lang={{ lang }}" class="logo">
                 <div class="logo-icon">
                     <i class="fas fa-paper-plane"></i>
                 </div>
-                <span>{{ translations.get('social_media_platform', 'Social Media Platform') }}</span>
+                <span>{{ get_translation('platform_name', 'Nashrati') }}</span>
             </a>
             
+            <!-- روابط التنقل -->
             <div class="nav-links">
-                <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">
-                    {{ translations.get('home', 'Home') }}
+                <a href="{{ url_for('index') }}?lang={{ lang }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">
+                    {{ get_translation('home', 'Home') }}
                 </a>
-                <!-- استخدام الـ endpoint الصحيح بناءً على السجلات -->
-                <a href="{{ url_for('api_login') if 'api_login' in url_for.__code__.co_varnames else '/login' }}" 
-                   class="nav-link {% if request.endpoint == 'api_login' %}active{% endif %}">
-                    {{ translations.get('login', 'Login') }}
+                
+                <a href="{{ url_for('login_page') }}?lang={{ lang }}" class="nav-link {% if request.endpoint == 'login_page' %}active{% endif %}">
+                    {{ get_translation('login', 'Login') }}
                 </a>
-                <!-- روابط مؤقتة للصفحات غير الموجودة بعد -->
-                <a href="#" class="nav-link">
-                    {{ translations.get('profile', 'Profile') }}
+                
+                <a href="{{ url_for('dashboard') }}?lang={{ lang }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    {{ get_translation('dashboard', 'Dashboard') }}
                 </a>
-                <a href="#" class="nav-link">
-                    {{ translations.get('dashboard', 'Dashboard') }}
+
+                <!-- رابط إدارة الترجمة (يظهر فقط في الصفحات الإدارية) -->
+                {% if request.path.startswith('/admin') %}
+                <a href="/admin/translation-manager?lang={{ lang }}" class="nav-link admin-link active">
+                    <i class="fas fa-language"></i> {{ get_translation('translation_manager', 'Translation Manager') }}
                 </a>
+                {% endif %}
             </div>
             
+            <!-- قسم المستخدم واللغة -->
             <div class="user-section">
+                <!-- منتقي اللغة -->
                 <div class="language-selector">
                     <button class="lang-toggle">
-                        <span>{{ languages[lang].flag }}</span>
-                        <span>{{ languages[lang].name }}</span>
+                        <i class="fas fa-globe"></i>
+                        <span>{{ current_language_name }}</span>
                     </button>
                     <div class="language-dropdown">
                         {% for code, info in languages.items() %}
-                        <a href="{{ request.path }}?lang={{ code }}" class="lang-btn {% if code == lang %}active{% endif %}">
-                            {{ info.flag }} {{ info.name }}
-                        </a>
+                        <button onclick="changeLanguage('{{ code }}')" class="lang-btn {% if code == lang %}active{% endif %}">
+                            {{ info.native_name }}
+                        </button>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="nav-user">
-                    <span class="user-greeting">{{ translations.get('welcome', 'Welcome') }}</span>
+                
+                <!-- ترحيب المستخدم -->
+                <div class="user-greeting">
+                    {{ get_translation('welcome', 'Welcome') }}
                 </div>
             </div>
         </nav>
@@ -101,6 +88,85 @@
     <main class="content-wrapper">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- دالة تغيير اللغة المحسنة -->
+    <script>
+        /**
+         * دالة تغيير اللغة مع الحفاظ على حالة الصفحة
+         * @param {string} lang - كود اللغة المطلوبة
+         */
+        function changeLanguage(lang) {
+            try {
+                // حفظ حالة الصفحة الحالية
+                const pageState = {
+                    scrollPosition: window.pageYOffset,
+                    currentPath: window.location.pathname,
+                    timestamp: Date.now()
+                };
+                sessionStorage.setItem('pageState', JSON.stringify(pageState));
+                
+                // تحديث اللغة مع الحفاظ على الصفحة الحالية
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.location.href = url.toString();
+                
+            } catch (error) {
+                console.error('Error changing language:', error);
+                // Fallback بسيط في حالة الخطأ
+                window.location.href = `/?lang=${lang}`;
+            }
+        }
+
+        // استعادة حالة الصفحة بعد تغيير اللغة
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const savedState = sessionStorage.getItem('pageState');
+                if (savedState) {
+                    const state = JSON.parse(savedState);
+                    
+                    // التحقق من أن البيانات حديثة ومن نفس الصفحة
+                    const isRecent = Date.now() - state.timestamp < 5000;
+                    const isSamePage = state.currentPath === window.location.pathname;
+                    
+                    if (isRecent && isSamePage) {
+                        // الانتقال إلى الموضع المحفوظ بعد تحميل المحتوى
+                        setTimeout(() => {
+                            if (state.scrollPosition > 0) {
+                                window.scrollTo(0, state.scrollPosition);
+                            }
+                        }, 100);
+                        
+                        // تنظيف البيانات المستخدمة
+                        sessionStorage.removeItem('pageState');
+                    }
+                }
+            } catch (error) {
+                console.error('Error restoring page state:', error);
+            }
+        });
+
+        // إدارة القائمة المنسدلة للغة على الأجهزة المحمولة
+        document.addEventListener('click', function(event) {
+            const languageSelector = document.querySelector('.language-selector');
+            const isClickInside = languageSelector.contains(event.target);
+            
+            if (!isClickInside) {
+                const dropdown = document.querySelector('.language-dropdown');
+                if (dropdown) {
+                    dropdown.style.display = 'none';
+                }
+            }
+        });
+
+        // إظهار/إخفاء القائمة المنسدلة للغة على اللمس
+        document.querySelector('.lang-toggle')?.addEventListener('click', function() {
+            const dropdown = document.querySelector('.language-dropdown');
+            if (dropdown) {
+                const isVisible = dropdown.style.display === 'block';
+                dropdown.style.display = isVisible ? 'none' : 'block';
+            }
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>

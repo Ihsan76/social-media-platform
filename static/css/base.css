@@ -1,0 +1,195 @@
+/* ===== أنماط قاعدة الموقع التكميلية ===== */
+
+/* استيراد المتغيرات من style.css */
+@import url('style.css');
+
+/* تحميل الصفحة - نستخدم الأنماط الموجودة في style.css */
+
+/* ===== القائمة العلوية المعدلة ===== */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    height: var(--header-height);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+    height: 100%;
+}
+
+/* الشعار - نستخدم الأنماط الموجودة */
+
+/* روابط التنقل المعدلة */
+.nav-links {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    transition: var(--transition);
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: var(--primary-500);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* رابط الإدارة */
+.admin-link {
+    background: var(--secondary-500);
+    color: var(--white);
+}
+
+.admin-link:hover {
+    background: var(--secondary-600);
+    transform: translateY(-2px);
+}
+
+/* قسم المستخدم */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.user-greeting {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* ===== منتقي اللغة المعدل ===== */
+.language-selector {
+    position: relative;
+}
+
+.lang-toggle {
+    background: var(--gray-50);
+    border: 1px solid var(--border-color);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.lang-toggle:hover {
+    border-color: var(--primary-500);
+    background: var(--primary-50);
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xl);
+    min-width: 150px;
+    z-index: 1001;
+    animation: dropdownFade 0.2s ease;
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.language-selector:hover .language-dropdown {
+    display: block;
+}
+
+.lang-btn {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    text-decoration: none;
+    color: var(--text-primary);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: right;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.lang-btn:hover,
+.lang-btn.active {
+    background: var(--primary-500);
+    color: var(--white);
+}
+
+/* ===== التجاوب المعدل ===== */
+@media (max-width: 768px) {
+    .main-nav {
+        padding: 0 var(--space-4);
+        flex-wrap: wrap;
+        gap: var(--space-4);
+    }
+    
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: var(--space-4);
+        gap: var(--space-4);
+    }
+    
+    .user-section {
+        order: 2;
+        margin-left: auto;
+        gap: var(--space-3);
+    }
+    
+    .nav-link {
+        padding: var(--space-2);
+        font-size: 0.9rem;
+    }
+    
+    .user-greeting {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo span {
+        display: none;
+    }
+    
+    .nav-links {
+        gap: var(--space-2);
+    }
+    
+    .nav-link {
+        padding: var(--space-1) var(--space-2);
+        font-size: 0.8rem;
+    }
+    
+    .language-selector .lang-toggle span {
+        display: none;
+    }
+}
