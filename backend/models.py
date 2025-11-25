@@ -29,7 +29,7 @@ class ScheduledPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    platforms = db.Column(db.Text)  JSON string of platforms to post to
+    platforms = db.Column(db.Text)  # تخزين منصات النشر كـ JSON
     scheduled_time = db.Column(db.DateTime, nullable=False)
     status = db.Column(db.String(20), default='scheduled')  # scheduled, posted, failed
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -38,7 +38,7 @@ class PostAnalytics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     scheduled_post_id = db.Column(db.Integer, db.ForeignKey('scheduled_post.id'))
     platform = db.Column(db.String(50))
-    post_id = db.Column(db.String(100))  # ID from social platform
+    post_id = db.Column(db.String(100))  # المعرف من المنصة الاجتماعية
     likes = db.Column(db.Integer, default=0)
     shares = db.Column(db.Integer, default=0)
     comments = db.Column(db.Integer, default=0)
