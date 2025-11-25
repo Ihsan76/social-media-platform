@@ -38,31 +38,48 @@ def create_app():
             <title>نظام إدارة وسائل التواصل الاجتماعي</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; text-align: center; }
-                .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
-                h1 { color: #333; }
-                .status { background: #4CAF50; color: white; padding: 10px; border-radius: 5px; margin: 20px 0; }
-                .endpoints { text-align: left; margin: 20px 0; }
-                .db-status { background: #2196F3; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+                .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 700px; margin: 0 auto; }
+                h1 { color: #333; margin-bottom: 20px; }
+                .status { background: #4CAF50; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 18px; }
+                .db-status { background: #2196F3; color: white; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 16px; }
+                .endpoints { text-align: right; margin: 25px 0; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+                .endpoints h3 { color: #333; margin-bottom: 15px; text-align: center; }
+                .endpoints ul { list-style: none; padding: 0; }
+                .endpoints li { margin: 10px 0; padding: 10px; background: white; border-radius: 5px; border-right: 4px solid #667eea; }
+                .endpoints a { color: #667eea; text-decoration: none; font-weight: bold; }
+                .endpoints a:hover { text-decoration: underline; }
+                .note { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #ffeaa7; }
             </style>
         </head>
         <body>
             <div class="container">
                 <h1>🚀 نظام إدارة وسائل التواصل الاجتماعي</h1>
+                
                 <div class="status">✅ الخدمة تعمل بنجاح</div>
                 <div class="db-status">🗄️ قاعدة البيانات PostgreSQL نشطة</div>
-                <p>مرحباً بك في النظام المتكامل لإدارة حسابات وسائل التواصل الاجتماعي</p>
+                
+                <p style="font-size: 18px; color: #555; margin: 20px 0;">
+                    مرحباً بك في النظام المتكامل لإدارة حسابات وسائل التواصل الاجتماعي
+                </p>
                 
                 <div class="endpoints">
-                    <h3>واجهات برمجة التطبيقات المتاحة:</h3>
+                    <h3>🔗 واجهات برمجة التطبيقات المتاحة:</h3>
                     <ul>
-                        <li><a href="/api/health">/api/health</a> - حالة الخدمة</li>
-                        <li><a href="/api/version">/api/version</a> - معلومات النسخة</li>
-                        <li><a href="/api/accounts">/api/accounts</a> - إدارة الحسابات</li>
-                        <li><a href="/api/schedule">/api/schedule</a> - جدولة المنشورات</li>
+                        <li>📊 <a href="/api/health">/api/health</a> - حالة الخدمة</li>
+                        <li>ℹ️ <a href="/api/version">/api/version</a> - معلومات النسخة</li>
+                        <li>👥 <a href="/api/accounts">/api/accounts</a> - إدارة الحسابات <small>(تتطلب مصادقة)</small></li>
+                        <li>📅 <a href="/api/schedule">/api/schedule</a> - جدولة المنشورات <small>(تتطلب مصادقة)</small></li>
+                        <li>�� <a href="/api/auth/login">/api/auth/login</a> - تسجيل الدخول</li>
                     </ul>
                 </div>
+
+                <div class="note">
+                    <strong>💡 ملاحظة:</strong> بعض الواجهات تتطلب مصادقة. استخدم <code>/api/auth/login</code> أولاً للحصول على token.
+                </div>
                 
-                <p>👉 <a href="https://github.com/Ihsan76/social-media-platform">تصفح المستودع على GitHub</a></p>
+                <p style="margin-top: 30px;">
+                    👉 <a href="https://github.com/Ihsan76/social-media-platform" style="color: #667eea; text-decoration: none; font-weight: bold;">تصفح المستودع على GitHub</a>
+                </p>
             </div>
         </body>
         </html>
@@ -75,8 +92,8 @@ def create_app():
             # اختبار اتصال قاعدة البيانات
             db.session.execute('SELECT 1')
             db_status = "connected"
-        except:
-            db_status = "disconnected"
+        except Exception as e:
+            db_status = f"disconnected: {str(e)}"
             
         return jsonify({
             "status": "healthy", 
@@ -90,7 +107,8 @@ def create_app():
         return jsonify({
             "version": "1.0.0", 
             "platform": "Social Media Manager",
-            "database": "PostgreSQL"
+            "database": "PostgreSQL",
+            "features": ["إدارة الحسابات", "جدولة المنشورات", "تحليل الإحصائيات"]
         })
     
     # واجهات برمجة التطبيقات لإدارة الحسابات
@@ -109,10 +127,12 @@ def create_app():
                         "id": acc.id,
                         "platform": acc.platform,
                         "account_name": acc.account_name,
-                        "is_active": acc.is_active
+                        "is_active": acc.is_active,
+                        "created_at": acc.created_at.isoformat()
                     } for acc in accounts
                 ],
-                "total": len(accounts)
+                "total": len(accounts),
+                "user_id": current_user_id
             })
         
         elif request.method == 'POST':
@@ -148,9 +168,11 @@ def create_app():
                         "content": post.content,
                         "platforms": json.loads(post.platforms) if post.platforms else [],
                         "scheduled_time": post.scheduled_time.isoformat(),
-                        "status": post.status
+                        "status": post.status,
+                        "created_at": post.created_at.isoformat()
                     } for post in posts
-                ]
+                ],
+                "total": len(posts)
             })
         
         elif request.method == 'POST':
@@ -172,8 +194,18 @@ def create_app():
             }), 201
     
     # واجهة تسجيل الدخول (مؤقتة للتطوير)
-    @app.route('/api/auth/login', methods=['POST'])
+    @app.route('/api/auth/login', methods=['POST', 'GET'])
     def login():
+        if request.method == 'GET':
+            return jsonify({
+                "message": "استخدم POST للحصول على token",
+                "example": {
+                    "method": "POST",
+                    "url": "/api/auth/login",
+                    "headers": {"Content-Type": "application/json"}
+                }
+            })
+        
         # استخدام string كـ identity بدلاً من integer
         access_token = create_access_token(
             identity="user_1",  # استخدام string بدلاً من integer
@@ -182,7 +214,9 @@ def create_app():
         return jsonify({
             "access_token": access_token,
             "user_id": "user_1",
-            "message": "تم تسجيل الدخول بنجاح"
+            "message": "تم تسجيل الدخول بنجاح",
+            "expires_in": "30 يوم",
+            "instructions": "استخدم هذا الـ token في header: Authorization: Bearer YOUR_TOKEN"
         })
     
     return app
