@@ -1,0 +1,11 @@
+{
+  "name": "social-media-platform",
+  "version": "1.0.0",
+  "description": "Social media platform with Vue.js frontend",
+  "scripts": {
+    "build": "echo 'Build handled by Vercel configuration'"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
