@@ -9,6 +9,11 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
+  // تعطيل Turbopack للمشاكل مع source-map
+  experimental: {
+    turbo: undefined
+  },
+  
   // إعدادات الأمان
   async headers() {
     return [
