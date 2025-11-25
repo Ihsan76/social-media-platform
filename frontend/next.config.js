@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: undefined // تعطيل Turbopack
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true
   }
 }
 
