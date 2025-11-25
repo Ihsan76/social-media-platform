@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template_string, request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -97,9 +97,12 @@ def create_app():
     @app.route('/api/accounts', methods=['GET', 'POST'])
     @jwt_required()
     def manage_accounts():
+        # الحصول على هوية المستخدم من الـ token
+        current_user_id = get_jwt_identity()
+        
         if request.method == 'GET':
             # جلب جميع الحسابات
-            accounts = SocialAccount.query.all()
+            accounts = SocialAccount.query.filter_by(user_id=current_user_id).all()
             return jsonify({
                 "accounts": [
                     {
@@ -119,7 +122,7 @@ def create_app():
                 platform=data.get('platform'),
                 account_name=data.get('account_name'),
                 access_token=data.get('access_token'),
-                user_id=1  # مؤقت - سنضيف نظام المستخدمين لاحقاً
+                user_id=current_user_id
             )
             db.session.add(new_account)
             db.session.commit()
@@ -133,9 +136,11 @@ def create_app():
     @app.route('/api/schedule', methods=['GET', 'POST'])
     @jwt_required()
     def schedule_posts():
+        current_user_id = get_jwt_identity()
+        
         if request.method == 'GET':
             # جلب المنشورات المجدولة
-            posts = ScheduledPost.query.all()
+            posts = ScheduledPost.query.filter_by(user_id=current_user_id).all()
             return jsonify({
                 "scheduled_posts": [
                     {
@@ -155,7 +160,7 @@ def create_app():
                 content=data.get('content'),
                 platforms=json.dumps(data.get('platforms', [])),
                 scheduled_time=datetime.fromisoformat(data.get('scheduled_time')),
-                user_id=1,  # مؤقت
+                user_id=current_user_id,
                 status='scheduled'
             )
             db.session.add(new_post)
@@ -169,14 +174,14 @@ def create_app():
     # واجهة تسجيل الدخول (مؤقتة للتطوير)
     @app.route('/api/auth/login', methods=['POST'])
     def login():
-        # مؤقت - سنضيف نظام مصادقة حقيقي لاحقاً
+        # استخدام string كـ identity بدلاً من integer
         access_token = create_access_token(
-            identity=1, 
+            identity="user_1",  # استخدام string بدلاً من integer
             expires_delta=timedelta(days=30)
         )
         return jsonify({
             "access_token": access_token,
-            "user_id": 1,
+            "user_id": "user_1",
             "message": "تم تسجيل الدخول بنجاح"
         })
     

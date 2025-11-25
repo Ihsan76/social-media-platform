@@ -13,18 +13,18 @@
     <div class="stats">
       <div class="stat-card">
         <h3>الحسابات المتصلة</h3>
-        <p class="number">0</p>
-        <button class="connect-btn">+ إضافة حساب</button>
+        <p class="number">{{ accountsCount }}</p>
+        <button class="connect-btn" @click="connectAccount">+ إضافة حساب</button>
       </div>
       <div class="stat-card">
         <h3>المنشورات المجدولة</h3>
-        <p class="number">0</p>
-        <button class="schedule-btn">📅 جدولة منشور</button>
+        <p class="number">{{ scheduledPostsCount }}</p>
+        <button class="schedule-btn" @click="createPost">📅 جدولة منشور</button>
       </div>
       <div class="stat-card">
-        <h3>التفاعلات</h3>
-        <p class="number">0</p>
-        <button class="analytics-btn">📊 عرض التحليلات</button>
+        <h3>حالة قاعدة البيانات</h3>
+        <p class="number">{{ databaseStatus }}</p>
+        <button class="analytics-btn" @click="refreshData">🔄 تحديث</button>
       </div>
     </div>
 
@@ -49,45 +49,126 @@
         </button>
       </div>
     </div>
+
+    <!-- قسم الحسابات المتصلة -->
+    <div class="connected-accounts" v-if="accounts.length > 0">
+      <h2>الحسابات المتصلة</h2>
+      <div class="accounts-grid">
+        <div v-for="account in accounts" :key="account.id" class="account-card">
+          <div class="platform-icon">{{ getPlatformIcon(account.platform) }}</div>
+          <div class="account-info">
+            <h4>{{ account.account_name }}</h4>
+            <p>{{ account.platform }}</p>
+          </div>
+          <div class="account-status" :class="{ active: account.is_active }">
+            {{ account.is_active ? 'نشط' : 'غير نشط' }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { apiService } from '../services/api'
+import authService from '../services/auth'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       apiStatus: 'checking',
-      apiMessage: 'جاري التحقق من حالة الخادم...'
+      apiMessage: 'جاري التحقق من حالة الخادم...',
+      accountsCount: 0,
+      scheduledPostsCount: 0,
+      databaseStatus: 'جاري التحقق...',
+      accounts: []
     }
   },
   async mounted() {
-    await this.checkAPIStatus()
+    await this.initializeApp()
   },
   methods: {
-    async checkAPIStatus() {
+    async initializeApp() {
       try {
-        const health = await apiService.healthCheck()
-        const version = await apiService.getVersion()
+        // تسجيل الدخول أولاً
+        if (!authService.isAuthenticated()) {
+          await authService.login()
+        }
+
+        // جلب بيانات النظام
+        await this.checkAPIStatus()
+        await this.loadAccounts()
+        await this.loadScheduledPosts()
         
-        this.apiStatus = 'connected'
-        this.apiMessage = `🟢 ${health.message} - ${version.platform} ${version.version}`
       } catch (error) {
+        console.error('خطأ في تهيئة التطبيق:', error)
         this.apiStatus = 'error'
         this.apiMessage = '🔴 تعذر الاتصال بالخادم'
       }
     },
+
+    async checkAPIStatus() {
+      try {
+        const health = await apiService.healthCheck()
+        this.apiStatus = 'connected'
+        this.apiMessage = `🟢 ${health.message} - قاعدة البيانات: ${health.database}`
+        this.databaseStatus = health.database === 'connected' ? '🟢 متصل' : '🔴 غير متصل'
+      } catch (error) {
+        this.apiStatus = 'error'
+        this.apiMessage = '🔴 تعذر الاتصال بالخادم'
+        this.databaseStatus = '🔴 غير معروف'
+      }
+    },
+
+    async loadAccounts() {
+      try {
+        const data = await apiService.getAccounts()
+        this.accounts = data.accounts
+        this.accountsCount = data.total
+      } catch (error) {
+        console.error('خطأ في جلب الحسابات:', error)
+      }
+    },
+
+    async loadScheduledPosts() {
+      try {
+        const data = await apiService.getScheduledPosts()
+        this.scheduledPostsCount = data.scheduled_posts.length
+      } catch (error) {
+        console.error('خطأ في جلب المنشورات المجدولة:', error)
+      }
+    },
+
+    async refreshData() {
+      await this.checkAPIStatus()
+      await this.loadAccounts()
+      await this.loadScheduledPosts()
+    },
+
+    getPlatformIcon(platform) {
+      const icons = {
+        twitter: '🐦',
+        facebook: '📘',
+        instagram: '📷',
+        linkedin: '💼',
+        tiktok: '🎵'
+      }
+      return icons[platform] || '🔗'
+    },
+
     connectAccount() {
       alert('سيتم فتح نافذة ربط الحسابات قريباً...')
     },
+
     createPost() {
       alert('سيتم فتح محرر المنشورات قريباً...')
     },
+
     viewAnalytics() {
       alert('سيتم فتح لوحة التحليلات قريباً...')
     },
+
     scheduleContent() {
       alert('سيتم فتح جدولة المحتوى قريباً...')
     }
@@ -96,165 +177,65 @@ export default {
 </script>
 
 <style scoped>
-.dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #333;
-  font-size: 2.5rem;
-}
-
-.connection-status {
-  margin-bottom: 2rem;
-}
-
-.status-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  border-left: 5px solid #ccc;
-  position: relative;
-}
-
-.status-card.connected {
-  border-left-color: #4CAF50;
-}
-
-.status-card.error {
-  border-left-color: #f44336;
-}
-
-.status-card.checking {
-  border-left-color: #FFC107;
-}
-
-.status-indicator {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.connected .status-indicator {
-  background: #4CAF50;
-}
-
-.error .status-indicator {
-  background: #f44336;
-}
-
-.checking .status-indicator {
-  background: #FFC107;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.stat-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.stat-card h3 {
-  color: #666;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-}
-
-.number {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #667eea;
-  margin: 1rem 0;
-}
-
-.connect-btn, .schedule-btn, .analytics-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-}
-
-.connect-btn:hover, .schedule-btn:hover, .analytics-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-.quick-actions {
+/* إضافة أنماط للحسابات المتصلة */
+.connected-accounts {
+  margin-top: 3rem;
   background: white;
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.quick-actions h2 {
-  color: #333;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.actions-grid {
+.accounts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
+  margin-top: 1rem;
 }
 
-.action-btn {
-  background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
-  padding: 1.5rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
+.account-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
 }
 
-.action-btn:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.icon {
+.platform-icon {
   font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.account-info {
+  flex: 1;
+}
+
+.account-info h4 {
+  margin: 0;
+  color: #333;
+}
+
+.account-info p {
+  margin: 0;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.account-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.account-status.active {
+  background: #4CAF50;
+  color: white;
+}
+
+.account-status:not(.active) {
+  background: #ff9800;
+  color: white;
 }
 </style>
