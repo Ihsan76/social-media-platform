@@ -49,6 +49,10 @@ def create_app():
                 .endpoints a { color: #667eea; text-decoration: none; font-weight: bold; }
                 .endpoints a:hover { text-decoration: underline; }
                 .note { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #ffeaa7; }
+                .login-btn { background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
+                .login-btn:hover { background: #218838; }
+                .token-display { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left; font-family: monospace; word-break: break-all; }
+                .copy-btn { background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px; }
             </style>
         </head>
         <body>
@@ -61,6 +65,21 @@ def create_app():
                 <p style="font-size: 18px; color: #555; margin: 20px 0;">
                     مرحباً بك في النظام المتكامل لإدارة حسابات وسائل التواصل الاجتماعي
                 </p>
+
+                <!-- زر تسجيل الدخول -->
+                <div style="margin: 25px 0;">
+                    <button class="login-btn" onclick="getAuthToken()">🔐 احصل على رمز الدخول (Token)</button>
+                </div>
+
+                <!-- عرض الـ Token -->
+                <div id="tokenResult" style="display: none;">
+                    <h3>🔑 رمز الدخول:</h3>
+                    <div class="token-display">
+                        <span id="tokenText"></span>
+                        <button class="copy-btn" onclick="copyToken()">نسخ</button>
+                    </div>
+                    <p><small>استخدم هذا الرمز في رأس الطلبات: <code>Authorization: Bearer YOUR_TOKEN</code></small></p>
+                </div>
                 
                 <div class="endpoints">
                     <h3>🔗 واجهات برمجة التطبيقات المتاحة:</h3>
@@ -68,19 +87,50 @@ def create_app():
                         <li>📊 <a href="/api/health">/api/health</a> - حالة الخدمة</li>
                         <li>ℹ️ <a href="/api/version">/api/version</a> - معلومات النسخة</li>
                         <li>👥 <a href="/api/accounts">/api/accounts</a> - إدارة الحسابات <small>(تتطلب مصادقة)</small></li>
-                        <li>📅 <a href="/api/schedule">/api/schedule</a> - جدولة المنشورات <small>(تتطلب مصادقة)</small></li>
-                        <li>�� <a href="/api/auth/login">/api/auth/login</a> - تسجيل الدخول</li>
+                        <li>�� <a href="/api/schedule">/api/schedule</a> - جدولة المنشورات <small>(تتطلب مصادقة)</small></li>
+                        <li>🔐 <a href="/api/auth/login">/api/auth/login</a> - تسجيل الدخول (POST)</li>
                     </ul>
                 </div>
 
                 <div class="note">
-                    <strong>💡 ملاحظة:</strong> بعض الواجهات تتطلب مصادقة. استخدم <code>/api/auth/login</code> أولاً للحصول على token.
+                    <strong>💡 ملاحظة:</strong> بعض الواجهات تتطلب مصادقة. استخدم الزر أعلاه للحصول على token.
                 </div>
                 
                 <p style="margin-top: 30px;">
                     👉 <a href="https://github.com/Ihsan76/social-media-platform" style="color: #667eea; text-decoration: none; font-weight: bold;">تصفح المستودع على GitHub</a>
                 </p>
             </div>
+
+            <script>
+                async function getAuthToken() {
+                    try {
+                        const response = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            document.getElementById('tokenText').textContent = data.access_token;
+                            document.getElementById('tokenResult').style.display = 'block';
+                        } else {
+                            alert('خطأ: ' + (data.message || 'فشل في الحصول على الرمز'));
+                        }
+                    } catch (error) {
+                        alert('خطأ في الاتصال: ' + error.message);
+                    }
+                }
+
+                function copyToken() {
+                    const tokenText = document.getElementById('tokenText').textContent;
+                    navigator.clipboard.writeText(tokenText).then(() => {
+                        alert('تم نسخ الرمز إلى الحافظة');
+                    });
+                }
+            </script>
         </body>
         </html>
         """
@@ -193,22 +243,12 @@ def create_app():
                 "post_id": new_post.id
             }), 201
     
-    # واجهة تسجيل الدخول (مؤقتة للتطوير)
-    @app.route('/api/auth/login', methods=['POST', 'GET'])
+    # واجهة تسجيل الدخول
+    @app.route('/api/auth/login', methods=['POST'])
     def login():
-        if request.method == 'GET':
-            return jsonify({
-                "message": "استخدم POST للحصول على token",
-                "example": {
-                    "method": "POST",
-                    "url": "/api/auth/login",
-                    "headers": {"Content-Type": "application/json"}
-                }
-            })
-        
         # استخدام string كـ identity بدلاً من integer
         access_token = create_access_token(
-            identity="user_1",  # استخدام string بدلاً من integer
+            identity="user_1",
             expires_delta=timedelta(days=30)
         )
         return jsonify({
