@@ -6,7 +6,7 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist",
-        "installCommand": "cd frontend && npm install --force",
+        "installCommand": "cd frontend && npm install --legacy-peer-deps --force",
         "buildCommand": "cd frontend && npm run build"
       }
     }
@@ -14,7 +14,15 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "frontend/dist/"
+      "dest": "frontend/dist/$1"
     }
-  ]
+  ],
+  "installCommand": "cd frontend && npm install --legacy-peer-deps --force",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "frontend/**": {
+      "maxDuration": 30
+    }
+  }
 }
