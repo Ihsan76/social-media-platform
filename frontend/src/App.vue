@@ -7,6 +7,17 @@
       <div class="nav-links">
         <router-link to="/" class="nav-link">الرئيسية</router-link>
         <router-link to="/accounts" class="nav-link">الحسابات</router-link>
+        <router-link to="/schedule" class="nav-link">الجدولة</router-link>
+        <router-link to="/analytics" class="nav-link">الإحصائيات</router-link>
+      </div>
+      <div class="nav-actions">
+        <button v-if="!isAuthenticated" class="btn btn-outline" @click="login">
+          تسجيل الدخول
+        </button>
+        <div v-else class="user-info">
+          <span>مرحباً، User</span>
+          <button class="btn btn-outline" @click="logout">تسجيل الخروج</button>
+        </div>
       </div>
     </nav>
     
@@ -17,12 +28,42 @@
 </template>
 
 <script>
+import authService from './services/auth'
+
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      isAuthenticated: false
+    }
+  },
+  async mounted() {
+    this.isAuthenticated = authService.isAuthenticated()
+    if (!this.isAuthenticated) {
+      await this.login()
+    }
+  },
+  methods: {
+    async login() {
+      try {
+        await authService.login()
+        this.isAuthenticated = true
+      } catch (error) {
+        console.error('Login failed:', error)
+        alert('فشل تسجيل الدخول')
+      }
+    },
+    logout() {
+      authService.removeAuthToken()
+      this.isAuthenticated = false
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
 <style>
+/* الأنماط الأساسية - سيتم استبدالها بملف CSS المنظم */
 * {
   margin: 0;
   padding: 0;
@@ -42,6 +83,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-brand {
@@ -66,28 +108,40 @@ body {
   background: rgba(255,255,255,0.2);
 }
 
-.main-content {
-  padding: 2rem;
-  min-height: calc(100vh - 80px);
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.dashboard, .accounts {
-  max-width: 1200px;
-  margin: 0 auto;
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-button {
-  background: #667eea;
-  color: white;
+.btn {
+  padding: 0.5rem 1rem;
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  margin: 1rem 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background: #5a6fd8;
+.btn-outline {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: #667eea;
+}
+
+.main-content {
+  min-height: calc(100vh - 80px);
 }
 </style>
