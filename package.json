@@ -6,6 +6,6 @@
     "build": "echo 'Build handled by Vercel configuration'"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   }
 }
