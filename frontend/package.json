@@ -15,7 +15,9 @@
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
+    "@babel/core": "^7.28.5",
+    "@babel/helper-validator-identifier": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0"
   },

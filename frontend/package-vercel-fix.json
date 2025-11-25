@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "vue-cli-service build",
+    "dev": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
+    "vercel-build": "npm install --force && npm run build"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
