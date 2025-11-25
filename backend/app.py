@@ -38,7 +38,7 @@ def create_app():
             <title>نظام إدارة وسائل التواصل الاجتماعي</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; text-align: center; }
-                .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 700px; margin: 0 auto; }
+                .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
                 h1 { color: #333; margin-bottom: 20px; }
                 .status { background: #4CAF50; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 18px; }
                 .db-status { background: #2196F3; color: white; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 16px; }
@@ -49,10 +49,15 @@ def create_app():
                 .endpoints a { color: #667eea; text-decoration: none; font-weight: bold; }
                 .endpoints a:hover { text-decoration: underline; }
                 .note { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #ffeaa7; }
-                .login-btn { background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
+                .btn { padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 10px; }
+                .login-btn { background: #28a745; color: white; }
                 .login-btn:hover { background: #218838; }
+                .test-btn { background: #007bff; color: white; }
+                .test-btn:hover { background: #0056b3; }
+                .test-btn:disabled { background: #6c757d; cursor: not-allowed; }
                 .token-display { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left; font-family: monospace; word-break: break-all; }
                 .copy-btn { background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px; }
+                .result { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 15px 0; text-align: left; max-height: 300px; overflow-y: auto; }
             </style>
         </head>
         <body>
@@ -66,9 +71,9 @@ def create_app():
                     مرحباً بك في النظام المتكامل لإدارة حسابات وسائل التواصل الاجتماعي
                 </p>
 
-                <!-- زر تسجيل الدخول -->
+                <!-- قسم الحصول على Token -->
                 <div style="margin: 25px 0;">
-                    <button class="login-btn" onclick="getAuthToken()">🔐 احصل على رمز الدخول (Token)</button>
+                    <button class="btn login-btn" onclick="getAuthToken()">🔐 احصل على رمز الدخول (Token)</button>
                 </div>
 
                 <!-- عرض الـ Token -->
@@ -79,6 +84,20 @@ def create_app():
                         <button class="copy-btn" onclick="copyToken()">نسخ</button>
                     </div>
                     <p><small>استخدم هذا الرمز في رأس الطلبات: <code>Authorization: Bearer YOUR_TOKEN</code></small></p>
+                    
+                    <!-- أزرار تجربة الـ APIs -->
+                    <div style="margin: 20px 0;">
+                        <h4>🧪 تجربة الواجهات:</h4>
+                        <button class="btn test-btn" onclick="testAccountsAPI()" id="testAccountsBtn">👥 جلب الحسابات</button>
+                        <button class="btn test-btn" onclick="testScheduleAPI()" id="testScheduleBtn">📅 جلب المنشورات المجدولة</button>
+                        <button class="btn test-btn" onclick="addSampleAccount()" id="addAccountBtn">➕ إضافة حساب تجريبي</button>
+                    </div>
+                    
+                    <!-- عرض النتائج -->
+                    <div id="apiResult" class="result" style="display: none;">
+                        <h4>📊 النتيجة:</h4>
+                        <pre id="resultText"></pre>
+                    </div>
                 </div>
                 
                 <div class="endpoints">
@@ -87,13 +106,12 @@ def create_app():
                         <li>📊 <a href="/api/health">/api/health</a> - حالة الخدمة</li>
                         <li>ℹ️ <a href="/api/version">/api/version</a> - معلومات النسخة</li>
                         <li>👥 <a href="/api/accounts">/api/accounts</a> - إدارة الحسابات <small>(تتطلب مصادقة)</small></li>
-                        <li>�� <a href="/api/schedule">/api/schedule</a> - جدولة المنشورات <small>(تتطلب مصادقة)</small></li>
-                        <li>🔐 <a href="/api/auth/login">/api/auth/login</a> - تسجيل الدخول (POST)</li>
+                        <li>📅 <a href="/api/schedule">/api/schedule</a> - جدولة المنشورات <small>(تتطلب مصادقة)</small></li>
                     </ul>
                 </div>
 
                 <div class="note">
-                    <strong>💡 ملاحظة:</strong> بعض الواجهات تتطلب مصادقة. استخدم الزر أعلاه للحصول على token.
+                    <strong>💡 ملاحظة:</strong> بعض الواجهات تتطلب مصادقة. استخدم الزر أعلاه للحصول على token ثم جرب الواجهات.
                 </div>
                 
                 <p style="margin-top: 30px;">
@@ -102,6 +120,8 @@ def create_app():
             </div>
 
             <script>
+                let currentToken = '';
+
                 async function getAuthToken() {
                     try {
                         const response = await fetch('/api/auth/login', {
@@ -114,8 +134,14 @@ def create_app():
                         const data = await response.json();
                         
                         if (response.ok) {
-                            document.getElementById('tokenText').textContent = data.access_token;
+                            currentToken = data.access_token;
+                            document.getElementById('tokenText').textContent = currentToken;
                             document.getElementById('tokenResult').style.display = 'block';
+                            
+                            // تفعيل أزرار التجربة
+                            document.getElementById('testAccountsBtn').disabled = false;
+                            document.getElementById('testScheduleBtn').disabled = false;
+                            document.getElementById('addAccountBtn').disabled = false;
                         } else {
                             alert('خطأ: ' + (data.message || 'فشل في الحصول على الرمز'));
                         }
@@ -125,10 +151,85 @@ def create_app():
                 }
 
                 function copyToken() {
-                    const tokenText = document.getElementById('tokenText').textContent;
-                    navigator.clipboard.writeText(tokenText).then(() => {
+                    navigator.clipboard.writeText(currentToken).then(() => {
                         alert('تم نسخ الرمز إلى الحافظة');
                     });
+                }
+
+                async function testAccountsAPI() {
+                    if (!currentToken) {
+                        alert('الرجاء الحصول على token أولاً');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/accounts', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${currentToken}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        showResult(data);
+                    } catch (error) {
+                        showResult({ error: error.message });
+                    }
+                }
+
+                async function testScheduleAPI() {
+                    if (!currentToken) {
+                        alert('الرجاء الحصول على token أولاً');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/schedule', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${currentToken}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        showResult(data);
+                    } catch (error) {
+                        showResult({ error: error.message });
+                    }
+                }
+
+                async function addSampleAccount() {
+                    if (!currentToken) {
+                        alert('الرجاء الحصول على token أولاً');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/accounts', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${currentToken}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                platform: 'twitter',
+                                account_name: 'حساب_تجريبي',
+                                access_token: 'token_12345'
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        showResult(data);
+                    } catch (error) {
+                        showResult({ error: error.message });
+                    }
+                }
+
+                function showResult(data) {
+                    document.getElementById('resultText').textContent = JSON.stringify(data, null, 2);
+                    document.getElementById('apiResult').style.display = 'block';
                 }
             </script>
         </body>
@@ -139,7 +240,6 @@ def create_app():
     @app.route('/api/health')
     def health_check():
         try:
-            # اختبار اتصال قاعدة البيانات
             db.session.execute('SELECT 1')
             db_status = "connected"
         except Exception as e:
@@ -161,15 +261,12 @@ def create_app():
             "features": ["إدارة الحسابات", "جدولة المنشورات", "تحليل الإحصائيات"]
         })
     
-    # واجهات برمجة التطبيقات لإدارة الحسابات
     @app.route('/api/accounts', methods=['GET', 'POST'])
     @jwt_required()
     def manage_accounts():
-        # الحصول على هوية المستخدم من الـ token
         current_user_id = get_jwt_identity()
         
         if request.method == 'GET':
-            # جلب جميع الحسابات
             accounts = SocialAccount.query.filter_by(user_id=current_user_id).all()
             return jsonify({
                 "accounts": [
@@ -186,7 +283,6 @@ def create_app():
             })
         
         elif request.method == 'POST':
-            # إضافة حساب جديد
             data = request.get_json()
             new_account = SocialAccount(
                 platform=data.get('platform'),
@@ -202,14 +298,12 @@ def create_app():
                 "account_id": new_account.id
             }), 201
     
-    # واجهات برمجة التطبيقات لجدولة المنشورات
     @app.route('/api/schedule', methods=['GET', 'POST'])
     @jwt_required()
     def schedule_posts():
         current_user_id = get_jwt_identity()
         
         if request.method == 'GET':
-            # جلب المنشورات المجدولة
             posts = ScheduledPost.query.filter_by(user_id=current_user_id).all()
             return jsonify({
                 "scheduled_posts": [
@@ -226,7 +320,6 @@ def create_app():
             })
         
         elif request.method == 'POST':
-            # جدولة منشور جديد
             data = request.get_json()
             new_post = ScheduledPost(
                 content=data.get('content'),
@@ -243,10 +336,8 @@ def create_app():
                 "post_id": new_post.id
             }), 201
     
-    # واجهة تسجيل الدخول
     @app.route('/api/auth/login', methods=['POST'])
     def login():
-        # استخدام string كـ identity بدلاً من integer
         access_token = create_access_token(
             identity="user_1",
             expires_delta=timedelta(days=30)
@@ -255,8 +346,7 @@ def create_app():
             "access_token": access_token,
             "user_id": "user_1",
             "message": "تم تسجيل الدخول بنجاح",
-            "expires_in": "30 يوم",
-            "instructions": "استخدم هذا الـ token في header: Authorization: Bearer YOUR_TOKEN"
+            "expires_in": "30 يوم"
         })
     
     return app
