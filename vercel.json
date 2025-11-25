@@ -19,10 +19,5 @@
   ],
   "installCommand": "cd frontend && npm install --legacy-peer-deps --force",
   "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
-  "functions": {
-    "frontend/**": {
-      "maxDuration": 30
-    }
-  }
+  "outputDirectory": "frontend/dist"
 }
