@@ -2,7 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useTranslations } from '../contexts/TranslationsContext'
-import { LanguageCode } from '../lib/locales/types'
+
+// تعريف النوع محلياً بدلاً من الاستيراد
+type LanguageCode = 'ar' | 'en' | 'fr'
 
 export default function LanguageSelector() {
   const { lang, setLang, t, availableLanguages } = useTranslations()
@@ -43,7 +45,7 @@ export default function LanguageSelector() {
           {Object.values(availableLanguages).map((language) => (
             <button
               key={language.code}
-              onClick={() => handleLanguageChange(language.code)}
+              onClick={() => handleLanguageChange(language.code as LanguageCode)}
               className={`w-full text-right px-4 py-2 hover:bg-gray-50 transition-colors flex items-center space-x-2 space-x-reverse ${
                 lang === language.code ? 'bg-primary-50 text-primary-600' : 'text-gray-700'
               }`}
